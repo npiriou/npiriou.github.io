@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
+
+
+<head>
+	<style>
+		#carteDivision{
+  display: flex;
+  justify-content: center;
+}
+		table,
+		th,
+		td {
+			border: 1px solid black;
+		}
+
+		#mainContainer {
+			display: flex;
+			justify-content: space-around;
+		}
+
+		#cardContainer {
+			display: flex;
+			justify-content: center;
+		}
+		#handContainer {
+			display: flex;
+			justify-content: center;
+		}
+
+		div {
+			border: 1px solid black;
+		}
+
+		div.dice {
+			border: #999 1px solid;
+			padding: 5px;
+			font-size: 24px;
+			text-align: center;
+			margin: 5px;
+			display : inline-block;
+		}
+
+		div.tranch {
+			width: 32px;
+			background: #ff9100;
+		}
+
+		div.per {
+			width: 18px;
+			height: 18px;
+			background: #beafaf;
+		}
+
+		div.mag {
+			width: 32px;
+			background: #707ce9;
+		}
+
+		div.mob {
+			width: 40px;
+			background: #ffffff;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<div style="height:50%;">
+		<div id="mainContainer">
+			<div style="float:left;width:30%;">
+
+				<p>
+					<button id="boutonRoll" onclick="advRoll()">Tout roll</button> </p>
+
+
+				<h4>Les monstres seront touchés sur <br>
+					<input id="resiTr" type="number" value=2 size=1> ou plus aux attaques Tranchantes.<br>
+					<input id="resiPe" type="number" value=3 size=1> ou plus aux attaques Perçantes.<br>
+					<input id="resiMa" type="number" value=2 size=1> ou plus aux attaques Magiques.<br>
+					<br>
+					Nombre d'ennemis au départ : <input id="nbMobsDepart" type="number" value=5 defaultvalue=5 size=2>
+					<!--bouton reset--> <button id="refresh" onclick="init()"> Reset ennemis</button> <br>
+				</h4>
+				Quand ils répondront, les ennemis toucheront sur <input id="mobPrecision" type="number" value="5"
+					size=1> ou
+				plus.
+				<br>
+
+				<p id="partr">Tranchantes
+					<button onclick="addDiceT()">+</button>
+					<button onclick="removeDiceT()">-</button>
+
+				</p>
+
+				<br><br><br>
+				<p id="parpe">Perçantes
+					<button onclick="addDiceP()">+ </button>
+					<button onclick="removeDiceP()">-</button>
+
+				</p>
+				<br><br><br>
+				<p id="parma">Magiques
+					<button onclick="addDiceM()">+ </button>
+					<button onclick="removeDiceM()">-</button>
+
+				</p>
+				<br><br><br>
+			</div>
+
+			<div style="float:left;width:30%;">
+				<h2 id="status" style="clear:left;"></h2>
+			</div>
+
+
+			<div style="float:left;width:30%;">
+				<p>
+					<button id="boutonRollMob" onclick="rollMob()">Roll pour l'ennemi</button> </p>
+
+				<p id="parmob"></p>
+				<br><br>
+				<h2 id="status2" style="clear:left;"></h2>
+			</div>
+		</div>
+
+		<br>
+		<div id="cardContainer">
+			<div id="sectiongold" style="float:left;">
+				20 gold<br>
+				
+			</div>
+			<div style="float:left;">
+				<table>
+					<tr>
+						<td id="Cell1">Place vide</td>
+						<td id="Cell2">Place vide</td>
+						<td id="Cell3">Place vide</td>
+						<td id="Cell4">Place vide</td>
+					</tr>
+					<tr>
+						<td id="Cell5">Place vide</td>
+						<td id="Cell6">Place vide</td>
+						<td id="Cell7">Place vide</td>
+						<td id="Cell8">Place vide</td>
+					</tr>
+				</table>
+			</div>
+			<div id="divboutonCombat"> <button id="boutonCombat" onclick="combat()"> Paré au combat</button> </div>
+		</div>
+		<div id="handContainer">
+			<div style="float:left;">
+				<table>
+					<tr>
+						<td id="CellM1" onclick="pickM1()"></td>
+						<td id="CellM2" onclick="pickM2()"><div id="carteDivision">
+							</td>
+						<td id="CellM3" onclick="pickM3()"><div id="carteDivision">
+							</td>
+						<td id="CellM4" onclick="pickM4()"><div id="carteDivision">
+							</td>
+						<td id="CellM5" onclick="pickM5()"><div id="carteDivision">
+							</td>
+					</tr>
+
+				</table>
+			</div>
+		</div>
+</body>
+
+
+<script src="scripts1.js">
+</script>
+<script src="scripts2.js">
+</script>
+
+</html>
