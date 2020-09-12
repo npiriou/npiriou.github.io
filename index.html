@@ -7,10 +7,18 @@
 
 <head>
 	<style>
-		#carteDivision{
-  display: flex;
-  justify-content: center;
-}
+		.carteB:hover {
+      cursor: pointer;
+      }
+
+		.carteM:hover {
+      cursor: pointer;
+      }
+		#carteDivision {
+			display: flex;
+			justify-content: center;
+		}
+
 		table,
 		th,
 		td {
@@ -26,6 +34,7 @@
 			display: flex;
 			justify-content: center;
 		}
+
 		#handContainer {
 			display: flex;
 			justify-content: center;
@@ -41,7 +50,7 @@
 			font-size: 24px;
 			text-align: center;
 			margin: 5px;
-			display : inline-block;
+			display: inline-block;
 		}
 
 		div.tranch {
@@ -65,10 +74,10 @@
 			background: #ffffff;
 		}
 	</style>
-<title>Les crabes</title>
+	<title>Les crabes</title>
 </head>
 
-<body>
+<body style="background-color:rgb(238, 227, 70);">
 
 	<div style="height:50%;">
 		<div id="mainContainer">
@@ -77,36 +86,36 @@
 				<p>
 					<button id="boutonRoll" onclick="advRoll()">Tout roll</button> </p>
 
-
+				<!--
 				<h4>Les monstres seront touchés sur <br>
 					<input id="resiTr" type="number" value=2 size=1> ou plus aux attaques Tranchantes.<br>
 					<input id="resiPe" type="number" value=3 size=1> ou plus aux attaques Perçantes.<br>
 					<input id="resiMa" type="number" value=2 size=1> ou plus aux attaques Magiques.<br>
-					<br>
+					<br> 
 					Nombre d'ennemis au départ : <input id="nbMobsDepart" type="number" value=5 defaultvalue=5 size=2>
-					<!--bouton reset--> <button id="refresh" onclick="init()"> Reset ennemis</button> <br>
+					 <button id="refresh" onclick="init()"> Reset ennemis</button> <br>
 				</h4>
 				Quand ils répondront, les ennemis toucheront sur <input id="mobPrecision" type="number" value="5"
 					size=1> ou
 				plus.
-				<br>
-
-				<p id="partr">Tranchantes
-					<button onclick="addDiceT()">+</button>
-					<button onclick="removeDiceT()">-</button>
+				<br> -->
+			
+				<p id="partr">Attaques Tranchantes
+					<!--	<button onclick="addDiceT()">+</button>
+					<button onclick="removeDiceT()">-</button> -->
 
 				</p>
 
 				<br><br><br>
-				<p id="parpe">Perçantes
-					<button onclick="addDiceP()">+ </button>
-					<button onclick="removeDiceP()">-</button>
+				<p id="parpe">Attaques Perçantes
+					<!--	<button onclick="addDiceP()">+ </button>
+					<button onclick="removeDiceP()">-</button> -->
 
 				</p>
 				<br><br><br>
-				<p id="parma">Magiques
-					<button onclick="addDiceM()">+ </button>
-					<button onclick="removeDiceM()">-</button>
+				<p id="parma">Attaques Magiques
+					<!--	<button onclick="addDiceM()">+ </button>
+					<button onclick="removeDiceM()">-</button> -->
 
 				</p>
 				<br><br><br>
@@ -131,21 +140,21 @@
 		<div id="cardContainer">
 			<div id="sectiongold" style="float:left;">
 				20 gold<br>
-				
+
 			</div>
 			<div style="float:left;">
 				<table>
 					<tr>
-						<td id="Cell1">Place vide</td>
-						<td id="Cell2">Place vide</td>
-						<td id="Cell3">Place vide</td>
-						<td id="Cell4">Place vide</td>
+						<td id="Cell1" class="carteB" onclick="selectionCarteBoard(board, 0)">Place vide</td>
+						<td id="Cell2" class="carteB" onclick="selectionCarteBoard(board, 1)">Place vide</td>
+						<td id="Cell3" class="carteB" onclick="selectionCarteBoard(board, 2)">Place vide</td>
+						<td id="Cell4" class="carteB" onclick="selectionCarteBoard(board, 3)">Place vide</td>
 					</tr>
 					<tr>
-						<td id="Cell5">Place vide</td>
-						<td id="Cell6">Place vide</td>
-						<td id="Cell7">Place vide</td>
-						<td id="Cell8">Place vide</td>
+						<td id="Cell5" class="carteB" onclick="selectionCarteBoard(board, 4)">Place vide</td>
+						<td id="Cell6" class="carteB" onclick="selectionCarteBoard(board, 5)">Place vide</td>
+						<td id="Cell7" class="carteB" onclick="selectionCarteBoard(board, 6)">Place vide</td>
+						<td id="Cell8" class="carteB" onclick="selectionCarteBoard(board, 7)">Place vide</td>
 					</tr>
 				</table>
 			</div>
@@ -155,15 +164,19 @@
 			<div style="float:left;">
 				<table>
 					<tr>
-						<td id="CellM1" onclick="pickM(0)"></td>
-						<td id="CellM2" onclick="pickM(1)"><div id="carteDivision">
-							</td>
-						<td id="CellM3" onclick="pickM(2)"><div id="carteDivision">
-							</td>
-						<td id="CellM4" onclick="pickM(3)"><div id="carteDivision">
-							</td>
-						<td id="CellM5" onclick="pickM(4)"><div id="carteDivision">
-							</td>
+						<td class="carteM" id="CellM1" onclick="pickM(0)"></td>
+						<td class="carteM" id="CellM2" onclick="pickM(1)">
+							<div id="carteDivision">
+						</td>
+						<td class="carteM" id="CellM3" onclick="pickM(2)">
+							<div id="carteDivision">
+						</td>
+						<td class="carteM" id="CellM4" onclick="pickM(3)">
+							<div id="carteDivision">
+						</td>
+						<td class="carteM" id="CellM5" onclick="pickM(4)">
+							<div id="carteDivision">
+						</td>
 					</tr>
 
 				</table>
