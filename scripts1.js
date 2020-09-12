@@ -48,7 +48,6 @@ function init() {
 		tabDicesMob[0].remove();
 
 	}
-
 	// ajout des nouveaux mobs
 	for (i = 0; i < nbMobsReste; i++) {
 		addDiceMob();
@@ -166,12 +165,7 @@ function rollMob() {
 	var boutonRoll = document.getElementById("boutonRoll");
 	boutonRoll.disabled = false;
 	boutonRollMob.disabled = true;
-
-
 }
-
-
-
 
 function reponseDesMonstres() {
 
@@ -191,7 +185,6 @@ function reponseDesMonstres() {
 		tour = "ennemi";
 		boutonRoll.disabled = true;
 		boutonRollMob.disabled = false;
-		console.log("le cbt continue");
 
 	}
 	else {

@@ -75,107 +75,43 @@ Passif
 
 
 function distribution() {
+    shuffle(deck1);
     carteM1 = deck1[0];
     carteM2 = deck1[1];
     carteM3 = deck1[2];
     carteM4 = deck1[3];
     carteM5 = deck1[4];
 
+    var status = document.getElementById("status");
+    status.innerHTML = ("Achetez des cartes puis cliquez sur le bouton Paré au combat");
+    $("#boutonCombat")[0].disabled=false;
 
     for (i = 0; i < 5; i++) {
         var CellMi = $("#CellM" + (i + 1))[0];
         var carteMi = deck1[i];
         CellMi.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pv, carteMi.pv);
+        
+        // on réactive le clic sur les cartes de la main pour pouvoir les acheter
+        $("#CellM" + (i + 1))[0].onclick = (function(temp){ return function() { pickM(temp)};}) (i);
     }
 }
 distribution();
 
 
 
-function pickM1() { 
-    carteM1 = deck1[0];
+function pickM(n) { // place des cartes de la main sur le board quand on clic dessus
+    carteN = deck1[n];
     for (i = 0; i < 8; i++) {
         if (board[i] == 0) {
-            if (((carteM1.tier) * 5) <= gold) { 
+            if (((carteN.tier) * 5) <= gold) {
                 var CellBoard = $("#Cell" + (i + 1))[0];
-                var CellMain = $("#CellM1")[0];
+                var CellMain = $("#CellM" + (n + 1))[0];
                 CellBoard.innerHTML = CellMain.innerHTML;
-                board[i] = carteM1;
+                board[i] = carteN;
                 CellMain.innerHTML = "-";
-                gold= gold - ((carteM1.tier)*5);
+                gold = gold - ((carteN.tier) * 5);
                 $("#sectiongold")[0].innerHTML = gold + "gold";
-                return 0;
-            }
-        }
-    }
-
-}
-function pickM2() { 
-    carteM2 = deck1[0];
-    for (i = 0; i < 8; i++) {
-        if (board[i] == 0) {
-            if (((carteM2.tier) * 5) <= gold) { 
-                var CellBoard = $("#Cell" + (i + 1))[0];
-                var CellMain = $("#CellM2")[0];
-                CellBoard.innerHTML = CellMain.innerHTML;
-                board[i] = carteM2;
-                CellMain.innerHTML = "-";
-                gold= gold - ((carteM2.tier)*5);
-                $("#sectiongold")[0].innerHTML = gold + "gold";
-                return 0;
-            }
-        }
-    }
-
-}
-function pickM3() { 
-    carteM3 = deck1[0];
-    for (i = 0; i < 8; i++) {
-        if (board[i] == 0) {
-            if (((carteM3.tier) * 5) <= gold) { 
-                var CellBoard = $("#Cell" + (i + 1))[0];
-                var CellMain = $("#CellM3")[0];
-                CellBoard.innerHTML = CellMain.innerHTML;
-                board[i] = carteM3;
-                CellMain.innerHTML = "-";
-                gold= gold - ((carteM3.tier)*5);
-                $("#sectiongold")[0].innerHTML = gold + "gold";
-                return 0;
-            }
-        }
-    }
-
-}
-function pickM4() { 
-    carteM4 = deck1[0];
-    for (i = 0; i < 8; i++) {
-        if (board[i] == 0) {
-            if (((carteM4.tier) * 5) <= gold) { 
-                var CellBoard = $("#Cell" + (i + 1))[0];
-                var CellMain = $("#CellM4")[0];
-                CellBoard.innerHTML = CellMain.innerHTML;
-                board[i] = carteM4;
-                CellMain.innerHTML = "-";
-                gold= gold - ((carteM4.tier)*5);
-                $("#sectiongold")[0].innerHTML = gold + "gold";
-                return 0;
-            }
-        }
-    }
-
-}
-function pickM5() { 
-    carteM5 = deck1[0];
-    for (i = 0; i < 8; i++) {
-        if (board[i] == 0) {
-            if (((carteM5.tier) * 5) <= gold) { 
-                var CellBoard = $("#Cell" + (i + 1))[0];
-                var CellMain = $("#CellM5")[0];
-                CellBoard.innerHTML = CellMain.innerHTML;
-                board[i] = carteM5;
-                CellMain.innerHTML = "-";
-                gold= gold - ((carteM5.tier)*5);
-                $("#sectiongold")[0].innerHTML = gold + "gold";
+                $("#CellM" + (n + 1))[0].onclick = null;
                 return 0;
             }
         }
@@ -183,13 +119,36 @@ function pickM5() {
 
 }
 
-function boutique(){ 
-    // à terminer, faut rajouter l'achat des cartes, le placement, le retour en phase de combat, etc
-gold = gold + parseInt($("#nbMobsDepart").val());
-distribution();
-$("#sectiongold")[0].innerHTML = gold + " gold;"
+
+function boutique() {
+    // à terminer, faut rajouter le placement, etc
+    gold = gold + parseInt($("#nbMobsDepart").val());
+    distribution();
+    $("#sectiongold")[0].innerHTML = gold + " gold;"
 }
 
-function combat(){
-    
+function combat() {
+    $("#boutonCombat")[0].disabled=true;
+    nbTotAttTr = 0;
+    nbTotAttPe = 0;
+    nbTotAttMa = 0;
+    for (i = 0; i < 4; i++) {
+        if (board[i] != 0) {
+            nbTotAttTr = nbTotAttTr + board[i].nbAttTr;
+            nbTotAttPe = nbTotAttPe + board[i].nbAttPe;
+            nbTotAttMa = nbTotAttMa + board[i].nbAttMa;
+        }
+    }
+    $(".dice").remove();
+
+    for (i = 0; i < nbTotAttTr; i++) {
+        addDiceT();
+    }
+    for (i = 0; i < nbTotAttPe; i++) {
+        addDiceP();
+    }
+    for (i = 0; i < nbTotAttMa; i++) {
+        addDiceM();
+    }
+    boutonRoll.disabled = false;
 }
