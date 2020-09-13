@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+	crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+	integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+	crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+	integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+	crossorigin="anonymous"></script>
+
 
 
 <head>
 	<style>
 		.carteB:hover {
-      cursor: pointer;
-      }
+			cursor: pointer;
+		}
 
 		.carteM:hover {
-      cursor: pointer;
-      }
+			cursor: pointer;
+		}
+
 		#carteDivision {
 			display: flex;
 			justify-content: center;
@@ -77,7 +91,7 @@
 	<title>Les crabes</title>
 </head>
 
-<body style="background-color:rgb(238, 227, 70);">
+<body>
 
 	<div style="height:50%;">
 		<div id="mainContainer">
@@ -85,6 +99,7 @@
 
 				<p>
 					<button id="boutonRoll" onclick="advRoll()">Tout roll</button> </p>
+
 
 				<!--
 				<h4>Les monstres seront touchés sur <br>
@@ -99,7 +114,7 @@
 					size=1> ou
 				plus.
 				<br> -->
-			
+
 				<p id="partr">Attaques Tranchantes
 					<!--	<button onclick="addDiceT()">+</button>
 					<button onclick="removeDiceT()">-</button> -->
@@ -121,8 +136,8 @@
 				<br><br><br>
 			</div>
 
-			<div style="float:left;width:30%;">
-				<h2 id="status" style="clear:left;"></h2>
+			<div class="jumbotron" style="float:left;width:30%;">
+				<h4 id="status" style="clear:left;"></h4>
 			</div>
 
 
@@ -132,16 +147,15 @@
 
 				<p id="parmob"></p>
 				<br><br>
-				<h2 id="status2" style="clear:left;"></h2>
+				<h4 id="status2" style="clear:left;"></h4>
 			</div>
 		</div>
 
 		<br>
 		<div id="cardContainer">
-			<div id="sectiongold" style="float:left;">
-				20 gold<br>
+			<span id="sectionlumber" style="float:left;" class="badge badge-success">0 ouvriers<br></span>
+			<span id="sectiongold" style="float:left;" class="badge badge-warning">20 gold<br></span>
 
-			</div>
 			<div style="float:left;">
 				<table>
 					<tr>
@@ -158,12 +172,20 @@
 					</tr>
 				</table>
 			</div>
-			<div id="divboutonCombat"> <button id="boutonCombat" onclick="combat()"> Paré au combat</button> </div>
+			<div id="divboutonCombat"> <button id="boutonCombat" onclick="combat()">Paré au combat</button><br/>
+				<button id="boutonVente" onclick="vente()">Vendre</button>
+			</div>
 		</div>
 		<div id="handContainer">
 			<div style="float:left;">
 				<table>
+
 					<tr>
+						<td class="carteAchatLumber" id="carteAchatLumber">
+							<button id="boutonAchatLumber" type="button" class="btn btn-success"
+								onclick="achatLumber()">Acheter un ouvrier <br /> 5 gold</button>
+						</td>
+
 						<td class="carteM" id="CellM1" onclick="pickM(0)"></td>
 						<td class="carteM" id="CellM2" onclick="pickM(1)">
 							<div id="carteDivision">
