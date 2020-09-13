@@ -98,9 +98,8 @@ function distribution() {
     carteM4 = deck1[3];
     carteM5 = deck1[4];
 
-    var status = document.getElementById("status");
-    let newP = document.createElement('p');
-    status.append(newP, "Achetez des cartes puis cliquez sur le bouton Paré au combat");
+
+    ajouterAuChat("Achetez des cartes puis cliquez sur le bouton Paré au combat");
 
     $("#boutonCombat")[0].disabled = false; // bouton Paré au combat réactivé
 
@@ -151,12 +150,12 @@ function selectionCarteBoard(boardA, posNouvelleCarteSelect) {
         posCarteSelect = posNouvelleCarteSelect;
         $("#Cell" + (posCarteSelect + 1))[0].style.background = "blue";
 
-        if(board[posCarteSelect] !=0) {$("#boutonVente")[0].disabled=false;}
+        if (board[posCarteSelect] != 0) { $("#boutonVente")[0].disabled = false; }
     }
     else if (posCarteSelect != null) {
         deplacerCarteBoard(boardA, posCarteSelect, posNouvelleCarteSelect)
         $("#Cell" + (posCarteSelect + 1))[0].style.background = "white"; posCarteSelect = null;
-        $("#boutonVente")[0].disabled=true;
+        $("#boutonVente")[0].disabled = true;
 
     }
 }
@@ -188,12 +187,11 @@ function boutique() {  // à terminer,
     tabDices = document.getElementsByClassName("mob");
     goldGagnes = parseFloat(vagueActuelle.nombre) - parseFloat(tabDices.length);
     if (goldGagnes < 0) { goldGagnes = 0; }
-    gold = parseFloat(gold) + parseFloat(goldGagnes)+parseFloat(lumber);
+    gold = parseFloat(gold) + parseFloat(goldGagnes) + parseFloat(lumber);
 
 
-    var status = document.getElementById("status");
-    let newP = document.createElement('p');
-    status.append(newP, "Vague terminée. Vous gagnez " + goldGagnes + " gold des ennemis et "+lumber+" de vous ouvriers.");
+
+    ajouterAuChat("Vague terminée. Vous gagnez " + goldGagnes + " gold des ennemis et " + lumber + " de vous ouvriers.");
 
     //le board revient comme avant le combat
     board = copyBoard(boardPreCombat);
@@ -221,9 +219,7 @@ function combat() {
 
     // verfication du placement en frontline
     if ((board[0] == 0 || board[1] == 0 || board[2] == 0 || board[3] == 0) && (board[4] != 0 || board[5] != 0 || board[6] != 0 || board[7] != 0)) {
-        var status = document.getElementById("status"); // on vide la chat box
-        let newP = document.createElement('p');
-        status.append(newP, "Vous devez remplir la première ligne avant de pouvoir mettre des cartes en deuxième ligne.");
+        ajouterAuChat("Vous devez remplir la première ligne avant de pouvoir mettre des cartes en deuxième ligne.");
     }
 
     else { // si le placement est autorisé
@@ -278,7 +274,7 @@ function afficherBoard(board) {
     for (i = 0; i < 8; i++) {
         var CellMi = $("#Cell" + (i + 1))[0];
         if (board[i] != 0) {
-            
+
             var carteMi = board[i];
             CellMi.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep);
         } else {
@@ -308,18 +304,20 @@ function achatLumber() {
 
 }
 
-function vente(){
+function vente() {
     if (posCarteSelect != null) {
-        
-        
-        $("#Cell" + (posCarteSelect + 1))[0].style.background = "white"; 
-        gold = parseFloat(parseFloat(gold)+parseFloat(board[posCarteSelect].tier));
+
+
+        $("#Cell" + (posCarteSelect + 1))[0].style.background = "white";
+        gold = parseFloat(parseFloat(gold) + parseFloat(board[posCarteSelect].tier));
         $("#sectiongold")[0].innerHTML = gold + " gold";
+        ajouterAuChat("Vous vendez 1 " + board[posCarteSelect].nom + " pour " + board[posCarteSelect].tier + " gold. ")
+        $("#boutonVente")[0].disabled = true;
 
-
-        board[posCarteSelect] =0;
+        board[posCarteSelect] = 0;
         posCarteSelect = null;
         afficherBoard(board);
-        
-        
-}}
+
+
+    }
+}

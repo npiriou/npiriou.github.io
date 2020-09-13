@@ -181,9 +181,8 @@ function advRoll() {
 	}
 	nbMobsReste = nbMobsReste - killCount; if (nbMobsReste < 0) { nbMobsReste = 0; }
 
-	var status = document.getElementById("status");
-	let newP = document.createElement('p');
-	status.append(newP, "Vous tuez " + killCount + " monstres. Il en reste " + nbMobsReste + ".");
+	
+	ajouterAuChat( "Vous tuez " + killCount +" "+ vagueActuelle.nom+". Il en reste " + nbMobsReste + ".");
 
 
 	reponseDesMonstres();
@@ -214,9 +213,8 @@ function rollMob() {
 		if (tabDices[i].innerHTML >= vagueActuelle.precision) degatsInfliges++;
 	}
 
-	var status = document.getElementById("status");
-	let newP = document.createElement('p');
-	status.append(newP, "Les "+vagueActuelle.nom+" attaquent ! Vous perdez " + degatsInfliges + " PV ! ");
+	
+	ajouterAuChat( "Les " + vagueActuelle.nom + " attaquent ! Vous perdez " + degatsInfliges + " PV ! ");
 
 	degatsRestants = degatsInfliges;
 	repartitionDegats();
@@ -245,6 +243,8 @@ function rollMob() {
 // }
 function repartitionDegats() {
 
+	var ilyaeuunmort=false;
+
 	// si le board est vide, ça leak et la vague se termine
 	if (boardVide(board)) {
 		degatsRestants = 0;
@@ -253,7 +253,9 @@ function repartitionDegats() {
 		boutonRoll.disabled = true;
 		boutonRollMob.disabled = true;
 		boutique();
-	}
+	
+	}else{
+
 
 
 	//tant qu'il reste des pv a repartir ET qu'il reste au moins une tour en front line	
@@ -264,19 +266,20 @@ function repartitionDegats() {
 			if (board[i].pvact < board[i].pvdep) {
 				carteBlessee = i;
 				selectionPVPerdu(i);
+				 ilyaeuunmort=true;
 			}
 		}
 		//si apres la repartition auto il reste des pv a repartir ET qu'il reste au moins une tour en front line	
-		if ((degatsRestants > 0) && (board[0] != 0 || board[1] != 0 || board[2] != 0 || board[3] != 0)) {
-		var status = document.getElementById("status");
-		let newP = document.createElement('p');
-		status.append(newP, "Il reste " + (degatsRestants) + " PV perdus à répartir. Sélectionnez une carte en première ligne. ");
+		if ((degatsRestants > 0) && (board[0] != 0 || board[1] != 0 || board[2] != 0 || board[3] != 0) && (!ilyaeuunmort)) {
+			
+			ajouterAuChat( "Il reste " + (degatsRestants) + " PV perdus à répartir.");
+			ajouterAuChat(" Sélectionnez une carte en première ligne. ");
 
-		//on active le clic sur les cartes en frontline pour les select
-		for (i = 0; i < 4; i++) {
-			$("#Cell" + (i + 1))[0].onclick = (function (temp2) { return function () { selectionPVPerdu(temp2) }; })(i);
+			//on active le clic sur les cartes en frontline pour les select
+			for (i = 0; i < 4; i++) {
+				$("#Cell" + (i + 1))[0].onclick = (function (temp2) { return function () { selectionPVPerdu(temp2) }; })(i);
+			}
 		}
-	}
 	}
 	else {
 		// si la frontline a une place et que il ya des cartes en backline, elles doivent avancer
@@ -292,16 +295,13 @@ function repartitionDegats() {
 			return;
 		}
 	}
-}
+}}
 
 
 function selectionPVPerdu(posCarte) {
 
-	var status = document.getElementById("status");
-	let newP = document.createElement('p');
-
 	if (board[posCarte].pvact <= degatsRestants) { // plus de degats que de pv, la carte meurt
-		status.append(newP, board[posCarte].nom + " est mort");
+		ajouterAuChat(board[posCarte].nom + " est mort. ");
 
 		var Celli = $("#Cell" + (posCarte + 1))[0];
 		var carteMi = board[posCarte];
@@ -313,7 +313,7 @@ function selectionPVPerdu(posCarte) {
 	}
 	else if (board[posCarte].pvact > degatsRestants) { // plus de pv que de dégats, la carte tanke
 		board[posCarte].pvact = board[posCarte].pvact - degatsRestants;
-		status.append(newP, board[posCarte].nom + " survit avec " + board[posCarte].pvact + " PV !");
+		ajouterAuChat(board[posCarte].nom + " survit avec " + board[posCarte].pvact + " PV !");
 		var Celli = $("#Cell" + (posCarte + 1))[0];
 		var carteMi = board[posCarte];
 		Celli.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep);
@@ -361,9 +361,8 @@ function boardVide(board) {
 }
 
 function backlineAvance() {
-	var status = document.getElementById("status");
-	let newP = document.createElement('p');
-	status.append(newP, "Faites avancer votre backline");
+	
+	ajouterAuChat("Faites avancer votre backline");
 
 	// on réactive le clic sur les cartes du board pour les select
 	for (i = 0; i < 8; i++) {
@@ -381,4 +380,15 @@ function selectionCarteBack(posNouvelleCarteSelect) {
 		$("#Cell" + (posCarteSelect + 1))[0].style.background = "white"; posCarteSelect = null;
 		repartitionDegats();
 	}
+}
+
+function ajouterAuChat(ecriture){
+	var status = document.getElementById("status");
+	var statusenrobage = document.getElementById("statusenrobage");
+	let newP = document.createElement('p');
+	status.append(newP, ecriture);
+
+	//descend la scrolleuse
+	statusenrobage.scrollTop = statusenrobage.scrollHeight;
+
 }
