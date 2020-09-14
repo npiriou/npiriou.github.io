@@ -157,8 +157,11 @@
 
 		<br>
 		<div id="cardContainer">
-			<span id="sectionlumber" style="float:left;" class="badge badge-success">0 ouvriers<br></span>
+			<span id="sectionscore" style="float:left;" class="badge badge-primary">Score : 0<br></span>
+			<span id="sectionleak" style="float:left;" class="badge badge-danger">0 leak<br></span>
+			<span id="sectionlumber" style="float:left;" class="badge badge-success">0 ouvrier<br></span>
 			<span id="sectiongold" style="float:left;" class="badge badge-warning">20 gold<br></span>
+			
 
 			<div style="float:left;">
 				<table>
@@ -187,7 +190,7 @@
 					<tr>
 						<td class="carteAchatLumber" id="carteAchatLumber">
 							<button id="boutonAchatLumber" type="button" class="btn btn-success"
-								onclick="achatLumber()">Acheter un ouvrier <br /> 5 gold</button>
+								onclick="achatLumber()">Acheter un ouvrier<br />5 gold</button> 								
 						</td>
 
 						<td class="carteM" id="CellM1" onclick="pickM(0)"></td>
@@ -202,6 +205,13 @@
 						</td>
 						<td class="carteM" id="CellM5" onclick="pickM(4)">
 							<div id="carteDivision">
+						</td>
+						<td class="carteAchatLumber" id="carteAchatLumber">
+							<button id="boutonreRollBoutiqueFree" type="button" class="btn btn-secondary"
+								onclick="reRollBoutiqueFree()">Re-roll la boutique<br />Gratuit</button> 
+								<button id="boutonreRollBoutique2G" type="button" class="btn btn-secondary"
+								onclick="reRollBoutique2G()">Re-roll la boutique<br />2 gold</button> 
+
 						</td>
 					</tr>
 

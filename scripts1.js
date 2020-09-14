@@ -35,9 +35,9 @@ function displayVagueActuelle() {
 	status2 = document.getElementById("status2");
 	status2.innerHTML = ("Vague " + ((vagueActuelle.numero)) + " : " + vagueActuelle.nom + "<br>"
 		+ (vagueActuelle.nombre) + " ennemis au départ.<br>"
-		+ "Résistances au attaques Tranchantes : " + vagueActuelle.resiTr + " ou plus.<br>"
-		+ "Résistances au attaques Perçantes : " + vagueActuelle.resiPe + " ou plus.<br>"
-		+ "Résistances au attaques Magiques : " + vagueActuelle.resiMa + " ou plus.<br>"
+		+ "Résistances aux attaques Tranchantes : " + vagueActuelle.resiTr + " ou plus.<br>"
+		+ "Résistances aux attaques Perçantes : " + vagueActuelle.resiPe + " ou plus.<br>"
+		+ "Résistances aux attaques Magiques : " + vagueActuelle.resiMa + " ou plus.<br>"
 		+ "Précision des ennemis : " + vagueActuelle.precision + " ou plus.<br>"
 		+ vagueActuelle.passif
 	);
@@ -53,7 +53,8 @@ var nbMobsReste = vagueActuelle.nombre;
 var nbMobsTourPrec = vagueActuelle.nombre;
 var gold = 20;
 var degatsRestants = null;
-
+var leakTotal = 0;
+var scoreTotal = 0;
 
 // désactivation des boutons pour le jeu par vagues
 $(':input').prop('disabled', true);
@@ -61,9 +62,13 @@ var boutonCombat = document.getElementById("boutonCombat");
 boutonCombat.disabled = false;
 var boutonAchatLumber = document.getElementById("boutonAchatLumber");
 boutonAchatLumber.disabled = false;
+$("#boutonreRollBoutiqueFree")[0].disabled = false;
+$("#boutonreRollBoutique2G")[0].disabled = false;
 
 // on cache le bouton re roll
 $("#boutonReRollMob")[0].style.display = "none";
+
+$("#boutonreRollBoutique2G")[0].style.display = "none";
 
 // desactive le bouton pour roll les mobs
 var tour = "joueur";
@@ -96,8 +101,9 @@ function addDiceT() {
 	// add the text node to the newly created div
 	newDiv.appendChild(newContent);
 	// add the newly created element and its content into the DOM 
-	var bouton = document.getElementById("partr");
-	bouton.insertAdjacentElement('afterend', newDiv);
+	var elem = document.getElementById("partr");
+	elem.insertAdjacentElement('afterend', newDiv);
+	return newDiv;
 }
 function addDiceP() {
 	// create a new div element 
@@ -111,6 +117,7 @@ function addDiceP() {
 	// add the newly created element and its content into the DOM 
 	var bouton = document.getElementById("parpe");
 	bouton.insertAdjacentElement('afterend', newDiv);
+	return newDiv;
 }
 function addDiceM() {
 	// create a new div element 
@@ -124,6 +131,7 @@ function addDiceM() {
 	// add the newly created element and its content into the DOM 
 	var bouton = document.getElementById("parma");
 	bouton.insertAdjacentElement('afterend', newDiv);
+	return newDiv;
 }
 function addDiceMob() {
 	// create a new div element 
@@ -137,6 +145,7 @@ function addDiceMob() {
 	// add the newly created element and its content into the DOM 
 	var bouton = document.getElementById("parmob");
 	bouton.insertAdjacentElement('afterend', newDiv);
+	return newDiv;
 }
 
 function advRoll() {
@@ -147,6 +156,7 @@ function advRoll() {
 		tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
 		if (tabDices[i].innerHTML >= vagueActuelle.resiTr) killCount++;;
 	}
+	killCount += passifZombie(tabDices);
 
 	tabDices = document.getElementsByClassName("per");
 	for (i = 0; i < tabDices.length; i++) {
@@ -207,12 +217,14 @@ function rollMob() {
 		repartitionDegats();
 	}
 
-if (vagueActuelle.passif==("Volent 1 gold à chaque attaque qui touche")) {
-	ajouterAuChat("Les "+vagueActuelle.nom+" vous volent "+degatsInfliges+" gold !")
-	gold = parseInt(gold)-parseInt(degatsInfliges);
-	if (gold<0) {gold=0;} 
-	$("#sectiongold")[0].innerHTML = gold + " gold";
-}
+passifGolemCorail();
+
+	if (vagueActuelle.passif == ("Volent 1 gold à chaque attaque qui touche")) {
+		ajouterAuChat("Les " + vagueActuelle.nom + " vous volent " + degatsInfliges + " gold !")
+		gold = parseInt(gold) - parseInt(degatsInfliges);
+		if (gold < 0) { gold = 0; }
+		$("#sectiongold")[0].innerHTML = gold + " gold";
+	}
 
 }
 function repartitionDegats() {
@@ -288,6 +300,7 @@ function selectionPVPerdu(posCarte) {
 	else if (board[posCarte].pvact <= degatsRestants) { // plus de degats que de pv, la carte meurt
 
 		ajouterAuChat(board[posCarte].nom + " est mort. ");
+		passifGobelinExp(posCarte);
 		degatsRestants = degatsRestants - board[posCarte].pvact;
 		board[posCarte] = 0;
 
@@ -299,7 +312,7 @@ function selectionPVPerdu(posCarte) {
 		ajouterAuChat(board[posCarte].nom + " survit avec " + board[posCarte].pvact + " PV !");
 		var Celli = $("#Cell" + (posCarte + 1))[0];
 		var carteMi = board[posCarte];
-		Celli.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep);
+		Celli.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep, carteMi.passifDescription);
 		degatsRestants = 0;
 		repartitionDegats();
 	}
@@ -338,7 +351,7 @@ function reponseDesMonstres() {
 // return vrai si le board est vide, faux sinon
 function boardVide(board) {
 	for (i = 0; i < 8; i++) {
-		if ((board[i] != 0)) return false;
+		if (board[i] != 0) return false;
 	}
 	return true;
 }
