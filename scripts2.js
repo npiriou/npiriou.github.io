@@ -1,6 +1,6 @@
 
 
-function carte(numero, tier, nom, pvdep, pvact, nbAttTr, nbAttPe, nbAttMa, passif) {
+function carte(numero, tier, nom, pvdep, pvact, nbAttTr, nbAttPe, nbAttMa, passif, passifDescription) {
     this.numero = numero;
     this.tier = tier;
     this.nom = nom;
@@ -10,6 +10,8 @@ function carte(numero, tier, nom, pvdep, pvact, nbAttTr, nbAttPe, nbAttMa, passi
     this.nbAttPe = nbAttPe;
     this.nbAttMa = nbAttMa;
     this.passif = passif;
+    this.passifDescription = passifDescription;
+
 }
 var deck1 = [];
 deck1[0] = new carte(1, 1, "Spartiate", 1, 1, 1, 1, 0, null);
@@ -32,6 +34,21 @@ deck1[16] = new carte(16, 2, "Mur", 4, 4, 0, 0, 0, null);
 deck1[17] = new carte(17, 4, "Sam", 1, 1, 2, 2, 1, null);
 deck1[18] = new carte(18, 4, "Chevalier", 2, 2, 2, 1, 1, null);
 deck1[19] = new carte(19, 4, "Panda", 6, 6, 0, 1, 0, null);
+deck1[20] = new carte(20, 2, "Lanceur de haches", 1, 1, 2, 0, 0, "RANGED", "Attaque à distance");
+deck1[21] = new carte(21, 1, "Fée", 1, 1, 0, 0, 1, "RANGED", "Attaque à distance");
+deck1[22] = new carte(22, 2, "Mage", 1, 1, 0, 0, 2, "RANGED", "Attaque à distance");
+deck1[23] = new carte(23, 4, "Canon de Glace", 1, 1, 1, 1, 1, "RANGED", "Attaque à distance");
+deck1[24] = new carte(24, 2, "Archère Elfe", 1, 1, 0, 2, 0, "RANGED", "Attaque à distance");
+deck1[25] = new carte(25, 3, "Ranger Tanker", 2, 2, 0, 2, 0, "RANGED", "Attaque à distance");
+deck1[26] = new carte(26, 1, "Lanceuse de couteaux", 1, 1, 1, 0, 0, "RANGED", "Attaque à distance");
+
+
+
+
+
+
+
+
 
 
 
@@ -88,9 +105,25 @@ var template = `<div id="tier" class="bloc-Gauche">
 {6} </div> 
 </div>`;
 
+function enleverCartesAcheteesDuDeck() {
 
+    for (i = 0; i < 4; i++) {
+        var CellMain = $("#CellM" + (i + 1))[0];
+        if (CellMain.innerHTML == "Carte achetée") {
+            console.log("on retire du deck "+deck1[i].nom);
+            //deck1.splice(i, 1);
+            delete deck1[i];
+        }
+    }
+    deck1 = deck1.filter(function(x) {
+        return x !== undefined;
+     });
+}
 
 function distribution() {
+
+    enleverCartesAcheteesDuDeck()
+
     shuffle(deck1);
     carteM1 = deck1[0];
     carteM2 = deck1[1];
@@ -104,7 +137,7 @@ function distribution() {
     $("#boutonCombat")[0].disabled = false; // bouton Paré au combat réactivé
 
     // écrit les carac des cartes sur les cartes en main
-    for (i = 0; i < 5; i++) {
+    for (i = 0; (i < 5) && (i < deck1.length); i++) {
         var CellMi = $("#CellM" + (i + 1))[0];
         var carteMi = deck1[i];
         CellMi.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep);
@@ -122,7 +155,7 @@ distribution();
 
 
 
-function pickM(n) { // place des cartes de la main sur le board quand on clic dessus
+function pickM(n) { // achete et place des cartes de la main sur le board quand on clic dessus
     carteN = deck1[n];
     for (i = 0; i < 8; i++) {
         if (board[i] == 0) {
@@ -131,10 +164,11 @@ function pickM(n) { // place des cartes de la main sur le board quand on clic de
                 var CellMain = $("#CellM" + (n + 1))[0];
                 CellBoard.innerHTML = CellMain.innerHTML;
                 board[i] = carteN;
-                CellMain.innerHTML = "";
+                CellMain.innerHTML = "Carte achetée";
                 gold = gold - ((carteN.tier) * 5);
                 $("#sectiongold")[0].innerHTML = gold + "gold";
                 $("#CellM" + (n + 1))[0].onclick = null;
+
                 return 0;
             }
         }
@@ -185,7 +219,10 @@ function boutique() {  // à terminer,
 
     // calcul des golds 
     tabDices = document.getElementsByClassName("mob");
-    goldGagnes = parseFloat(vagueActuelle.nombre) - parseFloat(tabDices.length);
+    if (vagueActuelle.passif == "Lancent deux attaques par Boss") { goldGagnes = parseInt(vagueActuelle.nombre) - (parseInt(tabDices.length) / 2); }
+    else {
+        goldGagnes = parseFloat(vagueActuelle.nombre) - parseFloat(tabDices.length);
+    }
     if (goldGagnes < 0) { goldGagnes = 0; }
     gold = parseFloat(gold) + parseFloat(goldGagnes) + parseFloat(lumber);
 
@@ -215,7 +252,7 @@ function boutique() {  // à terminer,
     displayVagueActuelle();
 }
 
-function combat() {
+function combat() { // se déclenche quand j'appuie sur le bouton paré au combat
 
     // verfication du placement en frontline
     if ((board[0] == 0 || board[1] == 0 || board[2] == 0 || board[3] == 0) && (board[4] != 0 || board[5] != 0 || board[6] != 0 || board[7] != 0)) {
@@ -238,10 +275,14 @@ function combat() {
         }
         nbMobsReste = vagueActuelle.nombre;
         donnerBonsDes(); // on donne le bon nombre de dés
-        boutonRoll.disabled = false; // on réactive le bouton pour lancer les dés
+        document.getElementById("status").innerHTML = " "; // on vide la chat box
 
-        var status = document.getElementById("status"); // on vide la chat box
-        status.innerHTML = " ";
+
+        if (vagueActuelle.passif == "Attaquent en premier") { boutonRollMob.disabled = false; }
+        else {
+            boutonRoll.disabled = false; // on réactive le bouton pour lancer les dés
+        }
+
     }
 }
 
@@ -250,18 +291,29 @@ function donnerBonsDes() {
     nbTotAttTr = 0;
     nbTotAttPe = 0;
     nbTotAttMa = 0;
-    for (i = 0; i < 4; i++) { // on ne compte que la frontline, c'est par ici qu'on ajoutera les ranged
+    for (i = 0; i < 4; i++) { // on ne compte que la frontline
         if (board[i] != 0) {
             nbTotAttTr = nbTotAttTr + board[i].nbAttTr;
             nbTotAttPe = nbTotAttPe + board[i].nbAttPe;
             nbTotAttMa = nbTotAttMa + board[i].nbAttMa;
         }
     }
+    for (i = 4; i < 8; i++) { // on ne compte que les ranged en backline
+        if ((board[i] != 0) && board[i].passive == "RANGED") {
+            nbTotAttTr = nbTotAttTr + board[i].nbAttTr;
+            nbTotAttPe = nbTotAttPe + board[i].nbAttPe;
+            nbTotAttMa = nbTotAttMa + board[i].nbAttMa;
+        }
+    }
+
     $(".dice").remove(); // on enleve les anciens dés
 
     // on met le bon nombre de dés
 
-    for (i = 0; i < nbMobsReste; i++) { addDiceMob(); }
+    if (vagueActuelle.passif == "Lancent deux attaques par Boss") { passifBoss2emeAtt(); }
+    else { for (i = 0; i < nbMobsReste; i++) { addDiceMob(); } }
+
+
     for (i = 0; i < nbTotAttTr; i++) { addDiceT(); }
     for (i = 0; i < nbTotAttPe; i++) { addDiceP(); }
     for (i = 0; i < nbTotAttMa; i++) { addDiceM(); }
@@ -286,12 +338,8 @@ function afficherBoard(board) {
 
 // Utilisez cette fonction pour copier un board    
 function copyBoard(board) {
-    try {
-        var copy = JSON.parse(JSON.stringify(board));
-    } catch (ex) {
-        alert("Sagarex pose une alerte");
-    }
-    return copy;
+    return JSON.parse(JSON.stringify(board));
+
 }
 
 function achatLumber() {

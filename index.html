@@ -58,47 +58,50 @@
 			border: 1px solid black;
 		}
 
-		div.dice {
+		 div.dice {
 			border: #999 1px solid;
-			padding: 5px;
 			font-size: 24px;
 			text-align: center;
+			vertical-align: middle;
 			margin: 5px;
 			display: inline-block;
 		}
 
 		div.tranch {
 			width: 32px;
+			height:32px;
 			background: #ff9100;
-		}
+		} 
 
 		div.per {
-			width: 18px;
-			height: 18px;
+			width: 28px;
+			height: 28px;
 			background: #beafaf;
 		}
 
 		div.mag {
 			width: 32px;
+			height:32px;
 			background: #707ce9;
 		}
 
 		div.mob {
 			width: 40px;
+			height:40px;
 			background: #ffffff;
 		}
 	</style>
 	<title>Les crabes</title>
 </head>
 
-<body style="background:grey;">
+<body>
 
 	<div style="height:50%;">
 		<div id="mainContainer">
 			<div style="float:left;width:30%;">
 
 				<p>
-					<button id="boutonRoll" onclick="advRoll()">Tout roll</button> </p>
+					<button id="boutonRoll" onclick="advRoll()">Lancer mes dés</button> </p>
 
 
 				<!--
@@ -143,7 +146,8 @@
 
 			<div style="float:left;width:30%;">
 				<p>
-					<button id="boutonRollMob" onclick="rollMob()">Roll pour l'ennemi</button> </p>
+					<button id="boutonRollMob" onclick="rollMob()">Roll pour l'ennemi</button>
+					<button id="boutonReRollMob" onclick="passifFanatiquesRelance()">Reroll pour l'ennemi</button> </p>
 
 				<p id="parmob"></p>
 				<br><br>
@@ -211,5 +215,6 @@
 </script>
 <script src="scripts2.js">
 </script>
-
+<script src="passifs.js">
+</script>
 </html>
