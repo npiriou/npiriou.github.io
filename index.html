@@ -20,6 +20,8 @@
 
 <head>
 	<style>
+
+
 		.carteB:hover {
 			cursor: pointer;
 		}
@@ -84,7 +86,10 @@
 			height: 32px;
 			background: #707ce9;
 		}
-
+		div.magenoir {
+	border: rgb(3, 3, 3) 3px solid;
+	background: #3542b8;
+}
 		div.mob {
 			width: 40px;
 			height: 40px;
@@ -94,7 +99,7 @@
 	<title>Les crabes</title>
 </head>
 
-<body>
+<body style="background-color: beige;">
 
 	<div style="height:20%;">
 		<div id="mainContainer">
@@ -121,7 +126,7 @@
 				<br><br><br>
 			</div>
 
-			<div id="statusenrobage" class="jumbotron" style="width:30%; height:350px; overflow:auto;">
+			<div id="statusenrobage"  style="width:30%; height:350px; overflow:auto;">
 				<h4 id="status" style="clear:left; "></h4>
 			</div>
 
@@ -136,8 +141,10 @@
 			
 		</div>
 		<button id="boutonRoll" onclick="advRoll()" style="float:left; margin-left: 30%; ">Lancer mes dés</button>
-		<button id="boutonRollMob" onclick="rollMob()" style="float:left; margin-left: 25%; ">Roll pour l'ennemi</button>
-		<button id="boutonReRollMob" onclick="passifFanatiquesRelance()"style="float:left; ">Reroll pour l'ennemi</button> 
+		<button id="boutonReRoll1s" onclick="passifDemonette()" style="float:left; ">Relancer les 1</button>
+		<button id="boutonReRoll1Percantes" onclick="passifPingouin()" style="float:left; ">Relancer les 1 Perçantes</button>
+		<button id="boutonRollMob" onclick="rollMob()" style="float:right; margin-right: 30%; ">Roll pour l'ennemi</button>
+		<button id="boutonReRollMob" onclick="passifFanatiquesRelance()"style="float:right; ">Reroll pour l'ennemi</button> 
 		<br/> 		<br/> 
 
 
@@ -165,7 +172,7 @@
 					</tr>
 				</table>
 			</div>
-			<div id="divboutonCombat"> <button id="boutonCombat" onclick="combat()">Paré au combat</button><br />
+			<div id="divboutonCombat"> <button id="boutonCombat" onclick="combat()">Prêt</button><br />
 				<button id="boutonVente" onclick="vente()" style =  "margin-top: 260%  ;">Vendre</button>
 			</div>
 		</div>

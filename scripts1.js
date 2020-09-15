@@ -55,6 +55,7 @@ var gold = 20;
 var degatsRestants = null;
 var leakTotal = 0;
 var scoreTotal = 0;
+var killCount = 0;
 
 // désactivation des boutons pour le jeu par vagues
 $(':input').prop('disabled', true);
@@ -65,9 +66,12 @@ boutonAchatLumber.disabled = false;
 $("#boutonreRollBoutiqueFree")[0].disabled = false;
 $("#boutonreRollBoutique2G")[0].disabled = false;
 
-// on cache le bouton re roll
+// on cache les boutons re roll
 $("#boutonReRollMob")[0].style.display = "none";
-
+$("#boutonReRoll1s")[0].style.display = "none";
+var demonette = true;
+$("#boutonReRoll1Percantes")[0].style.display = "none";
+var pingouin = true;
 $("#boutonreRollBoutique2G")[0].style.display = "none";
 
 // desactive le bouton pour roll les mobs
@@ -149,35 +153,49 @@ function addDiceMob() {
 }
 
 function advRoll() {
+
+
+	passifRegen();
+	passifSoin2();
+
 	donnerBonsDes(); // on réactualise le  nombre de dés
 
-	var killCount = 0;
+	killCount = 0;
 
 	var tabDices = document.getElementsByClassName("tranch");
 	for (i = 0; i < tabDices.length; i++) {
 		tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
-		if (tabDices[i].innerHTML >= vagueActuelle.resiTr) killCount++;;
 	}
+	for (i = 0; i < tabDices.length; i++) {
+		if (tabDices[i].innerHTML >= vagueActuelle.resiTr) killCount++;
+	}
+
 	killCount += passifZombie(tabDices);
 
 	tabDices = document.getElementsByClassName("per");
 	for (i = 0; i < tabDices.length; i++) {
 		tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
-		if (tabDices[i].innerHTML >= vagueActuelle.resiPe) killCount++;;
+	}
+	for (i = 0; i < tabDices.length; i++) {
+		if (tabDices[i].innerHTML >= vagueActuelle.resiPe) killCount++;
 	}
 
 	tabDices = document.getElementsByClassName("mag");
 	for (i = 0; i < tabDices.length; i++) {
 		tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
-		if (tabDices[i].innerHTML >= vagueActuelle.resiMa) killCount++;;
 	}
-	nbMobsReste = nbMobsReste - killCount; if (nbMobsReste < 0) { nbMobsReste = 0; }
+	for (i = 0; i < tabDices.length; i++) {
+		if (tabDices[i].innerHTML >= vagueActuelle.resiMa) killCount++;
+	}
 
+	killCount += passifMageNoir();
 
-	ajouterAuChat("Vous tuez " + killCount + " " + vagueActuelle.nom + ". Il en reste " + nbMobsReste + ".");
-
-
-	reponseDesMonstres();
+	
+	if (checkPassifProc("DEMONETTE") && auMoinsUn1("dice")) { passifDemonetteAddBouton(); }
+	else if (checkPassifProc("PINGOUIN") && auMoinsUn1("per")) { passifPingouinAddBouton(); }
+	else {
+		compterMobsMorts();
+	}
 }
 
 function removeDiceT() {
@@ -214,7 +232,7 @@ function rollMob() {
 
 	else {
 		passifGolemCorail();
-		ajouterAuChat("Les " + vagueActuelle.nom + " attaquent ! Vous perdez " + degatsInfliges + " PV ! ");
+		ajouterAuChatType("Les " + vagueActuelle.nom + " attaquent ! Vous perdez " + degatsInfliges + " PV ! ", 0);
 
 		degatsRestants = degatsInfliges;
 		repartitionDegats();
@@ -223,7 +241,7 @@ function rollMob() {
 
 
 	if (vagueActuelle.passif == ("Volent 1 gold à chaque attaque qui touche")) {
-		ajouterAuChat("Les " + vagueActuelle.nom + " vous volent " + degatsInfliges + " gold !")
+		ajouterAuChatType("Les " + vagueActuelle.nom + " vous volent " + degatsInfliges + " gold !", 0)
 		gold = parseInt(gold) - parseInt(degatsInfliges);
 		if (gold < 0) { gold = 0; }
 		$("#sectiongold")[0].innerHTML = gold + " gold";
@@ -264,8 +282,8 @@ function repartitionDegats() {
 				&& (board[0] != 0 || board[1] != 0 || board[2] != 0 || board[3] != 0)
 				&& (!ilyaeuunmort)) {
 
-				ajouterAuChat("Il reste " + (degatsRestants) + " PV perdus à répartir.");
-				ajouterAuChat(" Sélectionnez une carte en première ligne. ");
+				ajouterAuChatType("Il reste " + (degatsRestants) + " PV perdus à répartir.", 0);
+				ajouterAuChatType(" Sélectionnez une carte en première ligne. ", 1);
 
 				//on active le clic sur les cartes en frontline pour les select
 				for (i = 0; i < 4; i++) {
@@ -275,7 +293,7 @@ function repartitionDegats() {
 		}
 		else {
 			if ((board[0] == 0 && board[1] == 0 && board[2] == 0 && board[3] == 0) && (degatsRestants > 0)) {
-				degatsRestants = 0; ajouterAuChat("La première ligne s'est faite massacrer !")
+				degatsRestants = 0; ajouterAuChatType("La première ligne s'est faite massacrer !", 0)
 			}
 
 			// si la frontline a une place et que il ya des cartes en backline, elles doivent avancer
@@ -285,6 +303,10 @@ function repartitionDegats() {
 			}
 			else {
 				var tour = "joueur";
+
+				for (i = 0; i < 8; i++) { // désactivation du clic sur les cartes du board pour les selectionner et déplacer
+					$("#Cell" + (i + 1))[0].onclick = null;
+				}
 				var boutonRoll = document.getElementById("boutonRoll");
 				boutonRoll.disabled = false;
 				return;
@@ -303,7 +325,7 @@ function selectionPVPerdu(posCarte) {
 
 	else if (board[posCarte].pvact <= degatsRestants) { // plus de degats que de pv, la carte meurt
 
-		ajouterAuChat(board[posCarte].nom + " est mort. ");
+		ajouterAuChatType(board[posCarte].nom + " est mort. ", 0);
 		passifGobelinExp(posCarte);
 		degatsRestants = degatsRestants - board[posCarte].pvact;
 		board[posCarte] = 0;
@@ -313,7 +335,7 @@ function selectionPVPerdu(posCarte) {
 	}
 	else if (board[posCarte].pvact > degatsRestants) { // plus de pv que de dégats, la carte tanke
 		board[posCarte].pvact = board[posCarte].pvact - degatsRestants;
-		ajouterAuChat(board[posCarte].nom + " survit avec " + board[posCarte].pvact + " PV !");
+		ajouterAuChatType(board[posCarte].nom + " survit avec " + board[posCarte].pvact + " PV !", 0);
 		var Celli = $("#Cell" + (posCarte + 1))[0];
 		var carteMi = board[posCarte];
 		Celli.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep, carteMi.passifDescription);
@@ -331,8 +353,6 @@ function reponseDesMonstres() {
 	for (i = 0; i < nbDesMobsASuppr; i++) {
 		tabDicesMob[0].remove();
 	}
-
-
 
 	nbMobsTourPrec = nbMobsReste;
 	nbDesMobs = tabDicesMob.length;
@@ -362,7 +382,7 @@ function boardVide(board) {
 
 function backlineAvance() {
 
-	ajouterAuChat("Faites avancer votre backline");
+	ajouterAuChatType("Faites avancer votre backline", 1);
 
 	// on réactive le clic sur les cartes du board pour les select
 	for (i = 0; i < 8; i++) {
@@ -377,7 +397,7 @@ function selectionCarteBack(posNouvelleCarteSelect) {
 	}
 	else if ((posCarteSelect != null) && (posNouvelleCarteSelect < 4) && board[posNouvelleCarteSelect] == 0) {
 		deplacerCarteBoard(board, posCarteSelect, posNouvelleCarteSelect)
-		$("#Cell" + (posCarteSelect + 1))[0].style.background = "white"; posCarteSelect = null;
+		$("#Cell" + (posCarteSelect + 1))[0].style.background = "beige"; posCarteSelect = null;
 		repartitionDegats();
 	}
 }
@@ -385,8 +405,41 @@ function selectionCarteBack(posNouvelleCarteSelect) {
 function ajouterAuChat(ecriture) {
 	var status = document.getElementById("status");
 	var statusenrobage = document.getElementById("statusenrobage");
-	let newP = document.createElement('p');
-	status.append(newP, ecriture);
+
+	var t = document.createElement('p');
+	t.innerText = ecriture;
+	t.style.color = "green"
+
+
+	status.appendChild(t);
+
+	//descend la scrolleuse
+	statusenrobage.scrollTop = statusenrobage.scrollHeight;
+
+}
+
+function ajouterAuChatType(ecriture, type) {
+	var status = document.getElementById("status");
+	var statusenrobage = document.getElementById("statusenrobage");
+
+	var t = document.createElement('p');
+	t.innerText = ecriture;
+
+	if (type == 0) //description
+	{
+		t.style.fontStyle = "italic"
+		t.style.color = "#006600"
+	}
+
+	if (type == 1) //injonction
+	{
+		t.style.fontStyle = "bold"
+		t.style.color = "#800000"
+	}
+
+
+
+	status.appendChild(t);
 
 	//descend la scrolleuse
 	statusenrobage.scrollTop = statusenrobage.scrollHeight;

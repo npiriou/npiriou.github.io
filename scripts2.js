@@ -14,26 +14,26 @@ function carte(numero, tier, nom, pvdep, pvact, nbAttTr, nbAttPe, nbAttMa, passi
 
 }
 var deck1 = [];
-deck1[0] = new carte(1, 1, "Spartiate", 1, 1, 1, 1, 0, "","");
-deck1[1] = new carte(20, 5, "Yéti", 5, 5, 1, 1, 1, "","");
-deck1[2] = new carte(2, 1, "Grosse Mite", 1, 1, 0, 2, 0, "","");
-deck1[3] = new carte(3, 1, "Croisé", 1, 1, 1, 0, 1, "","");
-deck1[4] = new carte(4, 1, "Péon", 2, 2, 0, 1, 0, "","");
-deck1[5] = new carte(5, 1, "Barbare", 1, 1, 2, 0, 0, "","");
-deck1[6] = new carte(6, 1, "Petite Tortue", 2, 2, 0, 0, 1, "","");
-deck1[7] = new carte(7, 1, "Champignon", 2, 2, 0, 0, 1, "","");
-deck1[8] = new carte(8, 1, "Nain", 2, 2, 1, 0, 0, "","");
-deck1[9] = new carte(9, 1, "Magneto", 1, 1, 0, 1, 1, "","");
-deck1[10] = new carte(10, 1, "Barricade", 3, 3, 0, 0, 0, "","");
-deck1[11] = new carte(11, 2, "Bourrin", 2, 2, 1, 0, 1, "","");
-deck1[12] = new carte(12, 2, "Ermite", 2, 2, 0, 1, 1, "","");
-deck1[13] = new carte(13, 2, "Croketzor", 1, 1, 1, 1, 1, "","");
-deck1[14] = new carte(14, 2, "Bébé Panda", 3, 3, 0, 1, 0, "","");
-deck1[15] = new carte(15, 2, "Jacky", 1, 1, 1, 2, 0, "","");
-deck1[16] = new carte(16, 2, "Mur", 4, 4, 0, 0, 0, "","");
-deck1[17] = new carte(17, 4, "Sam", 1, 1, 2, 2, 1, "","");
-deck1[18] = new carte(18, 4, "Chevalier", 2, 2, 2, 1, 1, "","");
-deck1[19] = new carte(19, 4, "Panda", 6, 6, 0, 1, 0, "","");
+deck1[0] = new carte(1, 1, "Spartiate", 1, 1, 1, 1, 0, "", "");
+deck1[1] = new carte(20, 5, "Yéti", 5, 5, 1, 1, 1, "", "");
+deck1[2] = new carte(2, 1, "Grosse Mite", 1, 1, 0, 2, 0, "", "");
+deck1[3] = new carte(3, 1, "Croisé", 1, 1, 1, 0, 1, "", "");
+deck1[4] = new carte(4, 1, "Péon", 2, 2, 0, 1, 0, "", "");
+deck1[5] = new carte(5, 1, "Barbare", 1, 1, 2, 0, 0, "", "");
+deck1[6] = new carte(6, 1, "Petite Tortue", 2, 2, 0, 0, 1, "", "");
+deck1[7] = new carte(7, 1, "Champignon", 2, 2, 0, 0, 1, "", "");
+deck1[8] = new carte(8, 1, "Nain", 2, 2, 1, 0, 0, "", "");
+deck1[9] = new carte(9, 1, "Magneto", 1, 1, 0, 1, 1, "", "");
+deck1[10] = new carte(10, 1, "Barricade", 3, 3, 0, 0, 0, "", "");
+deck1[11] = new carte(11, 2, "Bourrin", 2, 2, 1, 0, 1, "", "");
+deck1[12] = new carte(12, 2, "Ermite", 2, 2, 0, 1, 1, "", "");
+deck1[13] = new carte(13, 2, "Croketzor", 1, 1, 1, 1, 1, "", "");
+deck1[14] = new carte(14, 2, "Bébé Panda", 3, 3, 0, 1, 0, "", "");
+deck1[15] = new carte(15, 2, "Jacky", 1, 1, 1, 2, 0, "", "");
+deck1[16] = new carte(16, 2, "Mur", 4, 4, 0, 0, 0, "", "");
+deck1[17] = new carte(17, 4, "Sam", 1, 1, 2, 2, 1, "", "");
+deck1[18] = new carte(18, 4, "Chevalier", 2, 2, 2, 1, 1, "", "");
+deck1[19] = new carte(19, 4, "Panda", 6, 6, 0, 1, 0, "", "");
 deck1[20] = new carte(20, 2, "Lanceur de haches", 1, 1, 2, 0, 0, "RANGED", "Attaque à distance");
 deck1[21] = new carte(21, 1, "Fée", 1, 1, 0, 0, 1, "RANGED", "Attaque à distance");
 deck1[22] = new carte(22, 2, "Mage", 1, 1, 0, 0, 2, "RANGED", "Attaque à distance");
@@ -42,8 +42,18 @@ deck1[24] = new carte(24, 2, "Archère Elfe", 1, 1, 0, 2, 0, "RANGED", "Attaque 
 deck1[25] = new carte(25, 3, "Ranger Tanker", 2, 2, 0, 2, 0, "RANGED", "Attaque à distance");
 deck1[26] = new carte(26, 1, "Lanceuse de couteaux", 1, 1, 1, 0, 0, "RANGED", "Attaque à distance");
 deck1[27] = new carte(27, 1, "Gobelin explosif", 1, 1, 1, 0, 0, "EXPLOSION", "Tue un ennemi quand il meurt");
-deck1[28] = new carte(28, 3, "Golem de Corail", 3, 3, 1, 0, 0, "CORAIL", "Pour chaque 1 des ennemis, un meurt");
-deck1[29] = new carte(29, 1, "Zombie", 1, 1, 1, 0, 0, "DAKKA","Pour chaque 6 tranchant, <br/>lancez un nouveau dé tranchant");
+deck1[28] = new carte(28, 3, "Golem de Corail", 3, 3, 1, 0, 0, "CORAIL", "Pour chaque 1 des ennemis,<br/>un meurt");
+deck1[29] = new carte(29, 1, "Zombie", 1, 1, 1, 0, 0, "DAKKA", "Pour chaque 6 tranchant, <br/>lancez un nouveau dé tranchant");
+deck1[30] = new carte(30, 2, "Tréant", 2, 2, 1, 0, 0, "TREANT", "Tue un ennemi au début du combat");
+deck1[31] = new carte(31, 3, "Abomination", 4, 4, 1, 0, 0, "REGEN1", "Quand vous attaquez,<br/> récupère 1 PV");
+deck1[32] = new carte(32, 2, "Docteur", 1, 1, 1, 0, 0, "SOIN2", "Quand vous attaquez,<br/> soigne un allié de 2 PV");
+deck1[33] = new carte(33, 3, "Mage Noir", 1, 1, 0, 0, 2, "MAGENOIR", "Ajoute un dé magique<br/>qui fait toujours 6");
+deck1[34] = new carte(34, 2, "Poulpitos", 1, 1, 0, 3, 0, "", "");
+deck1[35] = new carte(35, 2, "Capitaine", 1, 1, 0, 1, 0, "CAPITAINE", "Vos cartes avec 1 Perçante ou<br/>plus lancent 1 Perçante de plus")
+deck1[36] = new carte(36, 4, "Démonette", 3, 3, 0, 0, 2, "DEMONETTE", "Relancez vos jets de 1");
+deck1[37] = new carte(37, 1, "Pingouin", 1, 1, 0, 1, 0, "PINGOUIN", "Relancez vos attaques<br/> perçantes de 1");
+
+
 
 var board = [0, 0, 0, 0, 0, 0, 0, 0];
 var boardPreCombat = board;  //servira a sauvegarder le board pour le récupérer après le combat, pour résu les morts etc
@@ -101,9 +111,9 @@ var template = `<div id="tier" class="bloc-Gauche">
 function distribution() {
 
     //on clean
-    deck1 = deck1.filter(function(x) {
+    deck1 = deck1.filter(function (x) {
         return x !== undefined;
-     });
+    });
 
 
     shuffle(deck1);
@@ -113,12 +123,12 @@ function distribution() {
     carteM4 = deck1[3];
     carteM5 = deck1[4];
 
-    $("#boutonCombat")[0].disabled = false; // bouton Paré au combat réactivé
+    $("#boutonCombat")[0].disabled = false; // bouton Pret au combat réactivé
 
     // écrit les carac des cartes sur les cartes en main
     for (i = 0; (i < 5) && (i < deck1.length); i++) {
         var CellMi = $("#CellM" + (i + 1))[0];
-        var carteMi = deck1[i]; 
+        var carteMi = deck1[i];
         CellMi.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep, carteMi.passifDescription);
 
         // on réactive le clic sur les cartes de la main pour pouvoir les acheter
@@ -168,7 +178,7 @@ function selectionCarteBoard(boardA, posNouvelleCarteSelect) {
     }
     else if (posCarteSelect != null) {
         deplacerCarteBoard(boardA, posCarteSelect, posNouvelleCarteSelect)
-        $("#Cell" + (posCarteSelect + 1))[0].style.background = "white"; posCarteSelect = null;
+        $("#Cell" + (posCarteSelect + 1))[0].style.background = "beige"; posCarteSelect = null;
         $("#boutonVente")[0].disabled = true;
 
     }
@@ -200,17 +210,17 @@ function boutique() {  // à terminer,
 
     $("#boutonreRollBoutiqueFree")[0].style.display = "none";
     $("#boutonreRollBoutique2G")[0].style.display = "block";
-    $("#boutonreRollBoutique2G")[0].disabled=false;
-    $("#boutonreRollBoutiqueFree")[0].disabled=false;
+    $("#boutonreRollBoutique2G")[0].disabled = false;
+    $("#boutonreRollBoutiqueFree")[0].disabled = false;
 
-    if(lumber<10) {document.getElementById("boutonAchatLumber").disabled = false;}
-
-
+    if (lumber < 10) { document.getElementById("boutonAchatLumber").disabled = false; }
 
 
-// ajout des leak
-leakTotal = leakTotal + nbMobsReste;
-$("#sectionleak")[0].innerHTML = leakTotal+" leak";
+
+
+    // ajout des leak
+    leakTotal = leakTotal + nbMobsReste;
+    $("#sectionleak")[0].innerHTML = leakTotal + " leak";
 
 
 
@@ -225,12 +235,12 @@ $("#sectionleak")[0].innerHTML = leakTotal+" leak";
     gold = parseFloat(gold) + parseFloat(goldGagnes) + parseFloat(lumber);
 
 
-// ajout du score
-scoreTotal = scoreTotal + parseInt(goldGagnes)- nbMobsReste + parseInt(lumber);
-$("#sectionscore")[0].innerHTML = "Score : "+scoreTotal;
+    // ajout du score
+    scoreTotal = scoreTotal + parseInt(goldGagnes) - nbMobsReste + parseInt(lumber);
+    $("#sectionscore")[0].innerHTML = "Score : " + scoreTotal;
 
 
-    ajouterAuChat("Vague terminée. Vous gagnez " + goldGagnes + " gold des ennemis et " + lumber + " de vos ouvriers.");
+    ajouterAuChatType("Vague terminée. Vous gagnez " + goldGagnes + " gold des ennemis et " + lumber + " de vos ouvriers.", 0);
 
     //le board revient comme avant le combat
     board = copyBoard(boardPreCombat);
@@ -244,7 +254,7 @@ $("#sectionscore")[0].innerHTML = "Score : "+scoreTotal;
             Celli.innerHTML = template.format(cartei.tier, cartei.nom, cartei.nbAttTr, cartei.nbAttPe, cartei.nbAttMa, cartei.pvdep, cartei.pvdep, cartei.passifDescription);
         }
     }
-    ajouterAuChat("Achetez des cartes puis cliquez sur le bouton Paré au combat");
+    ajouterAuChatType("Quand vous êtes prêts, cliquez sur le bouton Prêt.", 1);
 
     // distribution des nouvelles cartes et mise a jour des gold
     distribution();
@@ -256,14 +266,14 @@ $("#sectionscore")[0].innerHTML = "Score : "+scoreTotal;
     displayVagueActuelle();
 }
 
-function combat() { // se déclenche quand j'appuie sur le bouton paré au combat
+function combat() { // se déclenche quand j'appuie sur le bouton Pret
 
-$("#boutonreRollBoutique2G")[0].disabled=true;
-$("#boutonreRollBoutiqueFree")[0].disabled=true;
+    $("#boutonreRollBoutique2G")[0].disabled = true;
+    $("#boutonreRollBoutiqueFree")[0].disabled = true;
 
     // verfication du placement en frontline
     if ((board[0] == 0 || board[1] == 0 || board[2] == 0 || board[3] == 0) && (board[4] != 0 || board[5] != 0 || board[6] != 0 || board[7] != 0)) {
-        ajouterAuChat("Vous devez remplir la première ligne avant de pouvoir mettre des cartes en deuxième ligne.");
+        ajouterAuChatType("Vous devez remplir la première ligne avant de pouvoir mettre des cartes en deuxième ligne.", 1);
     }
 
     else { // si le placement est autorisé
@@ -272,7 +282,7 @@ $("#boutonreRollBoutiqueFree")[0].disabled=true;
 
 
         document.getElementById("boutonAchatLumber").disabled = true;
-        $("#boutonCombat")[0].disabled = true; //desactivation du bouton Paré au combat
+        $("#boutonCombat")[0].disabled = true; //desactivation du bouton Pret
 
         for (i = 0; i < 5; i++) { // désactivation du clic sur les cartes de la main pour les acheter
             $("#CellM" + (i + 1))[0].onclick = null;
@@ -284,6 +294,7 @@ $("#boutonreRollBoutiqueFree")[0].disabled=true;
         donnerBonsDes(); // on donne le bon nombre de dés
         document.getElementById("status").innerHTML = " "; // on vide la chat box
 
+        passifTreant();
 
         if (vagueActuelle.passif == "Attaquent en premier") { boutonRollMob.disabled = false; }
         else {
@@ -300,18 +311,20 @@ function donnerBonsDes() {
     nbTotAttMa = 0;
     for (i = 0; i < 4; i++) { // on ne compte que la frontline
         if (board[i] != 0) {
-            nbTotAttTr = nbTotAttTr + board[i].nbAttTr;
-            nbTotAttPe = nbTotAttPe + board[i].nbAttPe;
-            nbTotAttMa = nbTotAttMa + board[i].nbAttMa;
+            nbTotAttTr += board[i].nbAttTr;
+            nbTotAttPe += board[i].nbAttPe;
+            nbTotAttMa += board[i].nbAttMa;
         }
     }
     for (i = 4; i < 8; i++) { // on ne compte que les ranged en backline
         if ((board[i] != 0) && board[i].passif == "RANGED") {
-            nbTotAttTr = nbTotAttTr + board[i].nbAttTr;
-            nbTotAttPe = nbTotAttPe + board[i].nbAttPe;
-            nbTotAttMa = nbTotAttMa + board[i].nbAttMa;
+            nbTotAttTr += board[i].nbAttTr;
+            nbTotAttPe += board[i].nbAttPe;
+            nbTotAttMa += board[i].nbAttMa;
         }
     }
+
+    nbTotAttPe += passifCapitaine();
 
     $(".dice").remove(); // on enleve les anciens dés
 
@@ -355,7 +368,7 @@ function achatLumber() {
         gold = gold - 5;
         $("#sectiongold")[0].innerHTML = gold + " gold";
         $("#sectionlumber")[0].innerHTML = lumber + "  ouvriers";
-        if (lumber>=10){$("#boutonAchatLumber")[0].disabled=true; ajouterAuChat("Vous avez le maximum d'ouvriers.")}
+        if (lumber >= 10) { $("#boutonAchatLumber")[0].disabled = true; ajouterAuChatType("Vous avez le maximum d'ouvriers.", 1) }
     }
 
 }
@@ -364,10 +377,10 @@ function vente() {
     if (posCarteSelect != null) {
 
 
-        $("#Cell" + (posCarteSelect + 1))[0].style.background = "white";
+        $("#Cell" + (posCarteSelect + 1))[0].style.background = "beige";
         gold = parseFloat(parseFloat(gold) + parseFloat(board[posCarteSelect].tier));
         $("#sectiongold")[0].innerHTML = gold + " gold";
-        ajouterAuChat("Vous vendez 1 " + board[posCarteSelect].nom + " pour " + board[posCarteSelect].tier + " gold. ")
+        ajouterAuChatType("Vous vendez 1 " + board[posCarteSelect].nom + " pour " + board[posCarteSelect].tier + " gold. ", 0)
         $("#boutonVente")[0].disabled = true;
 
         board[posCarteSelect] = 0;
@@ -378,15 +391,38 @@ function vente() {
     }
 }
 
-function reRollBoutiqueFree(){
+function reRollBoutiqueFree() {
     distribution();
     $("#boutonreRollBoutiqueFree")[0].style.display = "none";
     $("#boutonreRollBoutique2G")[0].style.display = "block";
 
 }
 
-function reRollBoutique2G(){
+function reRollBoutique2G() {
     distribution();
-    gold = parseInt(gold)-2;
+    gold = parseInt(gold) - 2;
     $("#sectiongold")[0].innerHTML = gold + " gold";
 }
+
+function compterMobsMorts() {
+    nbMobsReste = nbMobsReste - killCount; if (nbMobsReste < 0) { nbMobsReste = 0; }
+    ajouterAuChatType("Vous tuez " + killCount + " " + vagueActuelle.nom + ". Il en reste " + nbMobsReste + ".", 0);
+    reponseDesMonstres();
+}
+
+// function tousLesReRolls() {
+
+
+//     // des indices pour savoir si l'action a déjà été jouée (pas joué = true, jouée/pas jouable = false)
+//     if (pingouin || demonette) {
+//         if (checkPassifProc("PINGOUIN") && auMoinsUn1("per") && pingouin) { passifPingouinAddBouton(); }
+//         else pingouin = false;
+//         if (checkPassifProc("DEMONETTE") && auMoinsUn1("dice") && demonette) { passifDemonetteAddBouton(); }
+//         else demonette = false;
+//     }
+
+// else { // si plus aucun reroll n'est disponible
+// compterMobsMorts();
+// }
+// }
+
