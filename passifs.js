@@ -133,7 +133,7 @@ compterMobsMorts();
 
 function passifGobelinExp(posCarte) {
     if (board[posCarte].passif == "EXPLOSION") {
-        nbMobsReste--; donnerBonsDes();
+        nbMobsReste--; donnerBonsDes("mobs");
         ajouterAuChatType("Le gobelin tue un ennemi en mourrant.", 0)
     }
 
@@ -207,7 +207,7 @@ function checkPosPassif(passifACheck) {
 
 function passifTreant() {
     if (checkPassifProc("TREANT")) {
-        nbMobsReste--; donnerBonsDes();
+        nbMobsReste--; donnerBonsDes("mobs");
         ajouterAuChatType("Le tréant élimine un des " + vagueActuelle.nom + " .", 0)
     }
 

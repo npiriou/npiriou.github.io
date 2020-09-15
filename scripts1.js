@@ -140,7 +140,7 @@ function addDiceM() {
 function addDiceMob() {
 	// create a new div element 
 	const newDiv = document.createElement("div");
-	newDiv.classList.add("dice");
+	newDiv.classList.add("dicemob");
 	newDiv.classList.add("mob");
 	// and give it some content 
 	const newContent = document.createTextNode("0");
@@ -158,7 +158,7 @@ function advRoll() {
 	passifRegen();
 	passifSoin2();
 
-	donnerBonsDes(); // on réactualise le  nombre de dés
+	donnerBonsDes("joueur"); // on réactualise le  nombre de dés
 
 	killCount = 0;
 
@@ -215,7 +215,7 @@ function rollMob() {
 
 	boutonRollMob.disabled = true;
 
-	donnerBonsDes(); // on donne le bon nombre de dés
+	donnerBonsDes("mobs"); // on donne le bon nombre de dés aux mobs
 
 
 	// on roll les dés et calcule les dégats infligés
@@ -350,9 +350,7 @@ function reponseDesMonstres() {
 	nbDesMobs = tabDicesMob.length;
 	nbDesMobsASuppr = nbDesMobs - nbMobsReste;
 
-	for (i = 0; i < nbDesMobsASuppr; i++) {
-		tabDicesMob[0].remove();
-	}
+donnerBonsDes("mobs");
 
 	nbMobsTourPrec = nbMobsReste;
 	nbDesMobs = tabDicesMob.length;

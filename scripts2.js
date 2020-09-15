@@ -199,11 +199,8 @@ function deplacerCarteBoard(boardA, posdep, posarr) {
 }
 
 
-function boutique() {  // à terminer, 
-
-    donnerBonsDes(); // on réactualise le  nombre de dés
-
-
+function boutique() { 
+    
     // on re desactive le bouton roll pour etre sur
     boutonRoll = document.getElementById("boutonRoll");
     boutonRoll.disabled = true;
@@ -304,7 +301,8 @@ function combat() { // se déclenche quand j'appuie sur le bouton Pret
     }
 }
 
-function donnerBonsDes() {
+function donnerBonsDes(quelDes="tous") {
+    if ((quelDes == "tous")|| quelDes == "joueur"){
     // on compte le nombre d'attaques pour mettre autant de dés
     nbTotAttTr = 0;
     nbTotAttPe = 0;
@@ -327,16 +325,20 @@ function donnerBonsDes() {
     nbTotAttPe += passifCapitaine();
 
     $(".dice").remove(); // on enleve les anciens dés
-
-    // on met le bon nombre de dés
-
-    if (vagueActuelle.passif == "Lancent deux attaques par Boss") { passifBoss2emeAtt(); }
-    else { for (i = 0; i < nbMobsReste; i++) { addDiceMob(); } }
-
-
-    for (i = 0; i < nbTotAttTr; i++) { addDiceT(); }
+    for (i = 0; i < nbTotAttTr; i++) { addDiceT(); }  // on met le bon nombre de dés
     for (i = 0; i < nbTotAttPe; i++) { addDiceP(); }
     for (i = 0; i < nbTotAttMa; i++) { addDiceM(); }
+    }
+
+    if ((quelDes == "tous")|| quelDes == "mobs"){
+    $(".dicemob").remove(); // on enleve les anciens dés
+
+    // on met le bon nombre de dés
+    if (vagueActuelle.passif == "Lancent deux attaques par Boss") { passifBoss2emeAtt(); }
+    else { for (i = 0; i < nbMobsReste; i++) { addDiceMob(); } }
+    }
+
+
 
 }
 
