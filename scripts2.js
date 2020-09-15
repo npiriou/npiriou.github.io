@@ -191,6 +191,9 @@ function deplacerCarteBoard(boardA, posdep, posarr) {
 
 function boutique() {  // à terminer, 
 
+    donnerBonsDes(); // on réactualise le  nombre de dés
+
+
     // on re desactive le bouton roll pour etre sur
     boutonRoll = document.getElementById("boutonRoll");
     boutonRoll.disabled = true;
@@ -223,7 +226,7 @@ $("#sectionleak")[0].innerHTML = leakTotal+" leak";
 
 
 // ajout du score
-scoreTotal = scoreTotal + parseInt(goldGagnes)- leakTotal + parseInt(lumber);
+scoreTotal = scoreTotal + parseInt(goldGagnes)- nbMobsReste + parseInt(lumber);
 $("#sectionscore")[0].innerHTML = "Score : "+scoreTotal;
 
 

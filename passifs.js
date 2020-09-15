@@ -30,6 +30,7 @@ function passifFanatiquesRelance() {
 
         if (tabDices[i].innerHTML >= vagueActuelle.precision) degatsInfliges++;
     }
+    passifGolemCorail();
     ajouterAuChat("Les " + vagueActuelle.nom + " attaquent ! Vous perdez " + degatsInfliges + " PV ! ");
 
     degatsRestants = degatsInfliges;
@@ -49,7 +50,10 @@ function passifFanatiquesAddBouton() {
 }
 
 function passifGobelinExp(posCarte) {
-    if (board[posCarte].passif == "EXPLOSION") { nbMobsReste--; donnerBonsDes(); ajouterAuChat("Le gobelin tue un ennemi en mourrant.") }
+    if (board[posCarte].passif == "EXPLOSION") {
+        nbMobsReste--; donnerBonsDes();
+        ajouterAuChat("Le gobelin tue un ennemi en mourrant.")
+    }
 
 }
 
@@ -90,14 +94,14 @@ function passifZombie(currentTabDices) {
             //roll
             roll = Math.floor(Math.random() * 6) + 1;
             //killcount
-            if (roll>=vagueActuelle.resiTr) nbKillsZombie++;
+            if (roll >= vagueActuelle.resiTr) nbKillsZombie++;
             // edit html
             div.innerHTML = roll;
 
         }
 
     }
-    if (nbKillsZombie > 0) ajouterAuChat("Le Zombie tue " + nbKillsZombie + " "+vagueActuelle.nom+" de plus");
+    if (nbKillsZombie > 0) ajouterAuChat("Le Zombie tue " + nbKillsZombie + " " + vagueActuelle.nom + " de plus");
     return nbKillsZombie;
 }
 

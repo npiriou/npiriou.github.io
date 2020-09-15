@@ -149,6 +149,8 @@ function addDiceMob() {
 }
 
 function advRoll() {
+	donnerBonsDes(); // on réactualise le  nombre de dés
+
 	var killCount = 0;
 
 	var tabDices = document.getElementsByClassName("tranch");
@@ -211,13 +213,14 @@ function rollMob() {
 	}
 
 	else {
+		passifGolemCorail();
 		ajouterAuChat("Les " + vagueActuelle.nom + " attaquent ! Vous perdez " + degatsInfliges + " PV ! ");
 
 		degatsRestants = degatsInfliges;
 		repartitionDegats();
+
 	}
 
-passifGolemCorail();
 
 	if (vagueActuelle.passif == ("Volent 1 gold à chaque attaque qui touche")) {
 		ajouterAuChat("Les " + vagueActuelle.nom + " vous volent " + degatsInfliges + " gold !")
@@ -257,7 +260,9 @@ function repartitionDegats() {
 				}
 			}
 			//si apres la repartition auto il reste des pv a repartir ET qu'il reste au moins une tour en front line	
-			if ((degatsRestants > 0) && (board[0] != 0 || board[1] != 0 || board[2] != 0 || board[3] != 0) && (!ilyaeuunmort)) {
+			if ((degatsRestants > 0)
+				&& (board[0] != 0 || board[1] != 0 || board[2] != 0 || board[3] != 0)
+				&& (!ilyaeuunmort)) {
 
 				ajouterAuChat("Il reste " + (degatsRestants) + " PV perdus à répartir.");
 				ajouterAuChat(" Sélectionnez une carte en première ligne. ");
@@ -279,7 +284,6 @@ function repartitionDegats() {
 				backlineAvance();
 			}
 			else {
-				donnerBonsDes(); // on réactualise le  nombre de dés
 				var tour = "joueur";
 				var boutonRoll = document.getElementById("boutonRoll");
 				boutonRoll.disabled = false;
