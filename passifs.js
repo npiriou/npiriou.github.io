@@ -257,10 +257,12 @@ function passifDragon() {
 function passifMutant() {
     var killsMutant = 0;
     var tabDices = document.getElementsByClassName("tranch");
+    if (checkPassifProc("MUTANT")) {
     for (i = 0; i < tabDices.length; i++) {
         if ((tabDices[i].innerHTML == 6) && (vagueActuelle.resiTr <= 6))
             killsMutant++;
     }
     if (killsMutant > 0) ajouterAuChatType("Le Mutant tue " + killsMutant + " " + vagueActuelle.nom + " de plus", 0);
     return killsMutant;
+}
 }
