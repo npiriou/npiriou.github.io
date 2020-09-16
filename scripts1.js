@@ -229,7 +229,7 @@ function rollMob() {
 		if (tabDices[i].innerHTML >= vagueActuelle.precision) degatsInfliges++;
 	}
 
-	if (vagueActuelle.passif == "Relancent une fois les 1 et 2") {
+	if ((vagueActuelle.passif == "Relancent une fois les 1 et 2")&& auMoinsUn1("dicemob")) {
 		passifFanatiquesAddBouton();
 	}
 

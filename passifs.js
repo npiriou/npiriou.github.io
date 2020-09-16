@@ -42,7 +42,7 @@ function passifFanatiquesRelance() {
 
 function passifFanatiquesAddBouton() {
 
-    if (vagueActuelle.passif == "Relancent une fois les 1 et 2") {
+    if ((vagueActuelle.passif == "Relancent une fois les 1 et 2")) {
         $("#boutonReRollMob")[0].style.display = "block";
         $("#boutonReRollMob")[0].disabled = false;
     }
@@ -121,7 +121,7 @@ function passifPingouin() {
     for (i = 0; i < tabDices.length; i++) {
         if (tabDices[i].innerHTML == 1) {
             tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
-            if (tabDices[i].innerHTML >= vagueActuelle.resiTr) killCount++;
+            if (tabDices[i].innerHTML >= vagueActuelle.resiPe) killCount++;
         }
     }
 pingouin = false;
@@ -283,3 +283,4 @@ function passifCapitaine() {
     }
     return attSuppCapitaine;
 }
+

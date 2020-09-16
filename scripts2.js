@@ -207,6 +207,7 @@ function deplacerCarteBoard(boardA, posdep, posarr) {
 
 function boutique() { 
     
+
     // on re desactive le bouton roll pour etre sur
     boutonRoll = document.getElementById("boutonRoll");
     boutonRoll.disabled = true;
@@ -267,6 +268,8 @@ function boutique() {
     v++;
     vagueActuelle = tabVagues[v];
     displayVagueActuelle();
+
+    donnerBonsDes("joueur");
 }
 
 function combat() { // se déclenche quand j'appuie sur le bouton Pret
