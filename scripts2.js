@@ -91,7 +91,7 @@ var template =
 <div id="tier" class="bloc-tier">
 {0}
 </div>
-<div id="nom" class="carteDivision">
+<div id="nom" class="carteDivision"style="max-height:27px;">
 {1}
 </div> 
 
