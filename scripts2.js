@@ -95,7 +95,7 @@ var template =
 {1}
 </div> 
 
-<div id="attaques" class="carteDivision" style="height:122px;">
+<div id="attaques" class="carteDivision" style="max-height:122px;">
 <b>{2}</b> Tranchantes<br>
 <b>{3}</b> Perçantes<br>
 <b>{4}</b> Magiques<br>
