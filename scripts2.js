@@ -87,7 +87,7 @@ if (!String.prototype.format) {
 }
 
 var template = 
-`<div id= "carteAffichee" style="width:205px;height:205px;">
+`<div id= "carteAffichee" style="max-width:205px;height:205px;">
 <div id="tier" class="bloc-tier">
 {0}
 </div>
