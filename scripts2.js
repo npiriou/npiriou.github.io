@@ -86,8 +86,8 @@ if (!String.prototype.format) {
     };
 }
 
-var template = 
-`<div id= "carteAffichee" style="max-width:205px;height:205px;">
+var template =
+    `<div id= "carteAffichee" style="max-width:205px;height:205px;min-width:150px;">
 <div id="tier" class="bloc-tier">
 {0}
 </div>
@@ -95,10 +95,10 @@ var template =
 {1}
 </div> 
 
-<div id="attaques" class="carteDivision" style="max-height:122px;">
-<b>{2}</b> Tranchantes<br>
-<b>{3}</b> Perçantes<br>
-<b>{4}</b> Magiques<br>
+<div id="attaques" class="carteDivision" style="height:122px;">
+<text id = "nbTranch" ><b>{2}</b> Tranchantes<br/></text>
+<text id = "nbPer" ><b>{3}</b> Perçantes<br/></text>
+<text id = "nbMag" ><b>{4}</b> Magiques<br/></text>
 <p id = "passif">
 <i>{7}</i>
 </p>  </div>
@@ -111,6 +111,79 @@ var template =
 {6} </div> 
 </div>
 </div></div></div>`;
+
+function cleanTemplate() {
+    // clean des cartes du board
+    var nbLigneSup = 0;
+    for (i = 0; i < 8; i++) {
+        var CellMi = $("#Cell" + (i + 1))[0];
+        if (board[i] != 0) {
+            if (board[i].nbAttTr == 0) {
+                var ligne = CellMi.children[0].children[2].children[0]; // la ligne a suppr
+                ligne.parentNode.removeChild(ligne);
+                nbLigneSup++;
+            }
+            if ((board[i].nbAttPe == 0)&&(CellMi.children[0].children[2].children[1-nbLigneSup])) {
+                var ligne = CellMi.children[0].children[2].children[1-nbLigneSup]; // la ligne a suppr
+                ligne.parentNode.removeChild(ligne);
+                nbLigneSup++;
+            }
+            if ((board[i].nbAttMa == 0)&&(CellMi.children[0].children[2].children[2-nbLigneSup])) {
+                var ligne = CellMi.children[0].children[2].children[2-nbLigneSup]; // la ligne a suppr
+                ligne.parentNode.removeChild(ligne);
+                
+            }
+        }
+        nbLigneSup=0;
+    }
+    // clean des cartes de la main
+    var nbLigneSup = 0;
+    for (i = 0; i < 5; i++) {
+        var CellMi = $("#CellM" + (i + 1))[0];
+        if (CellMi.children[0] != undefined) {
+            if (deck1[i].nbAttTr == 0) {
+                var ligne = CellMi.children[0].children[2].children[0]; // la ligne a suppr
+                ligne.parentNode.removeChild(ligne);
+                nbLigneSup++;
+            }
+            if (deck1[i].nbAttPe == 0) {
+                var ligne = CellMi.children[0].children[2].children[1-nbLigneSup]; // la ligne a suppr
+                ligne.parentNode.removeChild(ligne);
+                nbLigneSup++;
+            }
+            if (deck1[i].nbAttMa == 0) {
+                var ligne = CellMi.children[0].children[2].children[2-nbLigneSup]; // la ligne a suppr
+                ligne.parentNode.removeChild(ligne);
+                
+            }
+        }
+        nbLigneSup=0;
+    }
+}
+
+// for (let i = 15; i > 0; i--) {
+//     var toutesLignesTranch = $("#nbTranch");
+//     if (toutesLignesTranch[i] != undefined) {
+//         if (toutesLignesTranch[i].innerHTML == 
+//             "<b>0</b> Tranchantes<br>"){
+//         toutesLignesTranch[i].parentNode.removeChild(toutesLignesTranch[0]);
+//     }}
+// }
+// for (let i = 0; i < 15; i++) {
+//     var toutesLignesPer = $("#nbPer");
+//     if (toutesLignesPer[0] != undefined) {
+//         toutesLignesPer[0].parentNode.removeChild(toutesLignesPer[0]);
+//     }
+// }
+// for (let i = 0; i < 15; i++) {
+//     var toutesLignesMag = $("#nbMag");
+//     if (toutesLignesMag[0] != undefined) {
+//         toutesLignesMag[0].parentNode.removeChild(toutesLignesMag[0]);
+//     }
+// }
+// }
+
+
 
 function distribution() {
 
@@ -142,7 +215,7 @@ function distribution() {
     for (i = 0; i < 8; i++) {
         $("#Cell" + (i + 1))[0].onclick = (function (temp1, temp2) { return function () { selectionCarteBoard(temp1, temp2) }; })(board, i);
     }
-
+    cleanTemplate()
     coloriageSelonTier();
 }
 
@@ -205,8 +278,8 @@ function deplacerCarteBoard(boardA, posdep, posarr) {
 }
 
 
-function boutique() { 
-    
+function boutique() {
+
 
     // on re desactive le bouton roll pour etre sur
     boutonRoll = document.getElementById("boutonRoll");
@@ -310,41 +383,41 @@ function combat() { // se déclenche quand j'appuie sur le bouton Pret
     }
 }
 
-function donnerBonsDes(quelDes="tous") {
-    if ((quelDes == "tous")|| quelDes == "joueur"){
-    // on compte le nombre d'attaques pour mettre autant de dés
-    nbTotAttTr = 0;
-    nbTotAttPe = 0;
-    nbTotAttMa = 0;
-    for (i = 0; i < 4; i++) { // on ne compte que la frontline
-        if (board[i] != 0) {
-            nbTotAttTr += board[i].nbAttTr;
-            nbTotAttPe += board[i].nbAttPe;
-            nbTotAttMa += board[i].nbAttMa;
+function donnerBonsDes(quelDes = "tous") {
+    if ((quelDes == "tous") || quelDes == "joueur") {
+        // on compte le nombre d'attaques pour mettre autant de dés
+        nbTotAttTr = 0;
+        nbTotAttPe = 0;
+        nbTotAttMa = 0;
+        for (i = 0; i < 4; i++) { // on ne compte que la frontline
+            if (board[i] != 0) {
+                nbTotAttTr += board[i].nbAttTr;
+                nbTotAttPe += board[i].nbAttPe;
+                nbTotAttMa += board[i].nbAttMa;
+            }
         }
-    }
-    for (i = 4; i < 8; i++) { // on ne compte que les ranged en backline
-        if ((board[i] != 0) && board[i].passif == "RANGED") {
-            nbTotAttTr += board[i].nbAttTr;
-            nbTotAttPe += board[i].nbAttPe;
-            nbTotAttMa += board[i].nbAttMa;
+        for (i = 4; i < 8; i++) { // on ne compte que les ranged en backline
+            if ((board[i] != 0) && board[i].passif == "RANGED") {
+                nbTotAttTr += board[i].nbAttTr;
+                nbTotAttPe += board[i].nbAttPe;
+                nbTotAttMa += board[i].nbAttMa;
+            }
         }
+
+        nbTotAttPe += passifCapitaine();
+
+        $(".dice").remove(); // on enleve les anciens dés
+        for (i = 0; i < nbTotAttTr; i++) { addDiceT(); }  // on met le bon nombre de dés
+        for (i = 0; i < nbTotAttPe; i++) { addDiceP(); }
+        for (i = 0; i < nbTotAttMa; i++) { addDiceM(); }
     }
 
-    nbTotAttPe += passifCapitaine();
+    if ((quelDes == "tous") || quelDes == "mobs") {
+        $(".dicemob").remove(); // on enleve les anciens dés
 
-    $(".dice").remove(); // on enleve les anciens dés
-    for (i = 0; i < nbTotAttTr; i++) { addDiceT(); }  // on met le bon nombre de dés
-    for (i = 0; i < nbTotAttPe; i++) { addDiceP(); }
-    for (i = 0; i < nbTotAttMa; i++) { addDiceM(); }
-    }
-
-    if ((quelDes == "tous")|| quelDes == "mobs"){
-    $(".dicemob").remove(); // on enleve les anciens dés
-
-    // on met le bon nombre de dés
-    if (vagueActuelle.passif == "Lancent deux attaques par Boss") { passifBoss2emeAtt(); }
-    else { for (i = 0; i < nbMobsReste; i++) { addDiceMob(); } }
+        // on met le bon nombre de dés
+        if (vagueActuelle.passif == "Lancent deux attaques par Boss") { passifBoss2emeAtt(); }
+        else { for (i = 0; i < nbMobsReste; i++) { addDiceMob(); } }
     }
 
 
@@ -364,6 +437,7 @@ function afficherBoard(board) {
             CellMi.innerHTML = "Place Vide";
         }
     }
+    cleanTemplate()
     coloriageSelonTier();
 }
 
@@ -410,10 +484,10 @@ function reRollBoutiqueFree() {
 }
 
 function reRollBoutique2G() {
-    if (gold>=2){
-    distribution();
-    gold = parseInt(gold) - 2;
-    $("#sectiongold")[0].innerHTML = gold + " gold";
+    if (gold >= 2) {
+        distribution();
+        gold = parseInt(gold) - 2;
+        $("#sectiongold")[0].innerHTML = gold + " gold";
     }
 }
 
@@ -423,17 +497,17 @@ function compterMobsMorts() {
     reponseDesMonstres();
 }
 
-function coloriageSelonTier(){
+function coloriageSelonTier() {
     tabtiers = $(".bloc-tier");
-for(i=0;i<tabtiers.length;i++){
-tabtiers[i].style.background = "green";
-if (tabtiers[i].innerHTML=="\n1\n"){  tabtiers[i].style.background = "#CD853F"; }
-if (tabtiers[i].innerHTML=="\n2\n"){  tabtiers[i].style.background = "#DDA0DD"; }
-if (tabtiers[i].innerHTML=="\n3\n"){  tabtiers[i].style.background = "#7B68EE"; }
-if (tabtiers[i].innerHTML=="\n4\n"){  tabtiers[i].style.background = "#F0FFFF"; }
-if (tabtiers[i].innerHTML=="\n5\n"){  tabtiers[i].style.background = "#FF0000"; }
+    for (i = 0; i < tabtiers.length; i++) {
+        tabtiers[i].style.background = "green";
+        if (tabtiers[i].innerHTML == "\n1\n") { tabtiers[i].style.background = "#CD853F"; }
+        if (tabtiers[i].innerHTML == "\n2\n") { tabtiers[i].style.background = "#DDA0DD"; }
+        if (tabtiers[i].innerHTML == "\n3\n") { tabtiers[i].style.background = "#7B68EE"; }
+        if (tabtiers[i].innerHTML == "\n4\n") { tabtiers[i].style.background = "#F0FFFF"; }
+        if (tabtiers[i].innerHTML == "\n5\n") { tabtiers[i].style.background = "#FF0000"; }
 
-}
+    }
 }
 
 
