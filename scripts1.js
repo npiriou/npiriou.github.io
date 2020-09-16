@@ -341,9 +341,10 @@ function selectionPVPerdu(posCarte) {
 	else if (board[posCarte].pvact > degatsRestants) { // plus de pv que de dégats, la carte tanke
 		board[posCarte].pvact = board[posCarte].pvact - degatsRestants;
 		ajouterAuChatType(board[posCarte].nom + " survit avec " + board[posCarte].pvact + " PV !", 0);
-		var Celli = $("#Cell" + (posCarte + 1))[0];
-		var carteMi = board[posCarte];
-		Celli.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep, carteMi.passifDescription);
+		// var Celli = $("#Cell" + (posCarte + 1))[0];
+		// var carteMi = board[posCarte];
+		
+		afficherBoard(board);// Celli.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep, carteMi.passifDescription);
 		degatsRestants = 0;
 		repartitionDegats();
 	}
