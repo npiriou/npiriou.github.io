@@ -263,6 +263,6 @@ function passifMutant() {
             killsMutant++;
     }
     if (killsMutant > 0) ajouterAuChatType("Le Mutant tue " + killsMutant + " " + vagueActuelle.nom + " de plus", 0);
-    return killsMutant;
-}
+    
+}return killsMutant;
 }
