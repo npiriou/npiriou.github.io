@@ -20,7 +20,32 @@
 
 <head>
 	<style>
+		div.tranchaff {
+			width: 32px;
+			height: 32px;
+			background: #ff9100;
+		}
 
+		div.peraff {
+			width: 28px;
+			height: 28px;
+			background: #beafaf;
+		}
+
+		div.magaff {
+			width: 32px;
+			height: 32px;
+			background: #707ce9;
+		}
+
+		div.diceaff {
+			border: #999 1px solid;
+			font-size: 24px;
+			text-align: center;
+			vertical-align: middle;
+			margin: 5px;
+			display: inline-block;
+		}
 
 		.carteB:hover {
 			cursor: pointer;
@@ -95,10 +120,12 @@
 			height: 32px;
 			background: #707ce9;
 		}
+
 		div.magenoir {
-	border: rgb(3, 3, 3) 3px solid;
-	background: #3542b8;
-}
+			border: rgb(3, 3, 3) 3px solid;
+			background: #3542b8;
+		}
+
 		div.mob {
 			width: 40px;
 			height: 40px;
@@ -135,7 +162,7 @@
 				<br><br><br>
 			</div>
 
-			<div id="statusenrobage"  style="width:30%; height:350px; overflow:auto;">
+			<div id="statusenrobage" style="width:30%; height:380px; overflow:auto;">
 				<h4 id="status" style="clear:left; "></h4>
 			</div>
 
@@ -145,20 +172,26 @@
 
 				<p id="parmob"></p>
 				<br><br>
-				<p id="status2" style="clear:left;"></p>
+				<p id="status2" style="clear:left;">
+					<div class="diceaff tranchaff">0</div>
+					<div class="diceaff peraff">0</div>
+					<div class="diceaff magaff">0</div></p>
 			</div>
-			
+
 		</div>
 		<button id="boutonRoll" onclick="advRoll()" style="float:left; margin-left: 30%; ">Lancer mes dés</button>
 		<button id="boutonReRoll1s" onclick="passifDemonette()" style="float:left; ">Relancer les 1</button>
-		<button id="boutonReRoll1Percantes" onclick="passifPingouin()" style="float:left; ">Relancer les 1 Perçantes</button>
-		<button id="boutonRollMob" onclick="rollMob()" style="float:right; margin-right: 30%; ">Roll pour l'ennemi</button>
-		<button id="boutonReRollMob" onclick="passifFanatiquesRelance()"style="float:right; ">Reroll pour l'ennemi</button> 
-		<br/> 		<br/> 
+		<button id="boutonReRoll1Percantes" onclick="passifPingouin()" style="float:left; ">Relancer les 1
+			Perçantes</button>
+		<button id="boutonRollMob" onclick="rollMob()" style="float:right; margin-right: 30%; ">Roll pour
+			l'ennemi</button>
+		<button id="boutonReRollMob" onclick="passifFanatiquesRelance()" style="float:right; ">Reroll pour
+			l'ennemi</button>
+		<br /> <br />
 
 
 
-		<div id="cardContainer" style="height: 400px;">
+		<div id="cardContainer" style="height: 450px;">
 			<span id="sectionscore" style="float:left;height: 30px;" class="badge badge-primary">Score : 0<br></span>
 			<span id="sectionleak" style="float:left;height: 30px;" class="badge badge-danger">0 leak<br></span>
 			<span id="sectionlumber" style="float:left;height: 30px;" class="badge badge-success">0 ouvrier<br></span>
@@ -168,21 +201,29 @@
 			<div style="float:left;">
 				<table>
 					<tr>
-						<td id="Cell1" class="carteB" style="height: 200px;" onclick="selectionCarteBoard(board, 0)">Place vide</td>
-						<td id="Cell2" class="carteB" style="height: 200px;"onclick="selectionCarteBoard(board, 1)">Place vide</td>
-						<td id="Cell3" class="carteB" style="height: 200px;"onclick="selectionCarteBoard(board, 2)">Place vide</td>
-						<td id="Cell4" class="carteB" style="height: 200px;"onclick="selectionCarteBoard(board, 3)">Place vide</td>
+						<td id="Cell1" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 0)">
+							Place vide</td>
+						<td id="Cell2" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 1)">
+							Place vide</td>
+						<td id="Cell3" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 2)">
+							Place vide</td>
+						<td id="Cell4" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 3)">
+							Place vide</td>
 					</tr>
 					<tr>
-						<td id="Cell5" class="carteB" style="height: 200px;"onclick="selectionCarteBoard(board, 4)">Place vide</td>
-						<td id="Cell6" class="carteB" style="height: 200px;"onclick="selectionCarteBoard(board, 5)">Place vide</td>
-						<td id="Cell7" class="carteB" style="height: 200px;"onclick="selectionCarteBoard(board, 6)">Place vide</td>
-						<td id="Cell8" class="carteB" style="height: 200px;"onclick="selectionCarteBoard(board, 7)">Place vide</td>
+						<td id="Cell5" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 4)">
+							Place vide</td>
+						<td id="Cell6" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 5)">
+							Place vide</td>
+						<td id="Cell7" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 6)">
+							Place vide</td>
+						<td id="Cell8" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 7)">
+							Place vide</td>
 					</tr>
 				</table>
 			</div>
 			<div id="divboutonCombat"> <button id="boutonCombat" onclick="combat()">Prêt</button><br />
-				<button id="boutonVente" onclick="vente()" style =  "margin-top: 260%  ;">Vendre</button>
+				<button id="boutonVente" onclick="vente()" style="margin-top: 260%  ;">Vendre</button>
 			</div>
 		</div>
 		<div id="handContainer">

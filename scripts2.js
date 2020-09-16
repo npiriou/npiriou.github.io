@@ -42,16 +42,16 @@ deck1[24] = new carte(24, 2, "Archère Elfe", 1, 1, 0, 2, 0, "RANGED", "Attaque 
 deck1[25] = new carte(25, 3, "Ranger Tanker", 2, 2, 0, 2, 0, "RANGED", "Attaque à distance");
 deck1[26] = new carte(26, 1, "Lanceuse de couteaux", 1, 1, 1, 0, 0, "RANGED", "Attaque à distance");
 deck1[27] = new carte(27, 1, "Gobelin explosif", 1, 1, 1, 0, 0, "EXPLOSION", "Tue un ennemi quand il meurt");
-deck1[28] = new carte(28, 3, "Golem de Corail", 3, 3, 1, 0, 0, "CORAIL", "Pour chaque 1 des ennemis,<br/>un meurt");
-deck1[29] = new carte(29, 1, "Zombie", 1, 1, 1, 0, 0, "DAKKA", "Pour chaque 6 tranchant, <br/>lancez un nouveau dé tranchant");
+deck1[28] = new carte(28, 3, "Golem de Corail", 3, 3, 1, 0, 0, "CORAIL", "Pour chaque 1 des ennemis, un meurt");
+deck1[29] = new carte(29, 1, "Zombie", 1, 1, 1, 0, 0, "DAKKA", "Pour chaque 6 tranchant, lance un autre dé tranchant");
 deck1[30] = new carte(30, 2, "Tréant", 2, 2, 1, 0, 0, "TREANT", "Tue un ennemi au début du combat");
-deck1[31] = new carte(31, 3, "Abomination", 4, 4, 1, 0, 0, "REGEN1", "Quand vous attaquez,<br/> récupère 1 PV");
-deck1[32] = new carte(32, 2, "Docteur", 1, 1, 1, 0, 0, "SOIN2", "Quand vous attaquez,<br/> soigne un allié de 2 PV");
-deck1[33] = new carte(33, 3, "Mage Noir", 1, 1, 0, 0, 2, "MAGENOIR", "Ajoute un dé magique<br/>qui fait toujours 6");
+deck1[31] = new carte(31, 3, "Abomination", 4, 4, 1, 0, 0, "REGEN1", "Quand vous attaquez, récupère 1 PV");
+deck1[32] = new carte(32, 2, "Docteur", 1, 1, 1, 0, 0, "SOIN2", "Quand vous attaquez, soigne un allié de 2 PV");
+deck1[33] = new carte(33, 3, "Mage Noir", 1, 1, 0, 0, 2, "MAGENOIR", "Ajoute un dé magique qui fait toujours 6");
 deck1[34] = new carte(34, 2, "Poulpitos", 1, 1, 0, 3, 0, "", "");
-deck1[35] = new carte(35, 2, "Capitaine", 1, 1, 0, 1, 0, "CAPITAINE", "Vos cartes avec 1 Perçante ou<br/>plus lancent 1 Perçante de plus")
+deck1[35] = new carte(35, 2, "Capitaine", 1, 1, 0, 1, 0, "CAPITAINE", "Vos cartes avec 1 Perçante ou plus lancent +1 Perçante")
 deck1[36] = new carte(36, 4, "Démonette", 3, 3, 0, 0, 2, "DEMONETTE", "Relancez vos jets de 1");
-deck1[37] = new carte(37, 1, "Pingouin", 1, 1, 0, 1, 0, "PINGOUIN", "Relancez vos attaques<br/> perçantes de 1");
+deck1[37] = new carte(37, 1, "Pingouin", 1, 1, 0, 1, 0, "PINGOUIN", "Relancez vos attaques perçantes de 1");
 
 
 
@@ -86,27 +86,31 @@ if (!String.prototype.format) {
     };
 }
 
-var template = `<div id="tier" class="bloc-Gauche">
+var template = 
+`<div id= "carteAffichee" style="width:205px;height:205px;">
+<div id="tier" class="bloc-tier">
 {0}
 </div>
 <div id="nom" class="carteDivision">
 {1}
 </div> 
-</div>
-<div id="attaques" class="carteDivision">
-{2} Tranchantes<br>
-{3} Perçantes<br>
-{4} Magiques<br>
-{7}
-</div>  </div>
-<div id="carteDivision">
+
+<div id="attaques" class="carteDivision" style=" height:122px;">
+<b>{2}</b> Tranchantes<br>
+<b>{3}</b> Perçantes<br>
+<b>{4}</b> Magiques<br>
+<p id = "passif">
+<i>{7}</i>
+</p>  </div>
+<div id="carteDivision" style=" height:28px;">
 <div id="pvact" class="carteDivision">
 {5}
 </div>
 /
 <div id="pvdep" class="carteDivision">
 {6} </div> 
-</div>`;
+</div>
+</div></div></div>`;
 
 function distribution() {
 
@@ -138,6 +142,8 @@ function distribution() {
     for (i = 0; i < 8; i++) {
         $("#Cell" + (i + 1))[0].onclick = (function (temp1, temp2) { return function () { selectionCarteBoard(temp1, temp2) }; })(board, i);
     }
+
+    coloriageSelonTier();
 }
 
 distribution();
@@ -354,8 +360,8 @@ function afficherBoard(board) {
         } else {
             CellMi.innerHTML = "Place Vide";
         }
-
     }
+    coloriageSelonTier();
 }
 
 // Utilisez cette fonction pour copier un board    
@@ -401,9 +407,11 @@ function reRollBoutiqueFree() {
 }
 
 function reRollBoutique2G() {
+    if (gold>=2){
     distribution();
     gold = parseInt(gold) - 2;
     $("#sectiongold")[0].innerHTML = gold + " gold";
+    }
 }
 
 function compterMobsMorts() {
@@ -411,6 +419,22 @@ function compterMobsMorts() {
     ajouterAuChatType("Vous tuez " + killCount + " " + vagueActuelle.nom + ". Il en reste " + nbMobsReste + ".", 0);
     reponseDesMonstres();
 }
+
+function coloriageSelonTier(){
+    tabtiers = $(".bloc-tier");
+for(i=0;i<tabtiers.length;i++){
+tabtiers[i].style.background = "green";
+if (tabtiers[i].innerHTML=="\n1\n"){  tabtiers[i].style.background = "#CD853F"; }
+if (tabtiers[i].innerHTML=="\n2\n"){  tabtiers[i].style.background = "#DDA0DD"; }
+if (tabtiers[i].innerHTML=="\n3\n"){  tabtiers[i].style.background = "#7B68EE"; }
+if (tabtiers[i].innerHTML=="\n4\n"){  tabtiers[i].style.background = "#F0FFFF"; }
+if (tabtiers[i].innerHTML=="\n5\n"){  tabtiers[i].style.background = "#FF0000"; }
+
+}
+}
+
+
+
 
 // function tousLesReRolls() {
 

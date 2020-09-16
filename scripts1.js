@@ -32,15 +32,18 @@ var v = 0;
 var vagueActuelle = tabVagues[v];
 
 function displayVagueActuelle() {
+
 	status2 = document.getElementById("status2");
 	status2.innerHTML = ("Vague " + ((vagueActuelle.numero)) + " : " + vagueActuelle.nom + "<br>"
 		+ (vagueActuelle.nombre) + " ennemis au départ.<br>"
-		+ "Résistances aux attaques Tranchantes : " + vagueActuelle.resiTr + " ou plus.<br>"
-		+ "Résistances aux attaques Perçantes : " + vagueActuelle.resiPe + " ou plus.<br>"
-		+ "Résistances aux attaques Magiques : " + vagueActuelle.resiMa + " ou plus.<br>"
 		+ "Précision des ennemis : " + vagueActuelle.precision + " ou plus.<br>"
 		+ vagueActuelle.passif
+		+ "Résistances :"
 	);
+
+	$((".tranchaff"))[0].innerHTML = (vagueActuelle.resiTr + "+")
+	$((".peraff"))[0].innerHTML = (vagueActuelle.resiPe + "+")
+	$((".magaff"))[0].innerHTML = (vagueActuelle.resiMa + "+")
 }
 displayVagueActuelle();
 
@@ -190,7 +193,7 @@ function advRoll() {
 
 	killCount += passifMageNoir();
 
-	
+
 	if (checkPassifProc("DEMONETTE") && auMoinsUn1("dice")) { passifDemonetteAddBouton(); }
 	else if (checkPassifProc("PINGOUIN") && auMoinsUn1("per")) { passifPingouinAddBouton(); }
 	else {
@@ -350,7 +353,7 @@ function reponseDesMonstres() {
 	nbDesMobs = tabDicesMob.length;
 	nbDesMobsASuppr = nbDesMobs - nbMobsReste;
 
-donnerBonsDes("mobs");
+	donnerBonsDes("mobs");
 
 	nbMobsTourPrec = nbMobsReste;
 	nbDesMobs = tabDicesMob.length;
