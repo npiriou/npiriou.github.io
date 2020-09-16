@@ -70,11 +70,6 @@ $("#boutonreRollBoutiqueFree")[0].disabled = false;
 $("#boutonreRollBoutique2G")[0].disabled = false;
 
 // on cache les boutons re roll
-$("#boutonReRollMob")[0].style.display = "none";
-$("#boutonReRoll1s")[0].style.display = "none";
-var demonette = true;
-$("#boutonReRoll1Percantes")[0].style.display = "none";
-var pingouin = true;
 $("#boutonreRollBoutique2G")[0].style.display = "none";
 
 // desactive le bouton pour roll les mobs
@@ -160,7 +155,7 @@ function advRoll() {
 
 	passifRegen();
 	passifSoin2();
-
+	passifDragon();
 	donnerBonsDes("joueur"); // on réactualise le  nombre de dés
 
 	killCount = 0;
@@ -173,7 +168,7 @@ function advRoll() {
 		if (tabDices[i].innerHTML >= vagueActuelle.resiTr) killCount++;
 	}
 
-	killCount += passifZombie(tabDices);
+
 
 	tabDices = document.getElementsByClassName("per");
 	for (i = 0; i < tabDices.length; i++) {
@@ -182,23 +177,27 @@ function advRoll() {
 	for (i = 0; i < tabDices.length; i++) {
 		if (tabDices[i].innerHTML >= vagueActuelle.resiPe) killCount++;
 	}
+	killCount += passifPingouinAuto();
 
 	tabDices = document.getElementsByClassName("mag");
 	for (i = 0; i < tabDices.length; i++) {
 		tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
 	}
+
 	for (i = 0; i < tabDices.length; i++) {
 		if (tabDices[i].innerHTML >= vagueActuelle.resiMa) killCount++;
 	}
 
 	killCount += passifMageNoir();
+	killCount += passifDemonetteAuto();
+
+	killCount += passifMoine();
+	killCount += passifZombie();
+	killCount += passifMutant();
 
 
-	if (checkPassifProc("DEMONETTE") && auMoinsUn1("dice")) { passifDemonetteAddBouton(); }
-	else if (checkPassifProc("PINGOUIN") && auMoinsUn1("per")) { passifPingouinAddBouton(); }
-	else {
-		compterMobsMorts();
-	}
+	compterMobsMorts();
+
 }
 
 function removeDiceT() {
@@ -229,18 +228,18 @@ function rollMob() {
 		if (tabDices[i].innerHTML >= vagueActuelle.precision) degatsInfliges++;
 	}
 
-	if ((vagueActuelle.passif == "Relancent une fois les 1 et 2")&& auMoinsUn1("dicemob")) {
-		passifFanatiquesAddBouton();
-	}
 
-	else {
-		passifGolemCorail();
-		ajouterAuChatType("Les " + vagueActuelle.nom + " attaquent ! Vous perdez " + degatsInfliges + " PV ! ", 0);
+	degatsInfliges += passifFanatiquesAuto();
 
-		degatsRestants = degatsInfliges;
-		repartitionDegats();
 
-	}
+
+	passifGolemCorail();
+	ajouterAuChatType("Les " + vagueActuelle.nom + " attaquent ! Vous perdez " + degatsInfliges + " PV ! ", 0);
+
+	degatsRestants = degatsInfliges;
+	repartitionDegats();
+
+
 
 
 	if (vagueActuelle.passif == ("Volent 1 gold à chaque attaque qui touche")) {
@@ -252,7 +251,6 @@ function rollMob() {
 
 }
 function repartitionDegats() {
-console.log("repartion dommage se lance");
 	var ilyaeuunmort = false;
 
 	// si le board est vide, ça leak et la vague se termine
@@ -320,7 +318,6 @@ console.log("repartion dommage se lance");
 
 
 function selectionPVPerdu(posCarte) {
-	console.log("selectionpvperdu se lance");
 
 	if (vagueActuelle.passif == "Tuent en un coup") {
 		passifEmpoisonneurs(posCarte);
@@ -333,9 +330,7 @@ function selectionPVPerdu(posCarte) {
 		passifGobelinExp(posCarte);
 		degatsRestants = degatsRestants - board[posCarte].pvact;
 		board[posCarte] = 0;
-
-		afficherBoard(board);	console.log("selectionpvperdu se lance");
-
+		afficherBoard(board);
 		repartitionDegats();
 	}
 	else if (board[posCarte].pvact > degatsRestants) { // plus de pv que de dégats, la carte tanke
@@ -343,7 +338,7 @@ function selectionPVPerdu(posCarte) {
 		ajouterAuChatType(board[posCarte].nom + " survit avec " + board[posCarte].pvact + " PV !", 0);
 		// var Celli = $("#Cell" + (posCarte + 1))[0];
 		// var carteMi = board[posCarte];
-		
+
 		afficherBoard(board);// Celli.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep, carteMi.passifDescription);
 		degatsRestants = 0;
 		repartitionDegats();
@@ -448,4 +443,17 @@ function ajouterAuChatType(ecriture, type) {
 	//descend la scrolleuse
 	statusenrobage.scrollTop = statusenrobage.scrollHeight;
 
+}
+
+function victoire() {
+	var nbMobsTotal = 0;
+	for (let index = 0; index < tabVagues.length; index++) {
+		nbMobsTotal += tabVagues[index].nombre;
+	}
+
+	var grind = nbMobsTotal - leakTotal;
+	if (leakTotal == 0) alert("Félicitations ! Partie PARFAITE ! Votre score final est de " + scoreTotal + ".");
+	else {
+		alert("Félicitations ! Vous avez grindé " + grind + " monstres. Votre score final est de " + scoreTotal + ". Essaye de moins leak la prochaine fois ;)")
+	}
 }

@@ -17,117 +17,61 @@ function relance(resultatMin, resultatDe) {
     else return resultatDe;
 }
 
-function passifFanatiquesRelance() {
-
-    // on cache le bouton re roll
-    $("#boutonReRollMob")[0].style.display = "none";
-    var degatsInfliges = 0;
-
-
-    for (i = 0; i < tabDices.length; i++) {
-
-        tabDices[i].innerHTML = relance(vagueActuelle.precision, tabDices[i].innerHTML);
-
-        if (tabDices[i].innerHTML >= vagueActuelle.precision) degatsInfliges++;
-    }
-    passifGolemCorail();
-    ajouterAuChatType("Les " + vagueActuelle.nom + " attaquent ! Vous perdez " + degatsInfliges + " PV ! ", 0);
-
-    degatsRestants = degatsInfliges;
-    repartitionDegats();
-}
 
 
 
 
-function passifFanatiquesAddBouton() {
-
-    if ((vagueActuelle.passif == "Relancent une fois les 1 et 2")) {
-        $("#boutonReRollMob")[0].style.display = "block";
-        $("#boutonReRollMob")[0].disabled = false;
-    }
-}
-function auMoinsUn1(string){
-    var auMoinsUn1 = false;
-    var tabDices = document.getElementsByClassName(string);
-    for (let i = 0; i < tabDices.length; i++) {
-        if (tabDices[i].innerHTML == 1) { var auMoinsUn1 = true; }
-    }
-    return auMoinsUn1;
-}
-
-function passifDemonetteAddBouton() {
-    if (checkPassifProc("DEMONETTE")) {
-        if (auMoinsUn1("dice")) {
-            boutonRoll.disabled = true;
-            $("#boutonReRoll1s")[0].style.display = "block";
-            $("#boutonReRoll1s")[0].disabled = false;
+function passifFanatiquesAuto() {
+    var nbRelances = 0;
+    var nbDmgRel = 0;
+    if (checkPassifProc("Relancent une fois les 1 et 2")){
+        tabDices = document.getElementsByClassName("mob");
+        for (i = 0; i < tabDices.length; i++) {
+            if (tabDices[i].innerHTML == "1" || tabDices[i].innerHTML == "2") {
+                tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
+                nbRelances++
+                if (tabDices[i].innerHTML >= vagueActuelle.resiPe) nbDmgRel++;
+            }
         }
+        if (nbRelances > 0) ajouterAuChatType("Les Fanatiques ont relancé " + nbRelances + " attaques et infligé " + nbDmgRel + " dégats supplémentaires.", 0)
     }
-    else {
-        $("#boutonReRoll1s")[0].style.display = "none";
-    }
-}
-
-function passifDemonette() {
-    // on cache le bouton re roll
-    $("#boutonReRoll1s")[0].style.display = "none";
-
-    var tabDices = document.getElementsByClassName("tranch");
-    for (i = 0; i < tabDices.length; i++) {
-        if (tabDices[i].innerHTML == 1) {
-            tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
-            if (tabDices[i].innerHTML >= vagueActuelle.resiTr) killCount++;
-        }
-    }
-    tabDices = document.getElementsByClassName("per");
-    for (i = 0; i < tabDices.length; i++) {
-        if (tabDices[i].innerHTML == 1) {
-            tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
-            if (tabDices[i].innerHTML >= vagueActuelle.resiTr) killCount++;
-        }
-    }
-    tabDices = document.getElementsByClassName("mag");
-    for (i = 0; i < tabDices.length; i++) {
-        if (tabDices[i].innerHTML == 1) {
-            tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
-            if (tabDices[i].innerHTML >= vagueActuelle.resiTr) killCount++;
-        }
-    }
-demonette = false;
-compterMobsMorts();
+    return nbDmgRel;
 }
 
 
-function passifPingouinAddBouton() {
+function passifPingouinAuto() {
+    var nbRelances = 0;
+    var nbKillsPing = 0;
     if (checkPassifProc("PINGOUIN")) {
-        if (auMoinsUn1("per")) {
-            boutonRoll.disabled = true;
-            $("#boutonReRoll1Percantes")[0].style.display = "block";
-            $("#boutonReRoll1Percantes")[0].disabled = false;
+        tabDices = document.getElementsByClassName("per");
+        for (i = 0; i < tabDices.length; i++) {
+            if (tabDices[i].innerHTML == "1") {
+                tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
+                nbRelances++
+                if (tabDices[i].innerHTML >= vagueActuelle.resiPe) nbKillsPing++;
+            }
         }
+        if (nbRelances > 0) ajouterAuChatType("Le pingouin a relancé " + nbRelances + " attaques et tué " + nbKillsPing + " " + vagueActuelle.nom + ".", 0)
     }
-    else {
-        $("#boutonReRoll1Percantes")[0].style.display = "none";
-    }
+    return nbKillsPing;
 }
 
-
-function passifPingouin() {
-    // on cache le bouton re roll
-    $("#boutonReRoll1Percantes")[0].style.display = "none";
-
-    tabDices = document.getElementsByClassName("per");
-    for (i = 0; i < tabDices.length; i++) {
-        if (tabDices[i].innerHTML == 1) {
-            tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
-            if (tabDices[i].innerHTML >= vagueActuelle.resiPe) killCount++;
+function passifDemonetteAuto() {
+    var nbRelances = 0;
+    var nbKillsDem = 0;
+    if (checkPassifProc("DEMONETTE")) {
+        tabDices = document.getElementsByClassName("dice");
+        for (i = 0; i < tabDices.length; i++) {
+            if (tabDices[i].innerHTML == "1") {
+                tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
+                nbRelances++
+                if (tabDices[i].innerHTML >= vagueActuelle.resiPe) nbKillsDem++;
+            }
         }
+        if (nbRelances > 0) ajouterAuChatType("La Demonette a relancé " + nbRelances + " attaques et tué " + nbKillsDem + " " + vagueActuelle.nom + ".", 0)
     }
-pingouin = false;
-compterMobsMorts();
+    return nbKillsDem;
 }
-
 
 
 
@@ -157,7 +101,8 @@ function passifGolemCorail() {
     }
 }
 
-function passifZombie(currentTabDices) {
+function passifZombie() {
+    currentTabDices = document.getElementsByClassName("tranch");
     var nbKillsZombie = 0;
     if (checkPassifProc("DAKKA")) {
 
@@ -284,3 +229,38 @@ function passifCapitaine() {
     return attSuppCapitaine;
 }
 
+function passifMoine() {
+    tabDices = document.getElementsByClassName("mag");
+
+    if (checkPassifProc("MOINE")) {
+        for (let i = 0; i < tabDices.length; i++) {
+            if (tabDices[i].innerHTML == (vagueActuelle.resiMa - 1)) {
+                ajouterAuChatType("Le Moine permet de tuer un des " + vagueActuelle.nom + " .", 0)
+                return 1;
+            }
+        }
+
+    }
+
+    return 0;
+}
+
+function passifDragon() {
+    if (checkPassifProc("DRAGON")) {
+        posCarte = checkPosPassif("DRAGON");
+        board[posCarte].nbAttTr = (Math.floor(Math.random() * 6) + 1);
+        ajouterAuChatType("Le Dragon lance " + board[posCarte].nbAttTr + " attaques Tranchantes !", 0)
+        afficherBoard(board);
+    }
+}
+
+function passifMutant() {
+    var killsMutant = 0;
+    var tabDices = document.getElementsByClassName("tranch");
+    for (i = 0; i < tabDices.length; i++) {
+        if ((tabDices[i].innerHTML == 6) && (vagueActuelle.resiTr <= 6))
+            killsMutant++;
+    }
+    if (killsMutant > 0) ajouterAuChatType("Le Mutant tue " + killsMutant + " " + vagueActuelle.nom + " de plus", 0);
+    return killsMutant;
+}

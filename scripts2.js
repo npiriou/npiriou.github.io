@@ -14,31 +14,31 @@ function carte(numero, tier, nom, pvdep, pvact, nbAttTr, nbAttPe, nbAttMa, passi
 
 }
 var deck1 = [];
-deck1[0] = new carte(1, 1, "Spartiate", 1, 1, 1, 1, 0, "", "");
-deck1[1] = new carte(20, 5, "Yéti", 5, 5, 1, 1, 1, "", "");
-deck1[2] = new carte(2, 1, "Grosse Mite", 1, 1, 0, 2, 0, "", "");
-deck1[3] = new carte(3, 1, "Croisé", 1, 1, 1, 0, 1, "", "");
-deck1[4] = new carte(4, 1, "Péon", 2, 2, 0, 1, 0, "", "");
-deck1[5] = new carte(5, 1, "Barbare", 1, 1, 2, 0, 0, "", "");
-deck1[6] = new carte(6, 1, "Petite Tortue", 2, 2, 0, 0, 1, "", "");
-deck1[7] = new carte(7, 1, "Champignon", 2, 2, 0, 0, 1, "", "");
-deck1[8] = new carte(8, 1, "Nain", 2, 2, 1, 0, 0, "", "");
-deck1[9] = new carte(9, 1, "Magneto", 1, 1, 0, 1, 1, "", "");
-deck1[10] = new carte(10, 1, "Barricade", 3, 3, 0, 0, 0, "", "");
-deck1[11] = new carte(11, 2, "Bourrin", 2, 2, 1, 0, 1, "", "");
-deck1[12] = new carte(12, 2, "Ermite", 2, 2, 0, 1, 1, "", "");
-deck1[13] = new carte(13, 2, "Croketzor", 1, 1, 1, 1, 1, "", "");
-deck1[14] = new carte(14, 2, "Bébé Panda", 3, 3, 0, 1, 0, "", "");
-deck1[15] = new carte(15, 2, "Jacky", 1, 1, 1, 2, 0, "", "");
-deck1[16] = new carte(16, 2, "Mur", 4, 4, 0, 0, 0, "", "");
-deck1[17] = new carte(17, 4, "Sam", 1, 1, 2, 2, 1, "", "");
-deck1[18] = new carte(18, 4, "Chevalier", 2, 2, 2, 1, 1, "", "");
-deck1[19] = new carte(19, 4, "Panda", 6, 6, 0, 1, 0, "", "");
-deck1[20] = new carte(20, 2, "Lanceur de haches", 1, 1, 2, 0, 0, "RANGED", "Attaque à distance");
-deck1[21] = new carte(21, 1, "Fée", 1, 1, 0, 0, 1, "RANGED", "Attaque à distance");
-deck1[22] = new carte(22, 2, "Mage", 1, 1, 0, 0, 2, "RANGED", "Attaque à distance");
-deck1[23] = new carte(23, 4, "Canon de Glace", 1, 1, 1, 1, 1, "RANGED", "Attaque à distance");
-deck1[24] = new carte(24, 2, "Archère Elfe", 1, 1, 0, 2, 0, "RANGED", "Attaque à distance");
+// deck1[0] = new carte(1, 1, "Spartiate", 1, 1, 1, 1, 0, "", "");
+// deck1[1] = new carte(20, 5, "Yéti", 5, 5, 1, 1, 1, "", "");
+// deck1[2] = new carte(2, 1, "Grosse Mite", 1, 1, 0, 2, 0, "", "");
+// deck1[3] = new carte(3, 1, "Croisé", 1, 1, 1, 0, 1, "", "");
+// deck1[4] = new carte(4, 1, "Péon", 2, 2, 0, 1, 0, "", "");
+// deck1[5] = new carte(5, 1, "Barbare", 1, 1, 2, 0, 0, "", "");
+// deck1[6] = new carte(6, 1, "Petite Tortue", 2, 2, 0, 0, 1, "", "");
+// deck1[7] = new carte(7, 1, "Champignon", 2, 2, 0, 0, 1, "", "");
+// deck1[8] = new carte(8, 1, "Nain", 2, 2, 1, 0, 0, "", "");
+// deck1[9] = new carte(9, 1, "Magneto", 1, 1, 0, 1, 1, "", "");
+// deck1[10] = new carte(10, 1, "Barricade", 3, 3, 0, 0, 0, "", "");
+// deck1[11] = new carte(11, 2, "Bourrin", 2, 2, 1, 0, 1, "", "");
+// deck1[12] = new carte(12, 2, "Ermite", 2, 2, 0, 1, 1, "", "");
+// deck1[13] = new carte(13, 2, "Croketzor", 1, 1, 1, 1, 1, "", "");
+// deck1[14] = new carte(14, 2, "Bébé Panda", 3, 3, 0, 1, 0, "", "");
+// deck1[15] = new carte(15, 2, "Jacky", 1, 1, 1, 2, 0, "", "");
+// deck1[16] = new carte(16, 2, "Mur", 4, 4, 0, 0, 0, "", "");
+// deck1[17] = new carte(17, 4, "Sam", 1, 1, 2, 2, 1, "", "");
+// deck1[18] = new carte(18, 4, "Chevalier", 2, 2, 2, 1, 1, "", "");
+// deck1[19] = new carte(19, 4, "Panda", 6, 6, 0, 1, 0, "", "");
+// deck1[20] = new carte(20, 2, "Lanceur de haches", 1, 1, 2, 0, 0, "RANGED", "Attaque à distance");
+// deck1[21] = new carte(21, 1, "Fée", 1, 1, 0, 0, 1, "RANGED", "Attaque à distance");
+// deck1[22] = new carte(22, 2, "Mage", 1, 1, 0, 0, 2, "RANGED", "Attaque à distance");
+// deck1[23] = new carte(23, 4, "Canon de Glace", 1, 1, 1, 1, 1, "RANGED", "Attaque à distance");
+// deck1[24] = new carte(24, 2, "Archère Elfe", 1, 1, 0, 2, 0, "RANGED", "Attaque à distance");
 deck1[25] = new carte(25, 3, "Ranger Tanker", 2, 2, 0, 2, 0, "RANGED", "Attaque à distance");
 deck1[26] = new carte(26, 1, "Lanceuse de couteaux", 1, 1, 1, 0, 0, "RANGED", "Attaque à distance");
 deck1[27] = new carte(27, 1, "Gobelin explosif", 1, 1, 1, 0, 0, "EXPLOSION", "Tue un ennemi quand il meurt");
@@ -52,6 +52,10 @@ deck1[34] = new carte(34, 2, "Poulpitos", 1, 1, 0, 3, 0, "", "");
 deck1[35] = new carte(35, 2, "Capitaine", 1, 1, 0, 1, 0, "CAPITAINE", "Vos cartes avec 1 Perçante ou plus lancent +1 Perçante")
 deck1[36] = new carte(36, 4, "Démonette", 3, 3, 0, 0, 2, "DEMONETTE", "Relancez vos jets de 1");
 deck1[37] = new carte(37, 1, "Pingouin", 1, 1, 0, 1, 0, "PINGOUIN", "Relancez vos attaques perçantes de 1");
+deck1[38] = new carte(38, 2, "Moine", 3, 3, 0, 0, 1, "MOINE", "Augmente un dé magique de 1");
+deck1[39] = new carte(39, 3, "Dragon", 2, 2, "X", 0, 0, "DRAGON", "Lance un dé pour connaitre son nombre d'attaques");
+deck1[40] = new carte(40, 3, "Mutant enragé", 2, 2, 2, 0, 0, "MUTANT", "Chaque 6 Tranchante obtenu inflige double dommages");
+
 
 
 
@@ -216,9 +220,7 @@ function distribution() {
     for (i = 0; i < 8; i++) {
         $("#Cell" + (i + 1))[0].onclick = (function (temp1, temp2) { return function () { selectionCarteBoard(temp1, temp2) }; })(board, i);
     }
-    console.log("distribution avant clean");
      cleanTemplate()
-     console.log("distributio napres clean");
     coloriageSelonTier();
 }
 
@@ -342,6 +344,7 @@ function boutique() {
 
     //  on incrémente le compteur de vague et on affiche la nouvelle
     v++;
+    if (v>=16) victoire();
     vagueActuelle = tabVagues[v];
     displayVagueActuelle();
 
@@ -394,7 +397,7 @@ function donnerBonsDes(quelDes = "tous") {
         nbTotAttMa = 0;
         for (i = 0; i < 4; i++) { // on ne compte que la frontline
             if (board[i] != 0) {
-                nbTotAttTr += board[i].nbAttTr;
+               if(board[i].nbAttTr != "X") nbTotAttTr += board[i].nbAttTr;
                 nbTotAttPe += board[i].nbAttPe;
                 nbTotAttMa += board[i].nbAttMa;
             }
@@ -440,9 +443,7 @@ function afficherBoard(board) {
             CellMi.innerHTML = "Place Vide";
         }
     }
-     console.log("afficher board avant clean");
     cleanTemplate()
-    console.log("afficher board apres clean");
     coloriageSelonTier();
 }
 
@@ -517,20 +518,4 @@ function coloriageSelonTier() {
 
 
 
-
-// function tousLesReRolls() {
-
-
-//     // des indices pour savoir si l'action a déjà été jouée (pas joué = true, jouée/pas jouable = false)
-//     if (pingouin || demonette) {
-//         if (checkPassifProc("PINGOUIN") && auMoinsUn1("per") && pingouin) { passifPingouinAddBouton(); }
-//         else pingouin = false;
-//         if (checkPassifProc("DEMONETTE") && auMoinsUn1("dice") && demonette) { passifDemonetteAddBouton(); }
-//         else demonette = false;
-//     }
-
-// else { // si plus aucun reroll n'est disponible
-// compterMobsMorts();
-// }
-// }
 
