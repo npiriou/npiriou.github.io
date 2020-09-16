@@ -125,40 +125,40 @@ function cleanTemplate() {
         if (board[i] != 0) {
             if (board[i].nbAttTr == 0) {
                 var ligne = CellMi.children[0].children[2].children[0]; // la ligne a suppr
-                if (ligne != undefined) {ligne.parentNode.removeChild(ligne);}
+                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
                 nbLigneSup++;
             }
             if ((board[i].nbAttPe == 0)&&(CellMi.children[0].children[2].children[1-nbLigneSup])) {
                 var ligne = CellMi.children[0].children[2].children[1-nbLigneSup]; // la ligne a suppr
-                if (ligne != undefined) {ligne.parentNode.removeChild(ligne);}
+                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
                 nbLigneSup++;
             }
             if ((board[i].nbAttMa == 0)&&(CellMi.children[0].children[2].children[2-nbLigneSup])) {
                 var ligne = CellMi.children[0].children[2].children[2-nbLigneSup]; // la ligne a suppr
-                if (ligne != undefined) {ligne.parentNode.removeChild(ligne);}
+                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
                 
             }
         }}
         nbLigneSup=0;
     }
     // clean des cartes de la main
-    var nbLigneSup = 0;
+     nbLigneSup = 0;
     for (i = 0; i < 5; i++) {
         var CellMi = $("#CellM" + (i + 1))[0];
         if (CellMi.children[0] != undefined) {
             if (deck1[i].nbAttTr == 0) {
                 var ligne = CellMi.children[0].children[2].children[0]; // la ligne a suppr
-                if (ligne != undefined) {ligne.parentNode.removeChild(ligne);}
+                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
                 nbLigneSup++;
             }
             if (deck1[i].nbAttPe == 0) {
                 var ligne = CellMi.children[0].children[2].children[1-nbLigneSup]; // la ligne a suppr
-                if (ligne != undefined) {ligne.parentNode.removeChild(ligne);}
+                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
                 nbLigneSup++;
             }
             if (deck1[i].nbAttMa == 0) {
                 var ligne = CellMi.children[0].children[2].children[2-nbLigneSup]; // la ligne a suppr
-                if (ligne != undefined) {ligne.parentNode.removeChild(ligne);}
+                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
                 
             }
         }
