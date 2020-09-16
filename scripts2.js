@@ -215,7 +215,7 @@ function distribution() {
     for (i = 0; i < 8; i++) {
         $("#Cell" + (i + 1))[0].onclick = (function (temp1, temp2) { return function () { selectionCarteBoard(temp1, temp2) }; })(board, i);
     }
-    cleanTemplate()
+     //cleanTemplate()
     coloriageSelonTier();
 }
 
@@ -437,7 +437,7 @@ function afficherBoard(board) {
             CellMi.innerHTML = "Place Vide";
         }
     }
-    cleanTemplate()
+    //cleanTemplate()
     coloriageSelonTier();
 }
 

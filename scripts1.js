@@ -252,7 +252,7 @@ function rollMob() {
 
 }
 function repartitionDegats() {
-
+console.log("repartion dommage se lance");
 	var ilyaeuunmort = false;
 
 	// si le board est vide, ça leak et la vague se termine
@@ -320,6 +320,7 @@ function repartitionDegats() {
 
 
 function selectionPVPerdu(posCarte) {
+	console.log("selectionpvperdu se lance");
 
 	if (vagueActuelle.passif == "Tuent en un coup") {
 		passifEmpoisonneurs(posCarte);
@@ -333,7 +334,8 @@ function selectionPVPerdu(posCarte) {
 		degatsRestants = degatsRestants - board[posCarte].pvact;
 		board[posCarte] = 0;
 
-		afficherBoard(board);
+		afficherBoard(board);	console.log("selectionpvperdu se lance");
+
 		repartitionDegats();
 	}
 	else if (board[posCarte].pvact > degatsRestants) { // plus de pv que de dégats, la carte tanke
