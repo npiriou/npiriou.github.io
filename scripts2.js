@@ -15,7 +15,7 @@ function carte(numero, tier, nom, pvdep, pvact, nbAttTr, nbAttPe, nbAttMa, passi
 }
 var deck1 = [];
 deck1[0] = new carte(1, 1, "Spartiate", 1, 1, 1, 1, 0, "", "");
-deck1[1] = new carte(20, 5, "Yéti", 5, 5, 1, 1, 1, "", "");
+deck1[1] = new carte(0, 5, "Yéti", 5, 5, 1, 1, 1, "", "");
 deck1[2] = new carte(2, 1, "Grosse Mite", 1, 1, 0, 2, 0, "", "");
 deck1[3] = new carte(3, 1, "Croisé", 1, 1, 1, 0, 1, "", "");
 deck1[4] = new carte(4, 1, "Péon", 2, 2, 0, 1, 0, "", "");
@@ -49,12 +49,20 @@ deck1[31] = new carte(31, 3, "Abomination", 4, 4, 1, 0, 0, "REGEN1", "Quand vous
 deck1[32] = new carte(32, 2, "Docteur", 1, 1, 1, 0, 0, "SOIN2", "Quand vous attaquez, soigne un allié de 2 PV");
 deck1[33] = new carte(33, 3, "Mage Noir", 1, 1, 0, 0, 2, "MAGENOIR", "Ajoute un dé magique qui fait toujours 6");
 deck1[34] = new carte(34, 2, "Poulpitos", 1, 1, 0, 3, 0, "", "");
-deck1[35] = new carte(35, 2, "Capitaine", 1, 1, 0, 1, 0, "CAPITAINE", "Vos cartes avec 1 Perçante ou plus lancent +1 Perçante")
+deck1[35] = new carte(35, 2, "Capitaine", 1, 1, 0, 1, 0, "CAPITAINE", "Vos cartes avec 1 Perçante ou plus ont une attaque Perçante de plus")
 deck1[36] = new carte(36, 4, "Démonette", 3, 3, 0, 0, 2, "DEMONETTE", "Relancez vos jets de 1");
 deck1[37] = new carte(37, 1, "Pingouin", 1, 1, 0, 1, 0, "PINGOUIN", "Relancez vos attaques perçantes de 1");
 deck1[38] = new carte(38, 2, "Moine", 3, 3, 0, 0, 1, "MOINE", "Augmente un dé magique de 1");
 deck1[39] = new carte(39, 3, "Dragon", 2, 2, "X", 0, 0, "DRAGON", "Lance un dé pour connaitre son nombre d'attaques");
 deck1[40] = new carte(40, 3, "Mutant enragé", 2, 2, 2, 0, 0, "MUTANT", "Chaque 6 Tranchante obtenu inflige double dommages");
+deck1[41] = new carte(41, 1, "Marchand", 1, 1, 0, 0, 0, "MARCHAND", "Les cartes coûtent 1 gold de moins");
+deck1[42] = new carte(42, 3, "Forgeron", 1, 1, 1, 0, 0, "FORGERON", "Relancez vos attaques tranchantes ratées");
+deck1[43] = new carte(43, 4, "Berserker", 4, 4, 1, 0, 0, "BERSERKER", "Gagne 1 attaque Tranchante par PV manquant");
+deck1[44] = new carte(44, 1, "Banquier", 1, 1, 0, 1, 0, "BANQUIER", "S'il survit au combat, gagnez 1 gold");
+deck1[45] = new carte(45, 5, "Seigneur de l'Arène", 4, 4, 0, 0, 0, "SEIGNEUR", "Relancez toutes vos attaques ratées");
+
+
+
 
 
 
@@ -122,71 +130,50 @@ function cleanTemplate() {
     for (i = 0; i < 8; i++) {
         var CellMi = $("#Cell" + (i + 1))[0];
         if (CellMi.children[0] != undefined) {
-        if (board[i] != 0) {
-            if (board[i].nbAttTr == 0) {
-                var ligne = CellMi.children[0].children[2].children[0]; // la ligne a suppr
-                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
-                nbLigneSup++;
+            if (board[i] != 0) {
+                if (board[i].nbAttTr == 0) {
+                    var ligne = CellMi.children[0].children[2].children[0]; // la ligne a suppr
+                    if (ligne.innerHTML[3] == "0") { ligne.parentNode.removeChild(ligne); }
+                    nbLigneSup++;
+                }
+                if ((board[i].nbAttPe == 0) && (CellMi.children[0].children[2].children[1 - nbLigneSup])) {
+                    var ligne = CellMi.children[0].children[2].children[1 - nbLigneSup]; // la ligne a suppr
+                    if (ligne.innerHTML[3] == "0") { ligne.parentNode.removeChild(ligne); }
+                    nbLigneSup++;
+                }
+                if ((board[i].nbAttMa == 0) && (CellMi.children[0].children[2].children[2 - nbLigneSup])) {
+                    var ligne = CellMi.children[0].children[2].children[2 - nbLigneSup]; // la ligne a suppr
+                    if (ligne.innerHTML[3] == "0") { ligne.parentNode.removeChild(ligne); }
+
+                }
             }
-            if ((board[i].nbAttPe == 0)&&(CellMi.children[0].children[2].children[1-nbLigneSup])) {
-                var ligne = CellMi.children[0].children[2].children[1-nbLigneSup]; // la ligne a suppr
-                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
-                nbLigneSup++;
-            }
-            if ((board[i].nbAttMa == 0)&&(CellMi.children[0].children[2].children[2-nbLigneSup])) {
-                var ligne = CellMi.children[0].children[2].children[2-nbLigneSup]; // la ligne a suppr
-                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
-                
-            }
-        }}
-        nbLigneSup=0;
+        }
+        nbLigneSup = 0;
     }
     // clean des cartes de la main
-     nbLigneSup = 0;
+    nbLigneSup = 0;
     for (i = 0; i < 5; i++) {
         var CellMi = $("#CellM" + (i + 1))[0];
         if (CellMi.children[0] != undefined) {
             if (deck1[i].nbAttTr == 0) {
                 var ligne = CellMi.children[0].children[2].children[0]; // la ligne a suppr
-                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
+                if (ligne.innerHTML[3] == "0") { ligne.parentNode.removeChild(ligne); }
                 nbLigneSup++;
             }
             if (deck1[i].nbAttPe == 0) {
-                var ligne = CellMi.children[0].children[2].children[1-nbLigneSup]; // la ligne a suppr
-                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
+                var ligne = CellMi.children[0].children[2].children[1 - nbLigneSup]; // la ligne a suppr
+                if (ligne.innerHTML[3] == "0") { ligne.parentNode.removeChild(ligne); }
                 nbLigneSup++;
             }
             if (deck1[i].nbAttMa == 0) {
-                var ligne = CellMi.children[0].children[2].children[2-nbLigneSup]; // la ligne a suppr
-                if (ligne.innerHTML[3] == "0") {ligne.parentNode.removeChild(ligne);}
-                
+                var ligne = CellMi.children[0].children[2].children[2 - nbLigneSup]; // la ligne a suppr
+                if (ligne.innerHTML[3] == "0") { ligne.parentNode.removeChild(ligne); }
+
             }
         }
-        nbLigneSup=0;
+        nbLigneSup = 0;
     }
 }
-
-// for (let i = 15; i > 0; i--) {
-//     var toutesLignesTranch = $("#nbTranch");
-//     if (toutesLignesTranch[i] != undefined) {
-//         if (toutesLignesTranch[i].innerHTML == 
-//             "<b>0</b> Tranchantes<br>"){
-//         toutesLignesTranch[i].parentNode.removeChild(toutesLignesTranch[0]);
-//     }}
-// }
-// for (let i = 0; i < 15; i++) {
-//     var toutesLignesPer = $("#nbPer");
-//     if (toutesLignesPer[0] != undefined) {
-//         toutesLignesPer[0].parentNode.removeChild(toutesLignesPer[0]);
-//     }
-// }
-// for (let i = 0; i < 15; i++) {
-//     var toutesLignesMag = $("#nbMag");
-//     if (toutesLignesMag[0] != undefined) {
-//         toutesLignesMag[0].parentNode.removeChild(toutesLignesMag[0]);
-//     }
-// }
-// }
 
 
 
@@ -220,7 +207,7 @@ function distribution() {
     for (i = 0; i < 8; i++) {
         $("#Cell" + (i + 1))[0].onclick = (function (temp1, temp2) { return function () { selectionCarteBoard(temp1, temp2) }; })(board, i);
     }
-     cleanTemplate()
+    cleanTemplate()
     coloriageSelonTier();
 }
 
@@ -232,14 +219,14 @@ function pickM(n) { // achete et place des cartes de la main sur le board quand 
     carteN = deck1[n];
     for (i = 0; i < board.length; i++) {
         if (board[i] == 0) { // si on a des slots libres
-            if (((carteN.tier) * 5) <= gold) { // et les moyens
+            if ((((carteN.tier) * 5) - passifMarchand()) <= gold) { // et les moyens
+                gold = gold - ((carteN.tier) * 5) - passifMarchand();
+                $("#sectiongold")[0].innerHTML = gold + "gold";
                 var CellBoard = $("#Cell" + (i + 1))[0];
                 var CellMain = $("#CellM" + (n + 1))[0];
                 CellBoard.innerHTML = CellMain.innerHTML;
                 board[i] = carteN;
                 CellMain.innerHTML = "Carte achetée";
-                gold = gold - ((carteN.tier) * 5);
-                $("#sectiongold")[0].innerHTML = gold + "gold";
                 $("#CellM" + (n + 1))[0].onclick = null;
 
                 delete deck1[n];
@@ -285,7 +272,7 @@ function deplacerCarteBoard(boardA, posdep, posarr) {
 
 function boutique() {
 
-
+    mainActive();
     // on re desactive le bouton roll pour etre sur
     boutonRoll = document.getElementById("boutonRoll");
     boutonRoll.disabled = true;
@@ -323,6 +310,7 @@ function boutique() {
 
 
     ajouterAuChatType("Vague terminée. Vous gagnez " + goldGagnes + " gold des ennemis et " + lumber + " de vos ouvriers.", 0);
+    passifBanquier();
 
     //le board revient comme avant le combat
     board = copyBoard(boardPreCombat);
@@ -344,7 +332,7 @@ function boutique() {
 
     //  on incrémente le compteur de vague et on affiche la nouvelle
     v++;
-    if (v>=16) victoire();
+    if (v >= 16) victoire();
     vagueActuelle = tabVagues[v];
     displayVagueActuelle();
 
@@ -352,19 +340,18 @@ function boutique() {
 }
 
 function combat() { // se déclenche quand j'appuie sur le bouton Pret
-
-    $("#boutonreRollBoutique2G")[0].disabled = true;
-    $("#boutonreRollBoutiqueFree")[0].disabled = true;
-    $("#boutonVente")[0].disabled = true;
-
     // verfication du placement en frontline
     if ((board[0] == 0 || board[1] == 0 || board[2] == 0 || board[3] == 0) && (board[4] != 0 || board[5] != 0 || board[6] != 0 || board[7] != 0)) {
         ajouterAuChatType("Vous devez remplir la première ligne avant de pouvoir mettre des cartes en deuxième ligne.", 1);
     }
 
     else { // si le placement est autorisé
+        mainDesactivee();
+        $("#boutonreRollBoutique2G")[0].disabled = true;
+        $("#boutonreRollBoutiqueFree")[0].disabled = true;
+        $("#boutonVente")[0].disabled = true;
 
-        if (posCarteSelect != null) { selectionCarteBoard(board, posCarteSelect);} // on dé-selectionne sa carte
+        if (posCarteSelect != null) { selectionCarteBoard(board, posCarteSelect); } // on dé-selectionne sa carte
 
         boardPreCombat = copyBoard(board); // on save le board
 
@@ -382,7 +369,7 @@ function combat() { // se déclenche quand j'appuie sur le bouton Pret
         donnerBonsDes(); // on donne le bon nombre de dés
         document.getElementById("status").innerHTML = " "; // on vide la chat box
 
-        passifTreant(); 
+        passifTreant();
 
         if (vagueActuelle.passif == "Attaquent en premier") { boutonRollMob.disabled = false; }
         else {
@@ -400,7 +387,7 @@ function donnerBonsDes(quelDes = "tous") {
         nbTotAttMa = 0;
         for (i = 0; i < 4; i++) { // on ne compte que la frontline
             if (board[i] != 0) {
-               if(board[i].nbAttTr != "X") nbTotAttTr += board[i].nbAttTr;
+                if (board[i].nbAttTr != "X") nbTotAttTr += board[i].nbAttTr;
                 nbTotAttPe += board[i].nbAttPe;
                 nbTotAttMa += board[i].nbAttMa;
             }

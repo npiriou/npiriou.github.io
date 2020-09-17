@@ -47,13 +47,7 @@
 			display: inline-block;
 		}
 
-		.carteB:hover {
-			cursor: pointer;
-		}
 
-		.carteM:hover {
-			cursor: pointer;
-		}
 
 		#carteDivision {
 			display: flex;
@@ -143,22 +137,15 @@
 			<div style="float:left;width:30%;height:350px;">
 
 				<p id="partr">Attaques Tranchantes
-					<!--	<button onclick="addDiceT()">+</button>
-					<button onclick="removeDiceT()">-</button> -->
-
 				</p>
 
 				<br><br><br>
 				<p id="parpe">Attaques Perçantes
-					<!--	<button onclick="addDiceP()">+ </button>
-					<button onclick="removeDiceP()">-</button> -->
+
 
 				</p>
 				<br><br><br>
 				<p id="parma">Attaques Magiques
-					<!--	<button onclick="addDiceM()">+ </button>
-					<button onclick="removeDiceM()">-</button> -->
-
 				</p>
 				<br><br><br>
 			</div>
@@ -174,9 +161,10 @@
 				<p id="parmob"></p>
 				<br><br>
 				<p id="status2" style="clear:left;">
-					<div class="diceaff tranchaff">0</div>
-					<div class="diceaff peraff">0</div>
-					<div class="diceaff magaff">0</div></p>
+				<div class="diceaff tranchaff">0</div>
+				<div class="diceaff peraff">0</div>
+				<div class="diceaff magaff">0</div>
+				</p>
 			</div>
 
 		</div>
@@ -198,23 +186,47 @@
 			<div style="float:left;">
 				<table>
 					<tr>
-						<td id="Cell1" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 0)">
+						<td id="Cell1" class="carteB" style="width:205px;height:205px;"
+						onmouseover="shadowBlue('Cell1', 'board', 0)"
+						onmouseout="noShadow('Cell1', 'board', 0)"
+						onclick="selectionCarteBoard(board, 0)">
 							Place vide</td>
-						<td id="Cell2" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 1)">
+						<td id="Cell2" class="carteB" style="width:205px;height:205px;"
+						onmouseover="shadowBlue('Cell2', 'board', 1)"
+						onmouseout="noShadow('Cell2', 'board', 1)"
+						onclick="selectionCarteBoard(board, 1)">
 							Place vide</td>
-						<td id="Cell3" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 2)">
+						<td id="Cell3" class="carteB" style="width:205px;height:205px;"
+						onmouseover="shadowBlue('Cell3', 'board', 2)"
+						onmouseout="noShadow('Cell3', 'board', 2)"
+						onclick="selectionCarteBoard(board, 2)">
 							Place vide</td>
-						<td id="Cell4" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 3)">
+						<td id="Cell4" class="carteB" style="width:205px;height:205px;"
+						onmouseover="shadowBlue('Cell4', 'board', 3)"
+						onmouseout="noShadow('Cell4', 'board', 3)"
+						onclick="selectionCarteBoard(board, 3)">
 							Place vide</td>
 					</tr>
 					<tr>
-						<td id="Cell5" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 4)">
+						<td id="Cell5" class="carteB" style="width:205px;height:205px;"
+						onmouseover="shadowBlue('Cell5', 'board', 4)"
+						onmouseout="noShadow('Cell5', 'board', 4)"
+						onclick="selectionCarteBoard(board, 4)">
 							Place vide</td>
-						<td id="Cell6" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 5)">
+						<td id="Cell6" class="carteB" style="width:205px;height:205px;"
+						onmouseover="shadowBlue('Cell6', 'board', 5)"
+						onmouseout="noShadow('Cell6', 'board', 5)"
+						onclick="selectionCarteBoard(board, 5)">
 							Place vide</td>
-						<td id="Cell7" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 6)">
+						<td id="Cell7" class="carteB" style="width:205px;height:205px;"
+						onmouseover="shadowBlue('Cell7', 'board', 6)"
+						onmouseout="noShadow('Cell7', 'board', 6)"
+						onclick="selectionCarteBoard(board, 6)">
 							Place vide</td>
-						<td id="Cell8" class="carteB" style="width:205px;height:205px;" onclick="selectionCarteBoard(board, 7)">
+						<td id="Cell8" class="carteB" style="width:205px;height:205px;"
+						onmouseover="shadowBlue('Cell8', 'board', 7)"
+						onmouseout="noShadow('Cell8', 'board', 7)"
+						onclick="selectionCarteBoard(board, 7)">
 							Place vide</td>
 					</tr>
 				</table>
@@ -233,19 +245,20 @@
 								onclick="achatLumber()">Acheter un ouvrier<br />5 gold</button>
 						</td>
 
-						<td class="carteM" id="CellM1" onclick="pickM(0)"></td>
-						<td class="carteM" id="CellM2" onclick="pickM(1)">
-							<div id="carteDivision">
-						</td>
-						<td class="carteM" id="CellM3" onclick="pickM(2)">
-							<div id="carteDivision">
-						</td>
-						<td class="carteM" id="CellM4" onclick="pickM(3)">
-							<div id="carteDivision">
-						</td>
-						<td class="carteM" id="CellM5" onclick="pickM(4)">
-							<div id="carteDivision">
-						</td>
+						<td class="carteM" id="CellM1" onmouseover="shadowBlue('CellM1', 'main', 0)"
+							onmouseout="noShadow('CellM1', 'main', 0)" onclick="pickM(0)"></td>
+						<td class="carteM" id="CellM2" onmouseover="shadowBlue('CellM2', 'main', 1)"
+						onmouseout="noShadow('CellM2', 'main', 1)"onclick="pickM(1)"></td>
+
+						<td class="carteM" id="CellM3" onmouseover="shadowBlue('CellM3', 'main', 2)"
+						onmouseout="noShadow('CellM3', 'main', 2)"onclick="pickM(2)"></td>
+
+						<td class="carteM" id="CellM4" onmouseover="shadowBlue('CellM4', 'main', 3)"
+						onmouseout="noShadow('CellM4', 'main', 3)"onclick="pickM(3)"></td>
+
+						<td class="carteM" id="CellM5" onmouseover="shadowBlue('CellM5', 'main', 4)"
+						onmouseout="noShadow('CellM5', 'main', 4)"onclick="pickM(4)"></td>
+
 						<td class="carteAchatLumber" id="carteAchatLumber">
 							<button id="boutonreRollBoutiqueFree" type="button" class="btn btn-secondary"
 								onclick="reRollBoutiqueFree()">Re-roll la boutique<br />Gratuit</button>

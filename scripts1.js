@@ -37,17 +37,17 @@ function displayVagueActuelle() {
 	status2.innerHTML = ("Vague " + ((vagueActuelle.numero)) + " : " + vagueActuelle.nom + "<br>"
 		+ (vagueActuelle.nombre) + " ennemis au départ.<br>"
 		+ "Précision des ennemis : " + vagueActuelle.precision + " ou plus.<br>"
-		+ vagueActuelle.passif+  "<br>Résistances :"
+		+ vagueActuelle.passif + "<br>Résistances :"
 	);
 
-if (vagueActuelle.resiTr<900)	{$((".tranchaff"))[0].innerHTML = (vagueActuelle.resiTr + "+")} 
-else {$((".tranchaff"))[0].innerHTML ="∞"}
+	if (vagueActuelle.resiTr < 900) { $((".tranchaff"))[0].innerHTML = (vagueActuelle.resiTr + "+") }
+	else { $((".tranchaff"))[0].innerHTML = "∞" }
 
-if (vagueActuelle.resiPe<900)	{$((".peraff"))[0].innerHTML = (vagueActuelle.resiPe + "+")}
-else {$((".peraff"))[0].innerHTML = "∞"}
+	if (vagueActuelle.resiPe < 900) { $((".peraff"))[0].innerHTML = (vagueActuelle.resiPe + "+") }
+	else { $((".peraff"))[0].innerHTML = "∞" }
 
-if (vagueActuelle.resiMa<900) {$((".magaff"))[0].innerHTML = (vagueActuelle.resiMa + "+")}
-else {$((".magaff"))[0].innerHTML = "∞"}
+	if (vagueActuelle.resiMa < 900) { $((".magaff"))[0].innerHTML = (vagueActuelle.resiMa + "+") }
+	else { $((".magaff"))[0].innerHTML = "∞" }
 }
 displayVagueActuelle();
 
@@ -160,6 +160,7 @@ function advRoll() {
 	passifRegen();
 	passifSoin2();
 	passifDragon();
+	passifBerserker();
 	donnerBonsDes("joueur"); // on réactualise le  nombre de dés
 
 	killCount = 0;
@@ -194,6 +195,9 @@ function advRoll() {
 
 	killCount += passifMageNoir();
 	killCount += passifDemonetteAuto();
+	killCount += passifForgeronAuto();
+	killCount += passifSeigneurAuto();    
+
 
 	killCount += passifMoine();
 	killCount += passifZombie();
@@ -461,3 +465,48 @@ function victoire() {
 		alert("Félicitations ! Vous avez grindé " + grind + " monstres. Votre score final est de " + scoreTotal + ". Essaye de moins leak la prochaine fois ;)")
 	}
 }
+
+function shadowBlue(cell, boardOuMain, pos) {
+	if (boardOuMain == 'main') {
+		if (deck1[pos] != undefined) {
+			document.getElementById(cell).style.boxShadow = "1px 1px 15px  blue";
+			document.getElementById(cell).style.cursor = "pointer";
+		}
+	}
+	else if (boardOuMain == 'board') {
+		if ((board[pos] != undefined && board[pos] != 0) || posCarteSelect != null) {
+			document.getElementById(cell).style.boxShadow = "1px 1px 15px  blue";
+			document.getElementById(cell).style.cursor = "pointer";
+		}
+	}
+}
+
+function noShadow(cell, boardOuMain, pos) { // trigger quand on enleve la souris, enleve l'ombre
+	if (boardOuMain == 'main') {
+
+		document.getElementById(cell).style.boxShadow = "0 0 0 white";
+	}
+	else if (boardOuMain == 'board') {
+
+		document.getElementById(cell).style.boxShadow = "0 0 0 white";
+
+	}
+}
+
+function mainDesactivee() {
+	for (i = 0; i < $(".carteM").length; i++) {
+		$(".carteM")[i].style.cursor = "not-allowed";
+		$(".carteM")[i].onmouseover = null;
+	}
+	$("#handContainer")[0].style.cursor = "not-allowed";
+}
+
+function mainActive() {
+	for (i = 0; i < $(".carteM").length; i++) {
+		$(".carteM")[i].style.cursor = "auto";
+		$(".carteM")[i].onmouseover = (function (temp1, temp2, temp3) { return function () { shadowBlue(temp1, temp2, temp3) }; })("CellM" + (i + 1), "main", i);
+		//	$(".carteM")[i].onmouseover = null;
+	}
+	$("#handContainer")[0].style.cursor = "auto";
+}
+

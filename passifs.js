@@ -24,7 +24,7 @@ function relance(resultatMin, resultatDe) {
 function passifFanatiquesAuto() {
     var nbRelances = 0;
     var nbDmgRel = 0;
-    if (checkPassifProc("Relancent une fois les 1 et 2")){
+    if (checkPassifProc("Relancent une fois les 1 et 2")) {
         tabDices = document.getElementsByClassName("mob");
         for (i = 0; i < tabDices.length; i++) {
             if (tabDices[i].innerHTML == "1" || tabDices[i].innerHTML == "2") {
@@ -51,11 +51,10 @@ function passifPingouinAuto() {
                 if (tabDices[i].innerHTML >= vagueActuelle.resiPe) nbKillsPing++;
             }
         }
-        if (nbRelances > 0) ajouterAuChatType("Le pingouin a relancé " + nbRelances + " attaques et tué " + nbKillsPing + " " + vagueActuelle.nom + ".", 0)
+        if (nbRelances > 0) ajouterAuChatType("Grâce au Pingouin vous relancez " + nbRelances + " attaques et tuez " + nbKillsPing + " des " + vagueActuelle.nom + ".", 0)
     }
     return nbKillsPing;
 }
-
 function passifDemonetteAuto() {
     var nbRelances = 0;
     var nbKillsDem = 0;
@@ -65,14 +64,66 @@ function passifDemonetteAuto() {
             if (tabDices[i].innerHTML == "1") {
                 tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
                 nbRelances++
-                if (tabDices[i].innerHTML >= vagueActuelle.resiPe) nbKillsDem++;
+                if (tabDices[i].classList[1] == "tranch") {
+                    if (tabDices[i].innerHTML >= vagueActuelle.resiTr) nbKillsDem++;
+                }
+                if (tabDices[i].classList[1] == "per") {
+                    if (tabDices[i].innerHTML >= vagueActuelle.resiPe) nbKillsDem++;
+                }
+                if (tabDices[i].classList[1] == "mag") {
+                    if (tabDices[i].innerHTML >= vagueActuelle.resiMa) nbKillsDem++;
+                }
             }
         }
-        if (nbRelances > 0) ajouterAuChatType("La Demonette a relancé " + nbRelances + " attaques et tué " + nbKillsDem + " " + vagueActuelle.nom + ".", 0)
+        if (nbRelances > 0) ajouterAuChatType("Grâce à la Demonette vous relancez " + nbRelances + " attaques et tuez " + nbKillsDem + " des " + vagueActuelle.nom + ".", 0)
     }
     return nbKillsDem;
 }
 
+function passifSeigneurAuto() {
+    var nbRelances = 0;
+    var nbKillsDem = 0;
+    if (checkPassifProc("SEIGNEUR")) {
+        tabDices = document.getElementsByClassName("dice");
+        for (i = 0; i < tabDices.length; i++) {
+            if (((tabDices[i].classList[1] == "tranch") && (tabDices[i].innerHTML < vagueActuelle.resiTr))
+                || ((tabDices[i].classList[1] == "per") && (tabDices[i].innerHTML < vagueActuelle.resiPe))
+                || ((tabDices[i].classList[1] == "mag") && (tabDices[i].innerHTML < vagueActuelle.resiMa)))
+             { 
+                tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
+                nbRelances++
+                if (tabDices[i].classList[1] == "tranch") {
+                    if (tabDices[i].innerHTML >= vagueActuelle.resiTr) nbKillsDem++;
+                }
+                if (tabDices[i].classList[1] == "per") {
+                    if (tabDices[i].innerHTML >= vagueActuelle.resiPe) nbKillsDem++;
+                }
+                if (tabDices[i].classList[1] == "mag") {
+                    if (tabDices[i].innerHTML >= vagueActuelle.resiMa) nbKillsDem++;
+                }
+            }
+        }
+        if (nbRelances > 0) ajouterAuChatType("Grâce au Seigneur de l'Arène vous relancez " + nbRelances + " attaques et tuez " + nbKillsDem + " des " + vagueActuelle.nom + ".", 0)
+    }
+    return nbKillsDem;
+}
+
+function passifForgeronAuto() {
+    var nbRelances = 0;
+    var nbKillsFor = 0;
+    if (checkPassifProc("FORGERON")) {
+        tabDices = document.getElementsByClassName("tranch");
+        for (i = 0; i < tabDices.length; i++) {
+            if (tabDices[i].innerHTML <= vagueActuelle.resiTr) {
+                tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
+                nbRelances++
+                if (tabDices[i].innerHTML >= vagueActuelle.resiTr) nbKillsFor++;
+            }
+        }
+        if (nbRelances > 0) ajouterAuChatType("Grâce au Forgeron vous relancez " + nbRelances + " attaques et tuez " + nbKillsFor + " des " + vagueActuelle.nom + ".", 0)
+    }
+    return nbKillsFor;
+}
 
 
 function passifGobelinExp(posCarte) {
@@ -147,7 +198,6 @@ function checkPosPassif(passifACheck) {
             return index;
         }
     }
-    console.log(passifACheck + " n'a pas été trouvé"); return false;
 }
 
 function passifTreant() {
@@ -229,6 +279,13 @@ function passifCapitaine() {
     return attSuppCapitaine;
 }
 
+function passifBanquier() {
+    if (checkPassifProc("BANQUIER")) {
+        gold++;
+        ajouterAuChatType("Le Banquier a survécu et vous rapporte 1 gold.", 0);
+    }
+}
+
 function passifMoine() {
     tabDices = document.getElementsByClassName("mag");
 
@@ -250,20 +307,38 @@ function passifDragon() {
     if (checkPassifProc("DRAGON")) {
         posCarte = checkPosPassif("DRAGON");
         board[posCarte].nbAttTr = (Math.floor(Math.random() * 6) + 1);
+        if (posCarte < 4){
         ajouterAuChatType("Le Dragon lance " + board[posCarte].nbAttTr + " attaques Tranchantes !", 0)
+        afficherBoard(board);
+    }}
+}
+
+function passifBerserker() {
+    if (checkPassifProc("BERSERKER")) {
+        posCarte = checkPosPassif("BERSERKER");
+        board[posCarte].nbAttTr = 1 + board[posCarte].pvdep - board[posCarte].pvact;
+       if(board[posCarte].nbAttTr>0) {ajouterAuChatType("La rage du Berzerker lui octroie " + (board[posCarte].nbAttTr - 1) + " attaques supplémentaires !", 0);}
         afficherBoard(board);
     }
 }
+
 
 function passifMutant() {
     var killsMutant = 0;
     var tabDices = document.getElementsByClassName("tranch");
     if (checkPassifProc("MUTANT")) {
-    for (i = 0; i < tabDices.length; i++) {
-        if ((tabDices[i].innerHTML == 6) && (vagueActuelle.resiTr <= 6))
-            killsMutant++;
+        for (i = 0; i < tabDices.length; i++) {
+            if ((tabDices[i].innerHTML == 6) && (vagueActuelle.resiTr <= 6))
+                killsMutant++;
+        }
+        if (killsMutant > 0) ajouterAuChatType("Le Mutant tue " + killsMutant + " " + vagueActuelle.nom + " de plus.", 0);
+
+    } return killsMutant;
+}
+
+function passifMarchand() {
+    if (checkPassifProc("MARCHAND")) {
+        return -1;
     }
-    if (killsMutant > 0) ajouterAuChatType("Le Mutant tue " + killsMutant + " " + vagueActuelle.nom + " de plus", 0);
-    
-}return killsMutant;
+    else return 0;
 }
