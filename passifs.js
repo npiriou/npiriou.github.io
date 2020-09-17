@@ -235,6 +235,7 @@ function passifMoine() {
     if (checkPassifProc("MOINE")) {
         for (let i = 0; i < tabDices.length; i++) {
             if (tabDices[i].innerHTML == (vagueActuelle.resiMa - 1)) {
+                tabDices[i].innerHTML = vagueActuelle.resiMa
                 ajouterAuChatType("Le Moine permet de tuer un des " + vagueActuelle.nom + " .", 0)
                 return 1;
             }

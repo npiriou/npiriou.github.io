@@ -37,13 +37,17 @@ function displayVagueActuelle() {
 	status2.innerHTML = ("Vague " + ((vagueActuelle.numero)) + " : " + vagueActuelle.nom + "<br>"
 		+ (vagueActuelle.nombre) + " ennemis au départ.<br>"
 		+ "Précision des ennemis : " + vagueActuelle.precision + " ou plus.<br>"
-		+ vagueActuelle.passif
-		+ "Résistances :"
+		+ vagueActuelle.passif+  "<br>Résistances :"
 	);
 
-	$((".tranchaff"))[0].innerHTML = (vagueActuelle.resiTr + "+")
-	$((".peraff"))[0].innerHTML = (vagueActuelle.resiPe + "+")
-	$((".magaff"))[0].innerHTML = (vagueActuelle.resiMa + "+")
+if (vagueActuelle.resiTr<900)	{$((".tranchaff"))[0].innerHTML = (vagueActuelle.resiTr + "+")} 
+else {$((".tranchaff"))[0].innerHTML ="∞"}
+
+if (vagueActuelle.resiPe<900)	{$((".peraff"))[0].innerHTML = (vagueActuelle.resiPe + "+")}
+else {$((".peraff"))[0].innerHTML = "∞"}
+
+if (vagueActuelle.resiMa<900) {$((".magaff"))[0].innerHTML = (vagueActuelle.resiMa + "+")}
+else {$((".magaff"))[0].innerHTML = "∞"}
 }
 displayVagueActuelle();
 

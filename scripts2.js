@@ -355,6 +355,7 @@ function combat() { // se déclenche quand j'appuie sur le bouton Pret
 
     $("#boutonreRollBoutique2G")[0].disabled = true;
     $("#boutonreRollBoutiqueFree")[0].disabled = true;
+    $("#boutonVente")[0].disabled = true;
 
     // verfication du placement en frontline
     if ((board[0] == 0 || board[1] == 0 || board[2] == 0 || board[3] == 0) && (board[4] != 0 || board[5] != 0 || board[6] != 0 || board[7] != 0)) {
@@ -362,6 +363,8 @@ function combat() { // se déclenche quand j'appuie sur le bouton Pret
     }
 
     else { // si le placement est autorisé
+
+        if (posCarteSelect != null) { selectionCarteBoard(board, posCarteSelect);} // on dé-selectionne sa carte
 
         boardPreCombat = copyBoard(board); // on save le board
 
@@ -379,7 +382,7 @@ function combat() { // se déclenche quand j'appuie sur le bouton Pret
         donnerBonsDes(); // on donne le bon nombre de dés
         document.getElementById("status").innerHTML = " "; // on vide la chat box
 
-        passifTreant();
+        passifTreant(); 
 
         if (vagueActuelle.passif == "Attaquent en premier") { boutonRollMob.disabled = false; }
         else {
