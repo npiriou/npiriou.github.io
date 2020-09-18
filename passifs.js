@@ -1,5 +1,5 @@
 function passifEmpoisonneurs(posCarte) {
-    if (board(posCarte) != 0) {
+    if (board[posCarte] != 0) {
         ajouterAuChatType(board[posCarte].nom + " est mort. ", 0);
         degatsRestants--;
         board[posCarte] = 0;
