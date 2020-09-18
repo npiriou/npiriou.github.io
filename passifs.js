@@ -1,9 +1,11 @@
 function passifEmpoisonneurs(posCarte) {
-    ajouterAuChatType(board[posCarte].nom + " est mort. ", 0);
-    degatsRestants--;
-    board[posCarte] = 0;
-
-    afficherBoard(board);
+    if (board(posCarte) != 0) {
+        ajouterAuChatType(board[posCarte].nom + " est mort. ", 0);
+        degatsRestants--;
+        board[posCarte] = 0;
+        passifGobelinExp(posCarte);
+        afficherBoard(board);
+    }
 }
 
 function passifBoss2emeAtt() {
@@ -24,7 +26,8 @@ function relance(resultatMin, resultatDe) {
 function passifFanatiquesAuto() {
     var nbRelances = 0;
     var nbDmgRel = 0;
-    if (checkPassifProc("Relancent une fois les 1 et 2")) {
+    if (vagueActuelle.passif == "Relancent une fois les 1 et 2") {
+
         tabDices = document.getElementsByClassName("mob");
         for (i = 0; i < tabDices.length; i++) {
             if (tabDices[i].innerHTML == "1" || tabDices[i].innerHTML == "2") {
@@ -88,8 +91,7 @@ function passifSeigneurAuto() {
         for (i = 0; i < tabDices.length; i++) {
             if (((tabDices[i].classList[1] == "tranch") && (tabDices[i].innerHTML < vagueActuelle.resiTr))
                 || ((tabDices[i].classList[1] == "per") && (tabDices[i].innerHTML < vagueActuelle.resiPe))
-                || ((tabDices[i].classList[1] == "mag") && (tabDices[i].innerHTML < vagueActuelle.resiMa)))
-             { 
+                || ((tabDices[i].classList[1] == "mag") && (tabDices[i].innerHTML < vagueActuelle.resiMa))) {
                 tabDices[i].innerHTML = (Math.floor(Math.random() * 6) + 1);
                 nbRelances++
                 if (tabDices[i].classList[1] == "tranch") {
@@ -148,7 +150,10 @@ function passifGolemCorail() {
         }
     }
     if (morts > 0) {
-        ajouterAuChatType("Le Golem de Corail tue " + morts + " " + vagueActuelle.nom, 0);
+        if (nbMobsReste > 0) {
+            ajouterAuChatType("Le Golem de Corail tue " + morts + " " + vagueActuelle.nom+".", 0);
+        }
+        else ajouterAuChatType("Le Golem de Corail achève les " + vagueActuelle.nom+ ".", 0);
     }
 }
 
@@ -307,17 +312,18 @@ function passifDragon() {
     if (checkPassifProc("DRAGON")) {
         posCarte = checkPosPassif("DRAGON");
         board[posCarte].nbAttTr = (Math.floor(Math.random() * 6) + 1);
-        if (posCarte < 4){
-        ajouterAuChatType("Le Dragon lance " + board[posCarte].nbAttTr + " attaques Tranchantes !", 0)
-        afficherBoard(board);
-    }}
+        if (posCarte < 4) {
+            ajouterAuChatType("Le Dragon lance " + board[posCarte].nbAttTr + " attaques Tranchantes !", 0)
+            afficherBoard(board);
+        }
+    }
 }
 
 function passifBerserker() {
     if (checkPassifProc("BERSERKER")) {
         posCarte = checkPosPassif("BERSERKER");
         board[posCarte].nbAttTr = 1 + board[posCarte].pvdep - board[posCarte].pvact;
-       if(board[posCarte].nbAttTr>0) {ajouterAuChatType("La rage du Berzerker lui octroie " + (board[posCarte].nbAttTr - 1) + " attaques supplémentaires !", 0);}
+        if (board[posCarte].nbAttTr > 1) { ajouterAuChatType("La rage du Berzerker lui octroie " + (board[posCarte].nbAttTr - 1) + " attaques supplémentaires !", 0); }
         afficherBoard(board);
     }
 }

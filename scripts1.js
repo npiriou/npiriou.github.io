@@ -196,7 +196,7 @@ function advRoll() {
 	killCount += passifMageNoir();
 	killCount += passifDemonetteAuto();
 	killCount += passifForgeronAuto();
-	killCount += passifSeigneurAuto();    
+	killCount += passifSeigneurAuto();
 
 
 	killCount += passifMoine();
@@ -242,8 +242,8 @@ function rollMob() {
 
 
 	passifGolemCorail();
-	ajouterAuChatType("Les " + vagueActuelle.nom + " attaquent ! Vous perdez " + degatsInfliges + " PV ! ", 0);
-
+	if (degatsInfliges>0) ajouterAuChatType("Les " + vagueActuelle.nom + " attaquent ! Vous perdez " + degatsInfliges + " PV ! ", 0);
+else ajouterAuChatType("Les " + vagueActuelle.nom + " ratent leur attaque ! ", 0);
 	degatsRestants = degatsInfliges;
 	repartitionDegats();
 
@@ -296,32 +296,34 @@ function repartitionDegats() {
 
 				//on active le clic sur les cartes en frontline pour les select
 				for (i = 0; i < 4; i++) {
+					if (board[i] != 0) { 
 					$("#Cell" + (i + 1))[0].onclick = (function (temp2) { return function () { selectionPVPerdu(temp2) }; })(i);
 				}
 			}
 		}
+	}
 		else {
-			if ((board[0] == 0 && board[1] == 0 && board[2] == 0 && board[3] == 0) && (degatsRestants > 0)) {
-				degatsRestants = 0; ajouterAuChatType("La première ligne s'est faite massacrer !", 0)
-			}
+		if ((board[0] == 0 && board[1] == 0 && board[2] == 0 && board[3] == 0) && (degatsRestants > 0)) {
+			degatsRestants = 0; ajouterAuChatType("La première ligne s'est faite massacrer !", 0)
+		}
 
-			// si la frontline a une place et que il ya des cartes en backline, elles doivent avancer
-			if ((board[0] == 0 || board[1] == 0 || board[2] == 0 || board[3] == 0)
-				&& (board[4] != 0 || board[5] != 0 || board[6] != 0 || board[7] != 0)) {
-				backlineAvance();
-			}
-			else {
-				var tour = "joueur";
+		// si la frontline a une place et que il ya des cartes en backline, elles doivent avancer
+		if ((board[0] == 0 || board[1] == 0 || board[2] == 0 || board[3] == 0)
+			&& (board[4] != 0 || board[5] != 0 || board[6] != 0 || board[7] != 0)) {
+			backlineAvance();
+		}
+		else {
+			var tour = "joueur";
 
-				for (i = 0; i < 8; i++) { // désactivation du clic sur les cartes du board pour les selectionner et déplacer
-					$("#Cell" + (i + 1))[0].onclick = null;
-				}
-				var boutonRoll = document.getElementById("boutonRoll");
-				boutonRoll.disabled = false;
-				return;
+			for (i = 0; i < 8; i++) { // désactivation du clic sur les cartes du board pour les selectionner et déplacer
+				$("#Cell" + (i + 1))[0].onclick = null;
 			}
+			var boutonRoll = document.getElementById("boutonRoll");
+			boutonRoll.disabled = false;
+			return;
 		}
 	}
+}
 }
 
 

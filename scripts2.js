@@ -42,7 +42,7 @@ deck1[24] = new carte(24, 2, "Archère Elfe", 1, 1, 0, 2, 0, "RANGED", "Attaque 
 deck1[25] = new carte(25, 3, "Ranger Tanker", 2, 2, 0, 2, 0, "RANGED", "Attaque à distance");
 deck1[26] = new carte(26, 1, "Lanceuse de couteaux", 1, 1, 1, 0, 0, "RANGED", "Attaque à distance");
 deck1[27] = new carte(27, 1, "Gobelin explosif", 1, 1, 1, 0, 0, "EXPLOSION", "Tue un ennemi quand il meurt");
-deck1[28] = new carte(28, 3, "Golem de Corail", 3, 3, 1, 0, 0, "CORAIL", "Pour chaque 1 des ennemis, un meurt");
+ deck1[28] = new carte(28, 3, "Golem de Corail", 3, 3, 1, 0, 0, "CORAIL", "Pour chaque 1 des ennemis, un meurt");
 deck1[29] = new carte(29, 1, "Zombie", 1, 1, 1, 0, 0, "DAKKA", "Pour chaque 6 tranchant, lance un autre dé tranchant");
 deck1[30] = new carte(30, 2, "Tréant", 2, 2, 1, 0, 0, "TREANT", "Tue un ennemi au début du combat");
 deck1[31] = new carte(31, 3, "Abomination", 4, 4, 1, 0, 0, "REGEN1", "Quand vous attaquez, récupère 1 PV");
@@ -219,8 +219,8 @@ function pickM(n) { // achete et place des cartes de la main sur le board quand 
     carteN = deck1[n];
     for (i = 0; i < board.length; i++) {
         if (board[i] == 0) { // si on a des slots libres
-            if ((((carteN.tier) * 5) - passifMarchand()) <= gold) { // et les moyens
-                gold = gold - ((carteN.tier) * 5) - passifMarchand();
+            if ((((carteN.tier) * 5) + parseInt(passifMarchand())) <= gold) { // et les moyens
+                gold = gold - ((carteN.tier) * 5) - parseInt(passifMarchand());
                 $("#sectiongold")[0].innerHTML = gold + "gold";
                 var CellBoard = $("#Cell" + (i + 1))[0];
                 var CellMain = $("#CellM" + (n + 1))[0];
@@ -488,8 +488,15 @@ function reRollBoutique2G() {
 }
 
 function compterMobsMorts() {
-    nbMobsReste = nbMobsReste - killCount; if (nbMobsReste < 0) { nbMobsReste = 0; }
+    if (killCount<=nbMobsReste)
+    {nbMobsReste = nbMobsReste - killCount; 
     ajouterAuChatType("Vous tuez " + killCount + " " + vagueActuelle.nom + ". Il en reste " + nbMobsReste + ".", 0);
+}
+  else {  
+    ajouterAuChatType("Vous auriez pu tuer " + killCount + " " + vagueActuelle.nom + ", mais il n'en restait que " + nbMobsReste + ".", 0);
+    nbMobsReste = 0;
+}
+  
     reponseDesMonstres();
 }
 
