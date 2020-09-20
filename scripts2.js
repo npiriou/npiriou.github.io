@@ -42,7 +42,7 @@ deck1[24] = new carte(24, 2, "Archère Elfe", 1, 1, 0, 2, 0, "RANGED", "Attaque 
 deck1[25] = new carte(25, 3, "Ranger Tanker", 2, 2, 0, 2, 0, "RANGED", "Attaque à distance");
 deck1[26] = new carte(26, 1, "Lanceur de lames", 1, 1, 1, 0, 0, "RANGED", "Attaque à distance");
 deck1[27] = new carte(27, 1, "Gobelin explosif", 1, 1, 1, 0, 0, "EXPLOSION", "Tue un ennemi quand il meurt");
- deck1[28] = new carte(28, 3, "Golem de Corail", 3, 3, 1, 0, 0, "CORAIL", "Pour chaque 1 des ennemis, un meurt");
+deck1[28] = new carte(28, 3, "Golem de Corail", 3, 3, 1, 0, 0, "CORAIL", "Pour chaque 1 des ennemis, un meurt");
 deck1[29] = new carte(29, 1, "Zombie", 1, 1, 1, 0, 0, "DAKKA", "Pour chaque 6 tranchant, lance un autre dé tranchant");
 deck1[30] = new carte(30, 2, "Tréant", 2, 2, 1, 0, 0, "TREANT", "Tue un ennemi au début du combat");
 deck1[31] = new carte(31, 3, "Abomination", 4, 4, 1, 0, 0, "REGEN1", "Quand vous attaquez, récupère 1 PV");
@@ -115,11 +115,11 @@ var template =
 <i>{7}</i>
 </p>  </div>
 <div id="carteDivision" style=" height:28px;">
-<div id="pvact" class="carteDivision">
+<div id="pvact">
 {5}
 </div>
 /
-<div id="pvdep" class="carteDivision">
+<div id="pvdep" >
 {6} </div> 
 </div>
 </div></div></div>`;
@@ -199,7 +199,7 @@ function distribution() {
         var CellMi = $("#CellM" + (i + 1))[0];
         var carteMi = deck1[i];
         CellMi.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep, carteMi.passifDescription);
-
+        CellMi.style.background = "url('cream_dust.png')";
         // on réactive le clic sur les cartes de la main pour pouvoir les acheter
         $("#CellM" + (i + 1))[0].onclick = (function (temp) { return function () { pickM(temp) }; })(i);
     }
@@ -227,6 +227,8 @@ function pickM(n) { // achete et place des cartes de la main sur le board quand 
                 CellBoard.innerHTML = CellMain.innerHTML;
                 board[i] = carteN;
                 CellMain.innerHTML = "Carte achetée";
+                CellMain.style.background = "url('pool_table.png')";
+                CellBoard.style.background = "url('cream_dust.png')";
                 $("#CellM" + (n + 1))[0].onclick = null;
 
                 delete deck1[n];
@@ -245,12 +247,21 @@ function selectionCarteBoard(boardA, posNouvelleCarteSelect) {
         posCarteSelect = posNouvelleCarteSelect;
         $("#Cell" + (posCarteSelect + 1))[0].style.background = "blue";
 
-        if (board[posCarteSelect] != 0) { $("#boutonVente")[0].disabled = false; }
+        if (board[posCarteSelect] != 0) {
+            $("#boutonVente")[0].disabled = false;
+            $("#boutonVente")[0].hidden = false;
+        }
     }
     else if (posCarteSelect != null) {
-        deplacerCarteBoard(boardA, posCarteSelect, posNouvelleCarteSelect)
-        $("#Cell" + (posCarteSelect + 1))[0].style.background = "beige"; posCarteSelect = null;
+        deplacerCarteBoard(boardA, posCarteSelect, posNouvelleCarteSelect);
+
+        if (board[posCarteSelect] == 0) { $("#Cell" + (posCarteSelect + 1))[0].style.background = "url('pool_table.png')"; }
+        if (board[posCarteSelect] != 0) { $("#Cell" + (posCarteSelect + 1))[0].style.background = "url('cream_dust.png')"; }
+        if (board[posNouvelleCarteSelect] == 0) { $("#Cell" + (posNouvelleCarteSelect + 1))[0].style.background = "url('pool_table.png')"; }
+        if (board[posNouvelleCarteSelect] != 0) { $("#Cell" + (posNouvelleCarteSelect + 1))[0].style.background = "url('cream_dust.png')"; }
+        posCarteSelect = null;
         $("#boutonVente")[0].disabled = true;
+        $("#boutonVente")[0].hidden = true;
 
     }
 }
@@ -276,6 +287,9 @@ function boutique() {
     // on re desactive le bouton roll pour etre sur
     boutonRoll = document.getElementById("boutonRoll");
     boutonRoll.disabled = true;
+    boutonRoll.hidden = true;
+    $("#handContainer")[0].hidden=false;
+    $("#mainContainer")[0].hidden=true;
 
     $("#boutonreRollBoutiqueFree")[0].style.display = "none";
     $("#boutonreRollBoutique2G")[0].style.display = "block";
@@ -340,6 +354,9 @@ function boutique() {
 }
 
 function combat() { // se déclenche quand j'appuie sur le bouton Pret
+
+$("#handContainer")[0].hidden=true;
+$("#mainContainer")[0].hidden=false;
     // verfication du placement en frontline
     if ((board[0] == 0 || board[1] == 0 || board[2] == 0 || board[3] == 0) && (board[4] != 0 || board[5] != 0 || board[6] != 0 || board[7] != 0)) {
         ajouterAuChatType("Vous devez remplir la première ligne avant de pouvoir mettre des cartes en deuxième ligne.", 1);
@@ -350,6 +367,8 @@ function combat() { // se déclenche quand j'appuie sur le bouton Pret
         $("#boutonreRollBoutique2G")[0].disabled = true;
         $("#boutonreRollBoutiqueFree")[0].disabled = true;
         $("#boutonVente")[0].disabled = true;
+        $("#boutonVente")[0].hidden = true;
+
 
         if (posCarteSelect != null) { selectionCarteBoard(board, posCarteSelect); } // on dé-selectionne sa carte
 
@@ -371,9 +390,13 @@ function combat() { // se déclenche quand j'appuie sur le bouton Pret
 
         passifTreant();
 
-        if (vagueActuelle.passif == "Attaquent en premier") { boutonRollMob.disabled = false; }
+        if (vagueActuelle.passif == "Attaquent en premier") {
+            boutonRollMob.disabled = false; boutonRollMob.hidden = false;
+        }
         else {
             boutonRoll.disabled = false; // on réactive le bouton pour lancer les dés
+            boutonRoll.hidden = false;
+
         }
 
     }
@@ -429,8 +452,10 @@ function afficherBoard(board) {
 
             var carteMi = board[i];
             CellMi.innerHTML = template.format(carteMi.tier, carteMi.nom, carteMi.nbAttTr, carteMi.nbAttPe, carteMi.nbAttMa, carteMi.pvact, carteMi.pvdep, carteMi.passifDescription);
+            CellMi.style.background = "url('cream_dust.png')";
         } else {
             CellMi.innerHTML = "Place Vide";
+            CellMi.style.background = "url('pool_table.png')";
         }
     }
     cleanTemplate()
@@ -463,6 +488,8 @@ function vente() {
         $("#sectiongold")[0].innerHTML = gold + " gold";
         ajouterAuChatType("Vous vendez 1 " + board[posCarteSelect].nom + " pour " + board[posCarteSelect].tier + " gold. ", 0)
         $("#boutonVente")[0].disabled = true;
+        $("#boutonVente")[0].hidden = true;
+
 
         board[posCarteSelect] = 0;
         posCarteSelect = null;
@@ -488,15 +515,15 @@ function reRollBoutique2G() {
 }
 
 function compterMobsMorts() {
-    if (killCount<=nbMobsReste)
-    {nbMobsReste = nbMobsReste - killCount; 
-    ajouterAuChatType("Vous tuez " + killCount + " " + vagueActuelle.nom + ". Il en reste " + nbMobsReste + ".", 0);
-}
-  else {  
-    ajouterAuChatType("Vous auriez pu tuer " + killCount + " " + vagueActuelle.nom + ", mais il n'en restait que " + nbMobsReste + ".", 0);
-    nbMobsReste = 0;
-}
-  
+    if (killCount <= nbMobsReste) {
+        nbMobsReste = nbMobsReste - killCount;
+        ajouterAuChatType("Vous tuez " + killCount + " " + vagueActuelle.nom + ". Il en reste " + nbMobsReste + ".", 0);
+    }
+    else {
+        ajouterAuChatType("Vous auriez pu tuer " + killCount + " " + vagueActuelle.nom + ", mais il n'en restait que " + nbMobsReste + ".", 0);
+        nbMobsReste = 0;
+    }
+
     reponseDesMonstres();
 }
 

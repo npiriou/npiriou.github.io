@@ -36,7 +36,7 @@ function displayVagueActuelle() {
 	status2 = document.getElementById("status2");
 	status2.innerHTML = ("Vague " + ((vagueActuelle.numero)) + " : " + vagueActuelle.nom + "<br>"
 		+ (vagueActuelle.nombre) + " ennemis au départ.<br>"
-		+ "Précision des ennemis : " + vagueActuelle.precision + " ou plus.<br>"
+		+ "Précision des ennemis :<br/>" + vagueActuelle.precision + " ou plus.<br>"
 		+ vagueActuelle.passif + "<br>Résistances :"
 	);
 
@@ -72,15 +72,19 @@ var boutonAchatLumber = document.getElementById("boutonAchatLumber");
 boutonAchatLumber.disabled = false;
 $("#boutonreRollBoutiqueFree")[0].disabled = false;
 $("#boutonreRollBoutique2G")[0].disabled = false;
+$("#mainContainer")[0].hidden=true;
 
 // on cache les boutons re roll
 $("#boutonreRollBoutique2G")[0].style.display = "none";
 
-// desactive le bouton pour roll les mobs
+// desactive les boutons pour roll les dés
 var tour = "joueur";
 var boutonRoll = document.getElementById("boutonRoll");
 var boutonRollMob = document.getElementById("boutonRollMob");
 boutonRollMob.disabled = true;
+boutonRollMob.hidden = true;
+boutonRoll.hidden = true;
+$("#boutonVente")[0].hidden = true;
 
 // delete des vieux mobs
 tabDicesMob = document.getElementsByClassName("mob");
@@ -224,6 +228,7 @@ function removeDiceM() {
 function rollMob() {
 
 	boutonRollMob.disabled = true;
+	boutonRollMob.hidden = true;
 
 	donnerBonsDes("mobs"); // on donne le bon nombre de dés aux mobs
 
@@ -267,7 +272,9 @@ function repartitionDegats() {
 		tour = "boutique";
 		var boutonRoll = document.getElementById("boutonRoll");
 		boutonRoll.disabled = true;
+		boutonRoll.hidden = true;
 		boutonRollMob.disabled = true;
+		boutonRollMob.hidden = true;
 		boutique();
 
 	} else {
@@ -320,6 +327,8 @@ function repartitionDegats() {
 			}
 			var boutonRoll = document.getElementById("boutonRoll");
 			boutonRoll.disabled = false;
+			boutonRoll.hidden = false;
+
 			return;
 		}
 	}
@@ -340,6 +349,7 @@ function selectionPVPerdu(posCarte) {
 		passifGobelinExp(posCarte);
 		degatsRestants = degatsRestants - board[posCarte].pvact;
 		board[posCarte] = 0;
+		$("#Cell"+(posCarte+1))[0].style.background = "url('pool_table.png')";
 		afficherBoard(board);
 		repartitionDegats();
 	}
@@ -369,13 +379,20 @@ function reponseDesMonstres() {
 	if (nbMobsReste > 0) {
 		tour = "ennemi";
 		boutonRoll.disabled = true;
+		boutonRoll.hidden = true;
+
 		boutonRollMob.disabled = false;
+		boutonRollMob.hidden = false;
+
 
 	}
 	else {
 		tour = "boutique";
 		boutonRoll.disabled = true;
+		boutonRoll.hidden = true;
+
 		boutonRollMob.disabled = true;
+		boutonRollMob.hidden = true;
 		boutique();
 	}
 }
@@ -404,9 +421,22 @@ function selectionCarteBack(posNouvelleCarteSelect) {
 		posCarteSelect = posNouvelleCarteSelect;
 		$("#Cell" + (posCarteSelect + 1))[0].style.background = "blue";
 	}
+
+	// pour changer la sélection en cas d'erreur
+	else if ((posCarteSelect != null) && (posNouvelleCarteSelect >= 4) && board[posNouvelleCarteSelect] != 0) {
+		$("#Cell" + (posCarteSelect + 1))[0].style.background = "url('cream_dust.png')";
+		posCarteSelect = posNouvelleCarteSelect;
+		$("#Cell" + (posCarteSelect + 1))[0].style.background = "blue";
+	}
+
 	else if ((posCarteSelect != null) && (posNouvelleCarteSelect < 4) && board[posNouvelleCarteSelect] == 0) {
 		deplacerCarteBoard(board, posCarteSelect, posNouvelleCarteSelect)
-		$("#Cell" + (posCarteSelect + 1))[0].style.background = "beige"; posCarteSelect = null;
+		if (board[posCarteSelect] == 0) { $("#Cell" + (posCarteSelect + 1))[0].style.background = "url('pool_table.png')"; }
+        if (board[posCarteSelect] != 0) { $("#Cell" + (posCarteSelect + 1))[0].style.background = "url('cream_dust.png')"; }
+		if (board[posNouvelleCarteSelect] == 0) { $("#Cell" + (posNouvelleCarteSelect + 1))[0].style.background = "url('pool_table.png')"; }		
+		if (board[posNouvelleCarteSelect] != 0) { $("#Cell" + (posNouvelleCarteSelect + 1))[0].style.background = "url('cream_dust.png')"; }		
+
+		posCarteSelect = null;
 		repartitionDegats();
 	}
 }
@@ -471,13 +501,13 @@ function victoire() {
 function shadowBlue(cell, boardOuMain, pos) {
 	if (boardOuMain == 'main') {
 		if (deck1[pos] != undefined) {
-			document.getElementById(cell).style.boxShadow = "1px 1px 15px  blue";
+			document.getElementById(cell).style.boxShadow = "1px 1px 15px  yellow";
 			document.getElementById(cell).style.cursor = "pointer";
 		}
 	}
 	else if (boardOuMain == 'board') {
 		if ((board[pos] != undefined && board[pos] != 0) || posCarteSelect != null) {
-			document.getElementById(cell).style.boxShadow = "1px 1px 15px  blue";
+			document.getElementById(cell).style.boxShadow = "1px 1px 15px  yellow";
 			document.getElementById(cell).style.cursor = "pointer";
 		}
 	}

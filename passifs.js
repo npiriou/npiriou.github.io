@@ -267,7 +267,7 @@ function passifCapitaine() {
 
         for (i = 0; i < 4; i++) { // on ne compte que la frontline
             if (board[i] != 0) {
-                if (nbTotAttPe > 0) {
+                if (board[i].nbAttPe > 0) {
                     attSuppCapitaine++
                 }
 
@@ -275,7 +275,7 @@ function passifCapitaine() {
         }
         for (i = 4; i < 8; i++) { // on ne compte que les ranged en backline
             if ((board[i] != 0) && board[i].passif == "RANGED") {
-                if (nbTotAttPe > 0) {
+                if (board[i].nbAttPe > 0) {
                     attSuppCapitaine++
                 }
             }
