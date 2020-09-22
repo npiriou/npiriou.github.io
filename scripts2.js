@@ -346,7 +346,7 @@ function boutique() {
 
     // distribution des nouvelles cartes et mise a jour des gold
     distribution();
-    $("#sectiongold")[0].innerHTML = gold + " gold;"
+    $("#sectiongold")[0].innerHTML = gold + " gold"
 
     //  on incrémente le compteur de vague et on affiche la nouvelle
     v++;
