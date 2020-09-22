@@ -35,13 +35,17 @@
 	border-radius: 10px;
 }
 		td.carteB {
-			border-radius: 10px;
+			border-radius: 15px;
 			background-image: url('pool_table.png');
+			width:180px;
+			height:275px;
 		}
 
 		td.carteM {
-			border-radius: 10px;
+			border-radius: 15px;
 			background-image: url('cream_dust.png');
+			width:180px;
+			height:275px;
 		}
 
 		div.tranchaff {
@@ -100,9 +104,7 @@
 			justify-content: center;
 		}
 
-		div {
-			border: 1px solid black;
-		}
+
 
 		div.dicemob {
 			border-radius: 1px;
@@ -200,13 +202,15 @@
 		<button id="boutonRollMob" class="btn btn-danger" onclick="rollMob()"
 			style="float:right; margin-right: 45%; ">Lancer pour
 			l'ennemi</button>
+			<button id="boutonCombat" class="btn btn-warning" style="float:left; margin-left: 19%; "
+					onclick="combat()">Prêt</button>
 		<br /> <br />
 
 
 
-		<div id="cardContainer" style="height: 450px;">
+		<div id="cardContainer" style="height: 560px;">
 
-			<div id="statusenrobage" style="float:left; margin-right:50px; margin-left:10px; 
+			<div id="statusenrobage" style="float:left; margin-right:10px; margin-left:10px; 
 			width:450px; height:420px; overflow:auto; background: url('cream_dust.png')">
 				<p id="status" style="clear:left; ">
 					<a href="regles.html" onclick="window.open(this.href); return false;"><b>Clique ici pour découvrir
@@ -217,49 +221,47 @@
 			<div style="float:left;">
 				<table>
 					<tr>
-						<td id="Cell1" class="carteB" style="width:205px;height:205px;"
+						<td id="Cell1" class="carteB" 
 							onmouseover="shadowBlue('Cell1', 'board', 0)" onmouseout="noShadow('Cell1', 'board', 0)"
 							onclick="selectionCarteBoard(board, 0)">
-							Place vide</td>
-						<td id="Cell2" class="carteB" style="width:205px;height:205px;"
+							</td>
+						<td id="Cell2" class="carteB" 
 							onmouseover="shadowBlue('Cell2', 'board', 1)" onmouseout="noShadow('Cell2', 'board', 1)"
 							onclick="selectionCarteBoard(board, 1)">
-							Place vide</td>
-						<td id="Cell3" class="carteB" style="width:205px;height:205px;"
+							</td>
+						<td id="Cell3" class="carteB" 
 							onmouseover="shadowBlue('Cell3', 'board', 2)" onmouseout="noShadow('Cell3', 'board', 2)"
 							onclick="selectionCarteBoard(board, 2)">
-							Place vide</td>
-						<td id="Cell4" class="carteB" style="width:205px;height:205px;"
+							</td>
+						<td id="Cell4" class="carteB" 
 							onmouseover="shadowBlue('Cell4', 'board', 3)" onmouseout="noShadow('Cell4', 'board', 3)"
 							onclick="selectionCarteBoard(board, 3)">
-							Place vide</td>
+							</td>
 					</tr>
 					<tr>
-						<td id="Cell5" class="carteB" style="width:205px;height:205px;"
+						<td id="Cell5" class="carteB" 
 							onmouseover="shadowBlue('Cell5', 'board', 4)" onmouseout="noShadow('Cell5', 'board', 4)"
 							onclick="selectionCarteBoard(board, 4)">
-							Place vide</td>
-						<td id="Cell6" class="carteB" style="width:205px;height:205px;"
+							</td>
+						<td id="Cell6" class="carteB" 
 							onmouseover="shadowBlue('Cell6', 'board', 5)" onmouseout="noShadow('Cell6', 'board', 5)"
 							onclick="selectionCarteBoard(board, 5)">
-							Place vide</td>
-						<td id="Cell7" class="carteB" style="width:205px;height:205px;"
+							</td>
+						<td id="Cell7" class="carteB" 
 							onmouseover="shadowBlue('Cell7', 'board', 6)" onmouseout="noShadow('Cell7', 'board', 6)"
 							onclick="selectionCarteBoard(board, 6)">
-							Place vide</td>
-						<td id="Cell8" class="carteB" style="width:205px;height:205px;"
+							</td>
+						<td id="Cell8" class="carteB" 
 							onmouseover="shadowBlue('Cell8', 'board', 7)" onmouseout="noShadow('Cell8', 'board', 7)"
 							onclick="selectionCarteBoard(board, 7)">
-							Place vide</td>
+							</td>
 					</tr>
 				</table>
 			</div>
-			<div id="divboutonCombat"> <button id="boutonCombat" class="btn btn-warning"
-					onclick="combat()">Prêt</button><br />
-				<button id="boutonVente" onclick="vente()" class="btn btn-secondary"
-					style="float:inline-end  ;">Vendre</button>
+			
 
-			</div>
+
+			
 			<div id="divinfosvague" style="float:left;  margin-left:10px; 
 			width:450px; height:420px; overflow:auto; background: url('cream_dust.png')">
 				<h4 id="infosvagues" style="clear:left; ">
@@ -271,7 +273,10 @@
 				</h4>
 			</div>
 		</div>
-		<div id="handContainer">
+		<div style="height :40px; ">
+		<button id="boutonVente" onclick="vente()" class="btn btn-secondary" style="margin-left : 48%;height :25px">Vendre</button>
+	</div>
+		<div id="handContainer" style="height: 300px;">
 			<div style="float:left;">
 				<table>
 
@@ -296,10 +301,13 @@
 							onmouseout="noShadow('CellM5', 'main', 4)" onclick="pickM(4)"></td>
 
 						<td class="carteAchatLumber" id="carteAchatLumber">
+							
 							<button id="boutonreRollBoutiqueFree" type="button" class="btn btn-secondary"
 								onclick="reRollBoutiqueFree()">Re-roll la boutique<br />Gratuit</button>
 							<button id="boutonreRollBoutique2G" type="button" class="btn btn-secondary"
 								onclick="reRollBoutique2G()">Re-roll la boutique<br />2 gold</button>
+								
+		
 
 						</td>
 					</tr>

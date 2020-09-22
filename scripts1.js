@@ -266,8 +266,8 @@ else ajouterAuChatType("Les " + vagueActuelle.nom + " ratent leur attaque ! ", 0
 function repartitionDegats() {
 	var ilyaeuunmort = false;
 
-	// si le board est vide, ça leak et la vague se termine
-	if (boardVide(board)) {
+	// si le board est vide OU si tous les ennemis sont morts, la vague se termine
+	if ((boardVide(board))||(nbMobsReste == 0)) {
 		degatsRestants = 0;
 		tour = "boutique";
 		var boutonRoll = document.getElementById("boutonRoll");
