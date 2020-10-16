@@ -4,330 +4,204 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- CSS only -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 <!-- JS, Popper.js, and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-	integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-	crossorigin="anonymous"></script>
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-	integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-	crossorigin="anonymous"></script>
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-	integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-	crossorigin="anonymous"></script>
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
 
 
 
 <head>
-	<link href="http://fonts.googleapis.com/css?family=Corben" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Corben" rel="stylesheet" type="text/css">
 
+    <title>Cases</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- adaptation mobile-->
+    <link rel="stylesheet" href="style.css" />
 
-	<style>
-		body {
-			background: url('cream_dust.png') repeat 0 0;
-			background: url('pool_table.png');
-		}
-
-#divinfosvague{
-	border-radius: 10px;
-}
-#statusenrobage{
-	border-radius: 10px;
-}
-		td.carteB {
-			border-radius: 15px;
-			background-image: url('pool_table.png');
-			width:180px;
-			height:275px;
-		}
-
-		td.carteM {
-			border-radius: 15px;
-			background-image: url('cream_dust.png');
-			width:180px;
-			height:275px;
-		}
-
-		div.tranchaff {
-			width: 32px;
-			height: 32px;
-			background: #ff9100;
-		}
-
-		div.peraff {
-			width: 32px;
-			height: 32px;
-			background: #beafaf;
-		}
-
-		div.magaff {
-			width: 32px;
-			height: 32px;
-			background: #707ce9;
-		}
-
-		div.diceaff {
-			border-radius: 1px;
-			border: #999 1px solid;
-			font-size: 24px;
-			text-align: center;
-			vertical-align: middle;
-			margin: 5px;
-			display: inline-block;
-		}
-
-
-
-		#carteDivision {
-			display: flex;
-			justify-content: center;
-		}
-
-		table,
-		th,
-		td {
-			border: 1px solid black;
-		}
-
-		#mainContainer {
-			display: flex;
-			justify-content: space-around;
-		}
-
-		#cardContainer {
-			display: flex;
-			justify-content: center;
-		}
-
-		#handContainer {
-			display: flex;
-			justify-content: center;
-		}
-
-
-
-		div.dicemob {
-			border-radius: 1px;
-			border: #999 1px solid;
-			font-size: 24px;
-			text-align: center;
-			vertical-align: middle;
-			margin: 5px;
-			display: inline-block;
-		}
-
-		div.dice {
-			border-radius: 1px;
-			border: #999 1px solid;
-			font-size: 24px;
-			text-align: center;
-			vertical-align: middle;
-			margin: 5px;
-			display: inline-block;
-		}
-
-		div.tranch {
-			width: 32px;
-			height: 32px;
-			background: #ff9100;
-		}
-
-		div.per {
-			width: 32px;
-			height: 32px;
-			background: #beafaf;
-		}
-
-		div.mag {
-			width: 32px;
-			height: 32px;
-			background: #707ce9;
-		}
-
-		div.magenoir {
-			border: rgb(3, 3, 3) 3px solid;
-			background: #3542b8;
-		}
-
-		div.mob {
-			width: 40px;
-			height: 40px;
-			background: #ffffff;
-		}
-	</style>
-	<title>Les crabes</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- adaptation mobile-->
 </head>
 
-<body style=" overflow-x:auto; overflow-y:auto;">
+<body>
+    <div id="divHeader">
+        <h1>Bienvenue sur le jeu des cases</h1>
+    </div>
+<div id="divBody">
+    <div id="divSorts">
+        <table id="tabSorts">
+            <tbody>
+            <tr>
+                <td class="sort" data-sort="0"></td>
+                <td class="sort"data-sort="1"></td>
+            </tr>
+            <tr>
+                <td class="sort"data-sort="2"></td>
+                <td class="sort"data-sort="3"></td>
+            </tr>
+            <tr>
+                <td class="sort"data-sort="4"></td>
+                <td class="sort"data-sort="5"></td>
+            </tr>
+            <tr>
+                <td class="sort"data-sort="6"></td>
+                <td class="sort"data-sort="7"></td>
+            </tr>
+            <tr>
+                <td class="sort"data-sort="8"></td>
+                <td class="sort"data-sort="9"></td>
+            </tr>
+            <tr><td id="tdPass" colspan="2"><button onclick="passerTourJoueur()">Passer</button></td></tr>
+        </tbody>
+        
+        </table>
+    </div>
 
-	<div style="height:20%;">
-		<div id="mainContainer">
-			<div style="float:left;width:40%;height:350px; background: url('cream_dust.png')">
+    <div id="divBoard">
+        <table id="board">
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                </tr>
+                <tr>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                </tr>
+                <tr>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                </tr>
+                <tr>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                </tr>
+                <tr>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                </tr>
+                <tr>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                </tr>
+                <tr>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                </tr>
+                <tr>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                </tr>
+                <tr>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                </tr>
+                <tr>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                    <td class="cell"> </td>
+                </tr>
 
-				<p id="partr">Attaques Tranchantes
-				</p>
-
-				<br>
-				<p id="parpe">Attaques Perçantes
-
-
-				</p>
-				<br>
-				<p id="parma">Attaques Magiques
-				</p>
-				
-			</div>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
 
-
-			<div style="float:left;width:40%;height:350px; background: url('cream_dust.png')">
-
-				<h4>Monstres restants :</h4>
-				<p id="parmob"></p>
-
-
-			</div>
-
-		</div>
-		<span id="sectionscore" style="float:left;height: 30px;margin-left:15%" class="badge badge-primary">Score :
-			0<br></span>
-		<span id="sectionleak" style="float:left;height: 30px;" class="badge badge-danger">0 leak<br></span>
-		<span id="sectionlumber" style="float:left;height: 30px;" class="badge badge-success">0 ouvrier<br></span>
-		<span id="sectiongold" style="float:left;height: 30px;" class="badge badge-warning">20 gold<br></span>
-		<button id="boutonRoll" class="btn btn-warning" onclick="advRoll()"
-			style="float:left; margin-left: 19%; ">Lancer mes dés</button>
-
-		<button id="boutonRollMob" class="btn btn-danger" onclick="rollMob()"
-			style="float:right; margin-right: 45%; ">Lancer pour
-			l'ennemi</button>
-			<button id="boutonCombat" class="btn btn-warning" style="float:left; margin-left: 19%; "
-					onclick="combat()">Prêt</button>
-		<br /> <br />
-
-
-
-		<div id="cardContainer" style="height: 560px;">
-
-			<div id="statusenrobage" style="float:left; margin-right:10px; margin-left:10px; 
-			width:450px; height:420px; overflow:auto; background: url('cream_dust.png')">
-				<p id="status" style="clear:left; ">
-					<a href="regles.html" onclick="window.open(this.href); return false;"><b>Clique ici pour découvrir
-							les règles du jeu</b></a> <br/>
-						Pictures used here do not belong to me. I'll remove your pictures ASAP if you ask me by mail : npiriou@yopmail.com
-					</p>
-			</div>
-
-			<div style="float:left;">
-				<table>
-					<tr>
-						<td id="Cell1" class="carteB" 
-							onmouseover="shadowBlue('Cell1', 'board', 0)" onmouseout="noShadow('Cell1', 'board', 0)"
-							onclick="selectionCarteBoard(board, 0)">
-							</td>
-						<td id="Cell2" class="carteB" 
-							onmouseover="shadowBlue('Cell2', 'board', 1)" onmouseout="noShadow('Cell2', 'board', 1)"
-							onclick="selectionCarteBoard(board, 1)">
-							</td>
-						<td id="Cell3" class="carteB" 
-							onmouseover="shadowBlue('Cell3', 'board', 2)" onmouseout="noShadow('Cell3', 'board', 2)"
-							onclick="selectionCarteBoard(board, 2)">
-							</td>
-						<td id="Cell4" class="carteB" 
-							onmouseover="shadowBlue('Cell4', 'board', 3)" onmouseout="noShadow('Cell4', 'board', 3)"
-							onclick="selectionCarteBoard(board, 3)">
-							</td>
-					</tr>
-					<tr>
-						<td id="Cell5" class="carteB" 
-							onmouseover="shadowBlue('Cell5', 'board', 4)" onmouseout="noShadow('Cell5', 'board', 4)"
-							onclick="selectionCarteBoard(board, 4)">
-							</td>
-						<td id="Cell6" class="carteB" 
-							onmouseover="shadowBlue('Cell6', 'board', 5)" onmouseout="noShadow('Cell6', 'board', 5)"
-							onclick="selectionCarteBoard(board, 5)">
-							</td>
-						<td id="Cell7" class="carteB" 
-							onmouseover="shadowBlue('Cell7', 'board', 6)" onmouseout="noShadow('Cell7', 'board', 6)"
-							onclick="selectionCarteBoard(board, 6)">
-							</td>
-						<td id="Cell8" class="carteB" 
-							onmouseover="shadowBlue('Cell8', 'board', 7)" onmouseout="noShadow('Cell8', 'board', 7)"
-							onclick="selectionCarteBoard(board, 7)">
-							</td>
-					</tr>
-				</table>
-			</div>
-			
-
-
-			
-			<div id="divinfosvague" style="float:left;  margin-left:10px; 
-			width:450px; height:420px; overflow:auto; background: url('cream_dust.png')">
-				<h4 id="infosvagues" style="clear:left; ">
-					<p id="status2" style="clear:left;">
-					<div class="diceaff tranchaff">0</div>
-					<div class="diceaff peraff">0</div>
-					<div class="diceaff magaff">0</div>
-					</p>
-				</h4>
-			</div>
-		</div>
-		<div style="height :40px; ">
-		<button id="boutonVente" onclick="vente()" class="btn btn-secondary" style="margin-left : 48%;height :25px">Vendre</button>
-	</div>
-		<div id="handContainer" style="height: 300px;">
-			<div style="float:left;">
-				<table>
-
-					<tr>
-						<td class="carteAchatLumber" id="carteAchatLumber">
-							<button id="boutonAchatLumber" type="button" class="btn btn-success"
-								onclick="achatLumber()">Acheter un ouvrier<br />5 gold</button>
-						</td>
-
-						<td class="carteM" id="CellM1" onmouseover="shadowBlue('CellM1', 'main', 0)"
-							onmouseout="noShadow('CellM1', 'main', 0)" onclick="pickM(0)"></td>
-						<td class="carteM" id="CellM2" onmouseover="shadowBlue('CellM2', 'main', 1)"
-							onmouseout="noShadow('CellM2', 'main', 1)" onclick="pickM(1)"></td>
-
-						<td class="carteM" id="CellM3" onmouseover="shadowBlue('CellM3', 'main', 2)"
-							onmouseout="noShadow('CellM3', 'main', 2)" onclick="pickM(2)"></td>
-
-						<td class="carteM" id="CellM4" onmouseover="shadowBlue('CellM4', 'main', 3)"
-							onmouseout="noShadow('CellM4', 'main', 3)" onclick="pickM(3)"></td>
-
-						<td class="carteM" id="CellM5" onmouseover="shadowBlue('CellM5', 'main', 4)"
-							onmouseout="noShadow('CellM5', 'main', 4)" onclick="pickM(4)"></td>
-
-						<td class="carteAchatLumber" id="carteAchatLumber">
-							
-							<button id="boutonreRollBoutiqueFree" type="button" class="btn btn-secondary"
-								onclick="reRollBoutiqueFree()">Re-roll la boutique<br />Gratuit</button>
-							<button id="boutonreRollBoutique2G" type="button" class="btn btn-secondary"
-								onclick="reRollBoutique2G()">Re-roll la boutique<br />2 gold</button>
-								
-		
-
-						</td>
-					</tr>
-
-				</table>
-
-			</div>
-
-		</div>
 </body>
 
+<script  src='astar.js'></script>
+<script src="IAs.js"></script>
+<script src="modifCSS.js"></script>
+<script src="fonctions.js"></script>
+<script src="bdd.js"></script>
+<script src="eventlistener.js"></script>
+<script src="main.js"></script>
 
-<script src="scripts1.js">
-</script>
-<script src="scripts2.js">
-</script>
-<script src="passifs.js">
-</script>
-<script src="patch.js">
-</script>
 
 </html>

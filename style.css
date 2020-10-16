@@ -1,0 +1,92 @@
+table {
+    border: 5px solid rgb(71, 65, 43);
+}
+
+#board {
+    width: 800px;
+    height: 800px;
+}
+
+td.cell {
+    border: 1px solid rgb(71, 65, 43);
+    height: 10%;
+    width: 10%;
+}
+
+#tabSorts {
+    width: 200px;
+    height: 600px;
+}
+
+td.sort {
+    border: 1px solid rgb(71, 65, 43);
+    height: 20%;
+    width: 50%;
+}
+
+button {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background-color: rgb(240, 110, 4);
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.disabled {
+    filter: grayscale(1);
+    -webkit-filter: grayscale(1);
+    filter: brightness(30%);
+}
+
+body {
+    background: rgb(165, 149, 98)
+}
+
+#divHeader {
+    width: 100%;
+    height: 20%;
+    border: 5px solid rgb(71, 65, 43);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#divBody {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#divBoard {
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#divSorts {
+    width: 15%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.previsuPM:hover {
+    background-color: darkgreen;
+    cursor: pointer;
+}
+
+.previsuSort {
+    background-color: royalblue;
+}
+
+.previsuSort:hover {
+    background-color: red;
+    box-shadow: 0 4px 8px 0 rgba(99, 30, 30, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
