@@ -50,16 +50,38 @@ iaDebile = async function () {
             this.PMact--;
         }
     }
-    // pour chaque sort on essaie de le lancer autant de fois que possible
+    // pour chaque sort on essaie de le lancer autant de fois que possible sur le joueur
     for (let i = 0; i < this.sorts.length; i++) {
         if (this.sorts[i].estAPortee(this.pos(), player.pos())) {
             while (this.PAact >= this.sorts[i].coutPA) {
                 game.sortActif = this.sorts[i];
-                player.recevoirSort();
+                player.recevoirSort(this.bonusDo, this.pourcentDo);
                 await new Promise(r => setTimeout(r, 100));
                 this.PAact = this.PAact - this.sorts[i].coutPA;
             }
         }
+    }
+    tabPosAdj = posAdjacentes(this.pos());
+    for (let i = 0; i < tabPosAdj.length; i++) {
+
+        if (contientEntite(tabCells[tabPosAdj[i]]) // si une des cases adjacentes contient une entité
+            && tabCells[tabPosAdj[i]].contenu.side != "ENEMY") { // et que cette entité n'est pas un enemi
+
+            // pour chaque sort on essaie de le lancer autant de fois que possible sur l'entité
+            for (let j = 0; j < this.sorts.length; j++) {
+                if (this.sorts[j].estAPortee(this.pos(), tabPosAdj[i])) {
+                    while (this.PAact >= this.sorts[j].coutPA) {
+                        game.sortActif = this.sorts[j];
+                        if (contientEntite(tabCells[tabPosAdj[i]])) {
+                            tabCells[tabPosAdj[i]].contenu.recevoirSort(this.bonusDo, this.pourcentDo);
+                        }
+                        await new Promise(r => setTimeout(r, 100));
+                        this.PAact = this.PAact - this.sorts[j].coutPA;
+                    }
+                }
+            }
+        }
+
     }
 }
 
@@ -76,7 +98,7 @@ iaDebileRange = async function () {
         if (this.sorts[i].estAPortee(this.pos(), player.pos())) {
             while (this.PAact >= this.sorts[i].coutPA) {
                 game.sortActif = this.sorts[i];
-                player.recevoirSort();
+                player.recevoirSort(this.bonusDo, this.pourcentDo);
                 await new Promise(r => setTimeout(r, 100));
                 this.PAact = this.PAact - this.sorts[i].coutPA;
             }
@@ -96,27 +118,22 @@ iaDebileRange = async function () {
         }
     }
     if (distanceMax > 0) {
-    // on trouve le chemin le plus court et on s'y déplace case par case
-    chemin = pathfinding(posx, posy, MaxPos[0], MaxPos[1]);
-    for (let j = 0; j < chemin.length; j++) {
-        if (this.PMact > 0) {
-            await deplacerContenu(this.pos(), posFromxy(chemin[j][0], chemin[j][1]));
-            this.PMact--;
+        // on trouve le chemin le plus court et on s'y déplace case par case
+        chemin = pathfinding(posx, posy, MaxPos[0], MaxPos[1]);
+        for (let j = 0; j < chemin.length; j++) {
+            if (this.PMact > 0) {
+                await deplacerContenu(this.pos(), posFromxy(chemin[j][0], chemin[j][1]));
+                this.PMact--;
+            }
         }
     }
-    }
-
-
-
-
-
 
     // pour chaque sort on essaie de le lancer autant de fois que possible
     for (let i = 0; i < this.sorts.length; i++) {
         if (this.sorts[i].estAPortee(this.pos(), player.pos())) {
             while (this.PAact >= this.sorts[i].coutPA) {
                 game.sortActif = this.sorts[i];
-                player.recevoirSort();
+                player.recevoirSort(this.bonusDo, this.pourcentDo);
                 await new Promise(r => setTimeout(r, 100));
                 this.PAact = this.PAact - this.sorts[i].coutPA;
             }

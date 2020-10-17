@@ -1,99 +1,4 @@
 
-
-
-
-function cell(posNum, posX, posY, contenu) {
-    this.posNum = posNum;
-    this.posX = posX;
-    this.posY = posY;
-    this.contenu = contenu;
-
-}
-
-function entite(
-    nom, PAmax, PMmax, PVmax, sorts, side, ia, skin
-) {
-    this.nom = nom;
-    this.PAmax = PAmax;
-    this.PAact = PAmax;
-    this.PMmax = PMmax;
-    this.PMact = PMmax;
-    this.PVact = PVmax;
-    this.PVmax = PVmax;
-    this.sorts = sorts;
-    this.side = side; // "ALLY" ou "ENEMY"
-    this.ia = ia;
-    this.skin = skin;
-
-    this.recevoirSort = function () {
-        let dommages = Math.floor(Math.random() * (game.sortActif.baseDmgMax - game.sortActif.baseDmgMin + 1)) + game.sortActif.baseDmgMin;
-        this.retirerPVs(dommages);
-    }
-    this.pos = function () {
-        for (let index = 0; index < tabCells.length; index++) {
-            if (contientEntite(tabCells[index])) {
-                if (tabCells[index].contenu == this) { return index; }
-            }
-        }
-    }
-    this.resetPAPM = function () {
-        this.PAact = this.PAmax;
-        this.PMact = this.PMmax;
-    }
-    this.retirerPASort = function () {
-        this.PAact = this.PAact - game.sortActif.coutPA;
-        griserOuDegriserSorts();
-    }
-    this.retirerPVs = function (PVPerdus) {
-        this.PVact = this.PVact - PVPerdus;
-        celltarget = document.getElementById(this.pos());
-
-        splash(celltarget, " - " + PVPerdus);
-        refreshBoard();
-        console.log(this.nom + " perd " + PVPerdus + " PVs. Il lui reste " + this.PVact + " PVs.");
-
-        if (this.PVact <= 0) {
-            this.PVact = 0;
-            this.mort();
-            refreshBoard();
-        }
-    }
-    this.mort = function () {
-        console.log(this.nom + " est mort.");
-        tabCells[this.pos()].contenu = null;
-        refreshBoard();
-        checkEndRound();
-    }
-    this.clone = function () {
-        return new entite(this.nom, this.PAmax, this.PMmax, this.PVmax, this.sorts, this.side, this.ia, this.skin);
-    }
-}
-
-
-function sort(nom, code, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax, POModif, zoneLancer, AoE, LdV, logo) {
-    this.code = code;
-    this.nom = nom;
-    this.coutPA = coutPA
-    this.baseDmgMin = baseDmgMin;
-    this.baseDmgMax = baseDmgMax;
-    this.porteeMin = porteeMin;
-    this.porteeMax = porteeMax;
-    this.POModif = POModif;
-    this.zoneLancer = zoneLancer;
-    this.AoE = AoE;
-    this.LdV = LdV;
-    this.logo = logo;
-    this.estAPortee = function (pos1, pos2) {
-        diffX = xFromPos(pos1) - xFromPos(pos2);
-        diffY = yFromPos(pos1) - yFromPos(pos2)
-        diffTotale = Math.abs(diffX) + Math.abs(diffY);
-        if ((diffTotale <= this.porteeMax) && (diffTotale >= this.porteeMin)) return 1;
-        else return 0;
-    }
-}
-
-
-
 function initialisationSorts() {
 
     for (let i = 0; i < player.sorts.length; i++) {
@@ -115,6 +20,45 @@ function initialisationCellules() {
     }
 }
 
+function initialiserObstacles() {
+    aRefaire = 0;
+    for (let i = 0; i < tabCells.length; i++) {
+        if (contientEntite(tabCells[i]))
+            continue;
+        if (getRandomInt(4) == 0)
+            tabCells[i].contenu = test.clone();
+    }
+    for (let i = 0; i < tabCells.length; i++) {
+        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom != "test")
+            && (tabCells[i].contenu != player)) {
+            //   on récupere les pos du joueur et du mob détecté
+            posxJ = xFromPos(player.pos());
+            posyJ = yFromPos(player.pos());
+
+            posx = tabCells[i].posX;
+            posy = tabCells[i].posY;
+
+            // on trouve le chemin le plus court
+            chemin = pathfinding(posx, posy, posxJ, posyJ);
+
+            if (chemin.length == 0) aRefaire = 1;
+        }
+    }
+
+    if (aRefaire) {
+        supprimerTousObstacles();
+        initialiserObstacles();
+    }
+}
+
+function supprimerTousObstacles() {
+    for (let i = 0; i < tabCells.length; i++) {
+        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == "test"))
+            tabCells[i].contenu = null;
+    }
+    refreshBoard();
+}
+
 function estVide(cell) {
     return (cell.contenu == null);
 }
@@ -122,7 +66,8 @@ function estObstacle(cell) {
     return (cell.contenu == "OBSTACLE");
 }
 function contientEntite(cell) {
-    return (cell.contenu) && (typeof cell.contenu === "object");
+    if ((cell.contenu) && (typeof cell.contenu === "object")) { return true; }
+    else return false;
 }
 
 
@@ -166,7 +111,7 @@ function estAdjacente(pos1, pos2) {
     else return 0;
 }
 
-function posAdjacentes(pos) { //bug peut etre
+function posAdjacentes(pos) {
     posAdjs = [];
     for (let i = 0; i < tabCells.length; i++) {
         if (estAdjacente(pos, tabCells[i].posNum)) {
@@ -220,7 +165,7 @@ function trouverEntites(side) {
     return tabMobs;
 }
 
-
+////////////////////////////////////FONCTION PASSER TOUR/////////////////////////////////////////
 async function passerTourJoueur() {
     game.phase = "TURN_ENEMY";
     sortActif = null;
@@ -228,6 +173,7 @@ async function passerTourJoueur() {
 
     var tabMobs = trouverEntites("ENEMY");
     player.resetPAPM();
+    player.reduirecdSorts();
     griserOuDegriserSorts();
     refreshBoard();
 
@@ -249,10 +195,10 @@ async function passerTourJoueur() {
 function griserOuDegriserSorts() {
     for (let i = 0; i < player.sorts.length; i++) {
 
-        if (player.sorts[i].coutPA > player.PAact) {
+        if ((player.sorts[i].coutPA > player.PAact) || (player.cdSorts[i] > 0)) {
             document.getElementsByClassName("sort")[i].children[0].classList.add("disabled");
         }
-        if (player.sorts[i].coutPA <= player.PAact) {
+        if ((player.sorts[i].coutPA <= player.PAact) && (player.cdSorts[i] <= 0)) {
             document.getElementsByClassName("sort")[i].children[0].classList.remove("disabled");
         }
     }
@@ -379,4 +325,28 @@ function splash(elem, text) {
         const r = (a, b, c) => parseFloat((Math.random() * ((a ? a : 1) - (b ? b : 0)) + (b ? b : 0)).toFixed(c ? c : 0));
         explode(coords.left, coords.top, text);
     }
+}
+
+function initCdSorts() {
+
+    for (let i = 0; i < tabCells.length; i++) {
+        if (contientEntite(tabCells[i])) { tabCells[i].contenu.cdSorts = tabCells[i].contenu.resetcdSorts(); }
+    }
+}
+
+
+
+
+
+function isInSight(posDep, posCible) { // check la Ligne de vue
+ 
+    function w(e, t, n, r) {
+        e = parseInt(e), t = parseInt(t);
+        var o = (n = parseInt(n)) > e ? 1 : -1, a = (r = parseInt(r)) > t ? 1 : -1, s = !0, i = Math.abs(n - e), c = Math.abs(r - t), l = e, u = t, d = -1 + i + c, p = i - c; i *= 2, c *= 2;
+        for (var m = 0; m < 1; m++)p > 0 ? (l += o, p -= c) : p < 0 ? (u += a, p += i) : (l += o, p -= c, u += a, p += i, d--);
+        for (; d > 0 && s;)null != tabCells[u*10+l].contenu ? s = !1 : (p > 0 ? (l += o, p -= c) : p < 0 ? (u += a, p += i) : (l += o, p -= c, u += a, p += i, d--), d--);
+        return s
+    }
+
+    return w(xFromPos(posDep), yFromPos(posDep), xFromPos(posCible), yFromPos(posCible));
 }

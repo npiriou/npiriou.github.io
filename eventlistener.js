@@ -19,7 +19,8 @@ function cellCliqued() {
             break;
         case "TURN_PLAYER_SPELL":
 
-            if (!game.sortActif.estAPortee(player.pos(), this.id)) { //si la case cliquée n'est pas à portée du sort
+            if (!game.sortActif.estAPortee(player.pos(), this.id)
+                || (game.sortActif.LdV && !isInSight(player.pos(), this.id))) { //si la case cliquée n'est pas à portée du sort
                 retirerToutesPrevisuSort();                          // on désélectione le sort
                 game.sortActif = null;
                 console.log("sort pas a portee");
@@ -31,10 +32,11 @@ function cellCliqued() {
                     splash(this, "");
                 }
                 else {                                                      // si il y a une entité sur la case    
-                    tabCells[this.id].contenu.recevoirSort(); 
+                    tabCells[this.id].contenu.recevoirSort(player.bonusDo, player.pourcentDo); 
                 }
                 retirerToutesPrevisuSort();
                 player.retirerPASort();
+                player.mettreSortEnCd();
                 game.sortActif = null;
             }
             game.phase = "TURN_PLAYER_MOVE";

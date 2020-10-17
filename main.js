@@ -9,24 +9,20 @@ function getRandomInt(max) {
   }
 
 tabCells[0].contenu=player;
-tabCells[66].contenu=artillerie;
+tabCells[69].contenu=artillerie;
+tabCells[66].contenu=orc;
 tabCells[77].contenu=ogre;
 
-for (let i = 0; i < tabCells.length; i++) {
-    if (contientEntite(tabCells[i]))
-        continue;
-    if(getRandomInt(5) == 0)
-        tabCells[i].contenu = test.clone();
-    
-}
 
+initialiserObstacles();
+initCdSorts();
 refreshBoard();
 
 addPrevisuPM();
 
 addOnClic();
 
- addOnClicPrevisuSort();
+addOnClicPrevisuSort();
 
  
 let game = {};
