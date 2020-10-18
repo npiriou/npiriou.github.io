@@ -2,7 +2,7 @@ iaMannequin = function () {
     console.log("Le mannequin vous sourit bêtement.");
 }
 
-function pathfinding(Xdep, Ydep, Xarr, Yarr) {
+function pathfinding(Xdep, Ydep, Xarr, Yarr, listeAEnlever = []) {
 
     let graph = [];
     var i, j, temparray, chunk = 10;
@@ -10,7 +10,7 @@ function pathfinding(Xdep, Ydep, Xarr, Yarr) {
         temparray = tabCells.slice(i, i + chunk);
 
         for (let k = 0; k < temparray.length; k++) {
-            if (temparray[k].contenu == null) {
+            if (temparray[k].contenu == null || listeAEnlever.includes(i*10+k)) {
                 temparray[k] = 1;
             }
             else temparray[k] = 0;
@@ -141,3 +141,4 @@ iaDebileRange = async function () {
         }
     }
 }
+

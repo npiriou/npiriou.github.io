@@ -3,7 +3,41 @@ function cell(posNum, posX, posY, contenu) {
     this.posX = posX;
     this.posY = posY;
     this.contenu = contenu;
+    this.glyphes = [];
 
+    this.recevoirSort = function (bonusDo, pcDo) {
+        if (!game.sortActif.effetCell(this)) {
+            // sort sans dommage
+            return;
+        }
+        if (this.contenu) {
+            this.contenu.recevoirSort(bonusDo, pcDo);
+        } else {
+            console.log("voilà des PA bien gachés");
+            splash(document.getElementById(this.posNum), "");
+        }
+    }
+
+    this.ajouterGlyphe = function (lanceur, nombreTours, callback, image=null) {
+        this.glyphes.push([lanceur, nombreTours, callback]);
+        if (image) {
+            document.getElementById(this.posNum).backgroundImage = "url('" + image + "')";
+        } else {
+            document.getElementById(this.posNum).classList.add("glyph");
+        }
+        
+        // todo image
+    }
+
+    this.triggerGlyphe = function (entite) {
+        this.glyphes.forEach(infos => {
+            lanceur = infos[0];
+            // tours = infos[1];
+            callback = infos[2]; 
+            callback(this, lanceur, entite);
+            // PAS TESTE
+        });
+    }
 }
 
 function entite(
@@ -42,11 +76,14 @@ function entite(
     }
 
     this.recevoirSort = function (bonusDo, pcDo) {
-        game.sortActif.effet(this);
+        if (!game.sortActif.effet(this)) {
+            // sort sans dommage
+            return;
+        }
         if (!bonusDo) bonusDo = 0;
         if (!pcDo) pcDo = 0;
         let dommagesBase = Math.floor(Math.random() * (game.sortActif.baseDmgMax - game.sortActif.baseDmgMin + 1)) + game.sortActif.baseDmgMin;
-       let dommages = dommagesBase * (pcDo + 1) + bonusDo;
+        let dommages = dommagesBase * (pcDo + 1) + bonusDo;
         this.retirerPVs(dommages);
     }
     this.pos = function () {
@@ -77,6 +114,14 @@ function entite(
             this.mort();
             refreshBoard();
         }
+    }
+    this.ajouterPVs = function (PVGagnes) {
+        this.PVact = Math.min(this.PVact + PVGagnes, this.PVmax); // max PVmax
+        let celltarget = document.getElementById(this.pos());
+
+        splash_heal(celltarget, " + " + PVGagnes);
+        refreshBoard();
+        console.log(this.nom + " gagne " + PVGagnes + " PVs. Il lui reste " + this.PVact + " PVs.");
     }
     this.mort = function () {
         console.log(this.nom + " est mort.");
@@ -115,9 +160,10 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
     this.dureeEffet = dureeEffet;
     this.cooldown = cooldown;
     this.logo = logo;
+    this.effetCell = function() {return 1;};
     this.estAPortee = function (pos1, pos2) {
         let diffX = xFromPos(pos1) - xFromPos(pos2);
-       let  diffY = yFromPos(pos1) - yFromPos(pos2)
+       let  diffY = yFromPos(pos1) - yFromPos(pos2);
       let   diffTotale = Math.abs(diffX) + Math.abs(diffY);
         if ((diffTotale <= this.porteeMax) && (diffTotale >= this.porteeMin)) return 1;
         else return 0;

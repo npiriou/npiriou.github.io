@@ -97,7 +97,7 @@ body {
 }
 
 .previsuPMPlusieurs{
-    background-color: darkgreen;
+    background-color: darkgreen !important;
     cursor: pointer;
 }
 
@@ -159,7 +159,8 @@ img {
   border-radius: 0 0 3px 3px;
 }
 .card__image-container {
-  background-color: rgba(0, 0, 0, 0.7);
+  /* background-color: rgba(0, 0, 0, 0.7); */
+  background-color: white;
   text-align: center;
   padding: 1em 1em 0;
   border-radius: 3px 3px 0 0;
@@ -231,4 +232,12 @@ img {
   box-shadow: 0px 13px 30px -15px #000000;
   -webkit-transform: translateY(-10px);
           transform: translateY(-10px);
+}
+
+.glyph {
+  background-color: rgb(178, 34, 34, 0.5);
+  border: 2px solid firebrick;
+  -webkit-box-shadow:inset 0px 0px 0px 2px firebrick;
+  -moz-box-shadow:inset 0px 0px 0px 2px firebrick;
+  box-shadow:inset 0px 0px 0px 2px firebrick;
 }

@@ -36,14 +36,7 @@ function cellCliqued() {
                 console.log("sort pas a portee");
             }
             else {                                                   // si le clic est sur une case à portée
-                if (tabCells[this.id].contenu == null) {                    // si la case est vide      
-                    //tabCells[this.id].recevoirSort();
-                    console.log("voilà des PA bien gachés");
-                    splash(this, "");
-                }
-                else {                                                      // si il y a une entité sur la case    
-                    tabCells[this.id].contenu.recevoirSort(player.bonusDo, player.pourcentDo);
-                }
+                tabCells[this.id].recevoirSort(player.bonusDo, player.pourcentDo);
                 retirerToutesPrevisuSort();
                 player.retirerPASort();
                 player.mettreSortEnCd();

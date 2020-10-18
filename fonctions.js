@@ -180,10 +180,12 @@ async function passerTourJoueur() {
     // faire jouer ennemis ici
     console.log(" aux ennemis de jouer");
     for (let i = 0; i < tabMobs.length; i++) {
+        game.mobActif = tabMobs[i];
         // faire jouer chaque ia ici, comment faire ?
         console.log(tabMobs[i].nom + " joue son tour.");
         await tabMobs[i].ia();
         tabMobs[i].resetPAPM();
+        game.mobActif = null;
         game.sortActif = null;
     }
 
@@ -246,6 +248,41 @@ function getCoords(elem) { // crossbrowser version
     var left = (box.right - box.left) / 2 + box.left + scrollLeft - clientLeft;
 
     return { top: Math.round(top), left: Math.round(left) };
+}
+
+function splash_img(elem, imgpath) {
+    let coords = getCoords(elem);
+    let c = document.createElement('canvas');
+    let ctx = c.getContext('2d');
+
+    const render = (width, height, imgpath) => {
+        requestAnimationFrame(() => render(width, height, imgpath));
+        ctx.clearRect(0, 0, width, height);
+        ctx.globalAlpha = ctx.opacity;
+        ctx.opacity -= 0.01;
+        base_image = new Image();
+        base_image.src = imgpath;
+        // TODO offset et size devrait etre configurable
+        ctx.drawImage(base_image, 50, 50, 50, 70);
+
+        return ctx;
+    };
+
+    c.style.position = 'absolute';
+    c.style.left = coords.left - 100 + 'px';
+    c.style.top = coords.top - 100 + 'px';
+    c.style.pointerEvents = 'none';
+    c.style.width = 200 + 'px';
+    c.style.height = 200 + 'px';
+    c.style.zIndex = 100;
+    c.width = 200;
+    c.height = 200;
+    c.style.zIndex = "9999999";
+    ctx.opacity = 1.0;
+    document.body.appendChild(c);
+
+    render(c.width, c.height, imgpath);
+    setTimeout(() => document.body.removeChild(c), 1000);
 }
 
 function splash(elem, text) {
@@ -318,6 +355,119 @@ function splash(elem, text) {
                 ctx.fillStyle = p.color;
                 ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI, false);
                 ctx.fill();
+            });
+
+            return ctx;
+        };
+
+        const r = (a, b, c) => parseFloat((Math.random() * ((a ? a : 1) - (b ? b : 0)) + (b ? b : 0)).toFixed(c ? c : 0));
+        explode(coords.left, coords.top, text);
+    }
+}
+
+
+function splash_heal(elem, text) {
+    {
+        let coords = getCoords(elem);
+        const colors = ['#ff4f65', '#ff5a73', '#ff5479', '#c0392b'];
+        const bubbles = 15;
+
+        const explode = (x, y, text) => {
+            let particles = [];
+            let ratio = window.devicePixelRatio;
+            let c = document.createElement('canvas');
+            let ctx = c.getContext('2d');
+
+            c.style.position = 'absolute';
+            c.style.left = x - 100 + 'px';
+            c.style.top = y - 100 + 'px';
+            c.style.pointerEvents = 'none';
+            c.style.width = 200 + 'px';
+            c.style.height = 200 + 'px';
+            c.style.zIndex = 100;
+            c.width = 200 * ratio;
+            c.height = 200 * ratio;
+            c.style.zIndex = "9999999"
+            let startY = c.height * 6 / 10;
+            ctx.textY = startY;
+            document.body.appendChild(c);
+
+
+            for (var i = 0; i < bubbles; i++) {
+                particles.push({
+                    x: r(c.width/2 - c.width*0.2, c.width/2 + c.width*0.2),
+                    y: r(startY * 0.9, startY * 1.2),
+                    radius: r(20, 40),
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: r(2, 3),
+                    opacity: r(0.5, 1, true),
+                });
+
+            }
+
+            render(particles, ctx, c.width, c.height, text);
+            setTimeout(() => document.body.removeChild(c), 1000);
+        };
+
+        const render = (particles, ctx, width, height, text) => {
+            requestAnimationFrame(() => render(particles, ctx, width, height, text));
+            ctx.clearRect(0, 0, width, height);
+            ctx.globalAlpha = 1.0;
+            ctx.font = 'bold 48px serif';
+            ctx.fillStyle = 'black';
+            ctx.fillText(text, width / 4, ctx.textY);
+            ctx.textY -= height / 100;
+            particles.forEach((p, i) => {
+                var x = p.x;
+                var y = p.y;
+                var width = p.radius;
+                var height = p.radius;
+                
+                p.y -= p.speed;
+                //p.x += p.speed * Math.sin(p.rotation * Math.PI / 180);
+
+                p.opacity -= 0.01;
+
+                if (p.opacity < 0 || p.radius < 0) return;
+                
+                ctx.save();
+                ctx.beginPath();
+                ctx.globalAlpha = p.opacity;
+                var topCurveHeight = height * 0.3;
+                ctx.moveTo(x, y + topCurveHeight);
+                // top left curve
+                ctx.bezierCurveTo(
+                    x, y, 
+                    x - width / 2, y, 
+                    x - width / 2, y + topCurveHeight
+                );
+                
+                // bottom left curve
+                ctx.bezierCurveTo(
+                    x - width / 2, y + (height + topCurveHeight) / 2, 
+                    x, y + (height + topCurveHeight) / 2, 
+                    x, y + height
+                );
+                
+                // bottom right curve
+                ctx.bezierCurveTo(
+                    x, y + (height + topCurveHeight) / 2, 
+                    x + width / 2, y + (height + topCurveHeight) / 2, 
+                    x + width / 2, y + topCurveHeight
+                );
+                
+                // top right curve
+                ctx.bezierCurveTo(
+                    x + width / 2, y, 
+                    x, y, 
+                    x, y + topCurveHeight
+                );
+                
+                ctx.closePath();
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                ctx.restore();
+
             });
 
             return ctx;
