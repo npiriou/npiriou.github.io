@@ -29,11 +29,11 @@
 
 <body>
     <div id="divHeader">
-        <h1>Bienvenue sur le jeu des cases</h1>
+        <h1 id="titre">Bienvenue sur le jeu des cases</h1>
     </div>
     <div id="divBody">
         <div class="row">
-            <div id="divSorts"  class="col">
+            <div id="divSorts" class="col">
                 <table id="tabSorts">
                     <tbody>
                         <tr>
@@ -65,7 +65,7 @@
 
                 </table>
             </div>
-            <div id="divBoard"  class="col">
+            <div id="divBoard" class="col">
                 <table id="board">
                     <thead></thead>
                     <tbody>
@@ -193,11 +193,10 @@
                     </tbody>
                 </table>
             </div>
-            <div id="divStats"  class="col">
+            <div id="divStats" class="col">
                 <figure class="card card--normal">
                     <div class="card__image-container">
-                        <img id="img_stats" src="img/player.png" alt="Joueur"
-                            class="card__image">
+                        <img id="img_stats" src="img/player.png" alt="Joueur" class="card__image">
                     </div>
 
                     <figcaption class="card__caption">
@@ -234,7 +233,8 @@
 
                         <div class="card__abilities card_title">
                             <div class="card__ability">
-                                <span class="card__label"><!-- Sorts--> </span><!-- Liste des sorts-->
+                                <span class="card__label">
+                                    <!-- Sorts--> </span><!-- Liste des sorts-->
                             </div>
                         </div>
                     </figcaption>
@@ -242,36 +242,55 @@
             </div>
         </div>
     </div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-            Launch demo modal
-        </button>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Bien joué ! Choisissez un bonus :</h5>
-                    </div>
-                    <div class="modal-body ">
-                        <div style=width:30%><button type="button" class="btn btn-primary choice" data-dismiss="modal">
-                                +3
-                                dommages </button></div>
-                        <div style=width:30%><button type="button" class="btn btn-primary choice" data-dismiss="modal">
-                                +30%
-                                dommages </button></div>
-                        <div style=width:30%><button type="button" class="btn btn-primary choice" data-dismiss="modal">
-                                Un sort aléatoire </button></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary choice" data-dismiss="modal"> Je n'ai besoin de
-                            rien.</button>
+    <!-- Button trigger modal
+    <button type="button" class="btn btn-primary" onclick="$(`#modalChooseBonus`).modal()">
+        Launch demo modal
+    </button>
+       Modal -->
+    <div class="modal fade" id="modalChooseBonus" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Bien joué ! Choisissez un bonus :</h5>
+                </div>
+                <div class="modal-body row">
+                    <div class="col bouton_bonus"><button id="buttonDo" type="button" class="btn btn-warning choice"
+                            data-dismiss="modal" onclick="onClickBonus(this)">
+                            +1 dommages </button></div>
+                    <div class="col bouton_bonus"><button id="buttonPourcentDo" type="button"
+                            class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            +10% dommages </button></div>
+                    <div class="col bouton_bonus"><button id="buttonPVmax" type="button" class="btn btn-warning choice"
+                            data-dismiss="modal" onclick="onClickBonus(this)">
+                            +10 PV maximum </button></div>
+                    <div class="col bouton_bonus"><button id="buttonHeal" type="button" class="btn btn-warning choice"
+                            data-dismiss="modal" onclick="onClickBonus(this)">
+                            Récupérer tous mes PV </button></div>
+                    <div class="col bouton_bonus"><button id="buttonNouveauSort" type="button"
+                            class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            1 nouveau sort</button></div>
+                    <div class="col bouton_bonus_rare"><button id="buttonPA" type="button"
+                            class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            +1 PA </button></div>
+                    <div class="col bouton_bonus_rare"><button id="buttonPM" type="button"
+                            class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            +1 PM </button></div>
+                    <div class="col bouton_bonus_rare"><button id="buttonPO" type="button"
+                            class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            +1 de Portée</button></div>
 
-                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary choice" data-dismiss="modal"> Je n'ai besoin de
+                        rien.</button>
+
                 </div>
             </div>
         </div>
+    </div>
 
 </body>
 
