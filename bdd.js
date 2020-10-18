@@ -7,13 +7,13 @@ effetBoostDo = function(entite){
 
 // sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax, POModif, zoneLancer, AoE, LdV, 
 //       effet, valeurEffet, dureeEffet, cooldown, logo)
-pression = new sort("PRESSION", "Pression", 4, 7, 9, 1, 2, 0, "NORMALE", "CASE", 1, pasdEffet, 0, 0,0,"img/pression.jpg");
-cac = new sort("CAC", "Attaque au CaC", 3, 3, 4, 1, 1, 0, "NORMALE", "CASE", 1, pasdEffet, 0,0,0,"img/cac.png");
-missile = new sort("MISSILE", "Missile", 4, 3, 4, 2, 10, 0, "NORMALE", "CASE", 0, pasdEffet, 0,0,0,"img/missile.png");
-rage = new sort("RAGE", "Rage", 4, 0, 0, 0, 0, 0, "NORMALE", "CASE", 1, effetBoostDo,  2, 2, 2,"img/rage.png");
-fireball = new sort("FIREBALL", "Fireball", 6, 5, 9, 2, 5, 1, "NORMALE", "CASE", 1, pasdEffet, 0,0,0, "img/fireball.png");
+pression = new sort("PRESSION", "Pression", 4, 7, 9, 1, 2, 0, "Aucune", "Case", 1, pasdEffet, 0, 0,0,"img/pression.jpg");
+cac = new sort("CAC", "Attaque au CaC", 3, 3, 4, 1, 1, 0, "Aucune", "Case", 1, pasdEffet, 0,0,0,"img/cac.png");
+missile = new sort("MISSILE", "Missile", 4, 3, 4, 2, 10, 1, "Aucune", "Case", 0, pasdEffet, 0,0,0,"img/missile.png");
+rage = new sort("RAGE", "Rage", 4, 0, 0, 0, 0, 0, "Aucune", "Case", 1, effetBoostDo,  2, 2, 2,"img/rage.png");
+fireball = new sort("FIREBALL", "Fireball", 6, 5, 9, 2, 5, 1, "Aucune", "Case", 1, pasdEffet, 0,0,0, "img/fireball.png");
 
-// Entites
+// Entites  nom, PAmax, PMmax, PVmax, sorts, side, ia, bonusDo, pourcentDo, skin
 player = new entite("player", 6, 3, 50, [cac, pression,fireball,rage,missile ], "ALLY", null, 0, 0, "img/player.png"); // player
 
 mannequin = new entite("mannequin", 0, 0, 18, [], "ENEMY", iaMannequin,0, 0, "img/mannequin.png");

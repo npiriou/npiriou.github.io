@@ -18,13 +18,14 @@ initialiserObstacles();
 initCdSorts();
 refreshBoard();
 
-addPrevisuPM();
+
 
 addOnClic();
 
 addOnClicPrevisuSort();
 
- 
+player.afficherStatsEntite();
+addHoverCell();
 let game = {};
 game.phase = "TURN_PLAYER_MOVE";
 game.sortActif = null;

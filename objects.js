@@ -24,7 +24,7 @@ function entite(
     this.skin = skin;
     this.cdSorts = [];
     this.resetcdSorts = function () {
-        a = []
+    let    a = []
         for (let i = 0; i < this.sorts.length; i++) {
             a.push(0);
         }
@@ -37,8 +37,7 @@ function entite(
     }
     this.mettreSortEnCd = function () {
         for (let i = 0; i < this.sorts.length; i++) {
-            if (game.sortActif.code == this.sorts[i].code)
-                {this.cdSorts[i] = this.sorts[i].cooldown; break;}
+            if (game.sortActif.code == this.sorts[i].code) { this.cdSorts[i] = this.sorts[i].cooldown; break; }
         }
     }
 
@@ -47,7 +46,7 @@ function entite(
         if (!bonusDo) bonusDo = 0;
         if (!pcDo) pcDo = 0;
         let dommagesBase = Math.floor(Math.random() * (game.sortActif.baseDmgMax - game.sortActif.baseDmgMin + 1)) + game.sortActif.baseDmgMin;
-        dommages = dommagesBase * (pcDo + 1) + bonusDo;
+       let dommages = dommagesBase * (pcDo + 1) + bonusDo;
         this.retirerPVs(dommages);
     }
     this.pos = function () {
@@ -67,7 +66,7 @@ function entite(
     }
     this.retirerPVs = function (PVPerdus) {
         this.PVact = this.PVact - PVPerdus;
-        celltarget = document.getElementById(this.pos());
+        let celltarget = document.getElementById(this.pos());
 
         splash(celltarget, " - " + PVPerdus);
         refreshBoard();
@@ -88,6 +87,13 @@ function entite(
     this.clone = function () {
         return new entite(this.nom, this.PAmax, this.PMmax, this.PVmax, this.sorts, this.side, this.ia, this.bonusDo, this.pourcentDo, this.skin);
     }
+    this.afficherStatsEntite = function () {
+       
+        document.getElementById("carteStats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo);
+        document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.skin + `"></img>`;
+        document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
+    }
+
 }
 
 
@@ -110,11 +116,20 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
     this.cooldown = cooldown;
     this.logo = logo;
     this.estAPortee = function (pos1, pos2) {
-        diffX = xFromPos(pos1) - xFromPos(pos2);
-        diffY = yFromPos(pos1) - yFromPos(pos2)
-        diffTotale = Math.abs(diffX) + Math.abs(diffY);
+        let diffX = xFromPos(pos1) - xFromPos(pos2);
+       let  diffY = yFromPos(pos1) - yFromPos(pos2)
+      let   diffTotale = Math.abs(diffX) + Math.abs(diffY);
         if ((diffTotale <= this.porteeMax) && (diffTotale >= this.porteeMin)) return 1;
         else return 0;
+    }
+    this.afficherStatsSort = function () {
+
+        if (this.POModif) pom = "Oui"; else pom = "Non";
+        if (this.LdV) ldv = "Oui"; else ldv = "Non";
+
+        document.getElementById("carteStats").innerHTML = templateSort.format(this.coutPA, this.baseDmgMin, this.baseDmgMax, this.porteeMin, this.porteeMax, pom, this.zoneLancer, this.AoE, ldv, this.cooldown);
+        document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.logo + `"></img>`;
+        document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
     }
 }
 

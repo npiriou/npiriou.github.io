@@ -1,6 +1,6 @@
 function addOnClic() {
     for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
-        celli = document.getElementsByClassName("cell")[index];
+        let celli = document.getElementsByClassName("cell")[index];
         document.getElementsByClassName("cell")[index].addEventListener("click", cellCliqued);
     }
 }
@@ -9,13 +9,23 @@ function cellCliqued() {
     switch (game.phase) {
         case "TURN_PLAYER_MOVE":
             game.sortActif = null;
-            if (estAdjacente(player.pos(), this.id)
-                && estVide(tabCells[this.id])
-                && (player.PMact > 0)) {
-                player.PMact--
-                deplacerContenu(player.pos(), this.id);
 
+
+            if (estVide(tabCells[this.id])) {
+              let  chemin = estAPorteeDeDeplacement(player.pos(), this.id, player.PMact);
+                if (chemin) {
+                    game.phase = "SLOWMO_PLAYER";
+                    slowMo(chemin);
+                }
             }
+
+            // if (estAdjacente(player.pos(), this.id)
+            //     && estVide(tabCells[this.id])
+            //     && (player.PMact > 0)) {
+            //     player.PMact--
+            //     deplacerContenu(player.pos(), this.id);
+
+            // }
             break;
         case "TURN_PLAYER_SPELL":
 
@@ -32,7 +42,7 @@ function cellCliqued() {
                     splash(this, "");
                 }
                 else {                                                      // si il y a une entité sur la case    
-                    tabCells[this.id].contenu.recevoirSort(player.bonusDo, player.pourcentDo); 
+                    tabCells[this.id].contenu.recevoirSort(player.bonusDo, player.pourcentDo);
                 }
                 retirerToutesPrevisuSort();
                 player.retirerPASort();

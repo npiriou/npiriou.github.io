@@ -26,7 +26,7 @@ function pathfinding(Xdep, Ydep, Xarr, Yarr) {
     var result = astar.search(graph, start, end);
     var chemin = [];
     for (let i = 0; i < result.length; i++) {
-        cellule = [result[i].y, result[i].x]
+        var cellule = [result[i].y, result[i].x]
         chemin.push(cellule);
     }
     return chemin;
@@ -34,16 +34,17 @@ function pathfinding(Xdep, Ydep, Xarr, Yarr) {
 
 
 
+
 iaDebile = async function () {
     //   on récupere les pos du joueur et du mob qui joue
-    posxJ = xFromPos(player.pos());
-    posyJ = yFromPos(player.pos());
+    let posxJ = xFromPos(player.pos());
+    let posyJ = yFromPos(player.pos());
 
-    posx = xFromPos(this.pos());
-    posy = yFromPos(this.pos());
+    let  posx = xFromPos(this.pos());
+    let  posy = yFromPos(this.pos());
 
     // on trouve le chemin le plus court et on s'y déplace case par case
-    chemin = pathfinding(posx, posy, posxJ, posyJ);
+    let chemin = pathfinding(posx, posy, posxJ, posyJ);
     for (let i = 0; i < chemin.length; i++) {
         if (this.PMact > 0) {
             await deplacerContenu(this.pos(), posFromxy(chemin[i][0], chemin[i][1]));
@@ -61,7 +62,7 @@ iaDebile = async function () {
             }
         }
     }
-    tabPosAdj = posAdjacentes(this.pos());
+    let  tabPosAdj = posAdjacentes(this.pos());
     for (let i = 0; i < tabPosAdj.length; i++) {
 
         if (contientEntite(tabCells[tabPosAdj[i]]) // si une des cases adjacentes contient une entité
@@ -87,11 +88,11 @@ iaDebile = async function () {
 
 iaDebileRange = async function () {
     //   on récupere les pos du joueur et du mob qui joue
-    posxJ = xFromPos(player.pos());
-    posyJ = yFromPos(player.pos());
+    let   posxJ = xFromPos(player.pos());
+    let  posyJ = yFromPos(player.pos());
 
-    posx = xFromPos(this.pos());
-    posy = yFromPos(this.pos());
+    let  posx = xFromPos(this.pos());
+    let  posy = yFromPos(this.pos());
 
     // pour chaque sort on essaie de le lancer autant de fois que possible
     for (let i = 0; i < this.sorts.length; i++) {
@@ -105,9 +106,9 @@ iaDebileRange = async function () {
         }
     }
     // on récupère notre distance par rapport au joueur
-    distanceAct = pathfinding(posx, posy, posxJ, posyJ).length;
-    distanceMax = 0;
-    MaxPos = [];
+    var distanceAct = pathfinding(posx, posy, posxJ, posyJ).length;
+    var distanceMax = 0;
+    var MaxPos = [];
     for (let i = 0; i < tabCells.length; i++) {
         var distanceCurrent = pathfinding(tabCells[i].posX, tabCells[i].posY, posxJ, posyJ).length;
         if ((distanceCurrent >= distanceAct) && distanceCurrent > distanceMax
@@ -119,7 +120,7 @@ iaDebileRange = async function () {
     }
     if (distanceMax > 0) {
         // on trouve le chemin le plus court et on s'y déplace case par case
-        chemin = pathfinding(posx, posy, MaxPos[0], MaxPos[1]);
+        let   chemin = pathfinding(posx, posy, MaxPos[0], MaxPos[1]);
         for (let j = 0; j < chemin.length; j++) {
             if (this.PMact > 0) {
                 await deplacerContenu(this.pos(), posFromxy(chemin[j][0], chemin[j][1]));

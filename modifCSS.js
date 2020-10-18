@@ -1,21 +1,3 @@
-
-function addPrevisuPM() {
-    if (player.PMact > 0) {
-        for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
-            cellTestee = document.getElementsByClassName("cell")[index];
-
-            if (estAdjacente(player.pos(), index)
-                && estVide(tabCells[index])) { cellTestee.classList.add("previsuPM"); }
-        }
-    }
-}
-
-function retirerToutesPrevisuPM() {
-    for (let index = 0; index < document.getElementsByClassName("cell").length; index++)
-        document.getElementsByClassName("cell")[index].classList.remove("previsuPM");
-}
-
-
 function addOnClicPrevisuSort() {
     for (let index = 0; index < player.sorts.length; index++) {
         document.getElementsByClassName("sort")[index].addEventListener("click", previsuSort);
@@ -37,9 +19,9 @@ function previsuSort(sortClique) {
 
             game.sortActif = player.sorts[sortUtilise];
             for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
-                cellTestee = document.getElementsByClassName("cell")[index];
+               let cellTestee = document.getElementsByClassName("cell")[index];
                 if (game.sortActif.estAPortee(player.pos(), index)
-                && (!game.sortActif.LdV || isInSight(player.pos(), index))) {
+                    && (!game.sortActif.LdV || isInSight(player.pos(), index))) {
                     cellTestee.classList.add("previsuSort");
                 }
             }
@@ -53,6 +35,44 @@ function retirerToutesPrevisuSort() {
         document.getElementsByClassName("cell")[index].classList.remove("previsuSort");
     }
 }
+
+
+function addHoverCell() {
+    for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
+        //if (contientEntite(tabCells[index]) && (tabCells[index].contenu.nom != "test")) {
+        document.getElementsByClassName("cell")[index].addEventListener("mouseover", onHoverCell);
+        document.getElementsByClassName("cell")[index].addEventListener("mouseout", onMouseOutOfCell);
+    }
+}
+function onHoverCell() {
+
+    if (contientEntite(tabCells[this.id]) && tabCells[this.id].contenu.nom != "test") {
+        tabCells[this.id].contenu.afficherStatsEntite();
+    }
+    else if (estVide(tabCells[this.id])) {
+        if (game.phase != "TURN_PLAYER_MOVE"){return;}
+       let chemin = estAPorteeDeDeplacement(player.pos(), this.id, player.PMact);
+        if (chemin) {
+            for (let i = 0; i < chemin.length; i++) {
+                document.getElementsByClassName("cell")[posFromxy(chemin[i][0], chemin[i][1])].classList.add("previsuPMPlusieurs");
+            }
+        }
+    }
+}
+
+function onMouseOutOfCell(){
+    for (let index = 0; index < document.getElementsByClassName("cell").length; index++)
+    document.getElementsByClassName("cell")[index].classList.remove("previsuPMPlusieurs");
+}
+
+function onHoverSort() {
+    if (player.sorts[this.dataset.sort]) {
+        player.sorts[this.dataset.sort].afficherStatsSort();
+    }
+
+}
+
+
 
 window.onkeydown = function (event) {
     if ((event.keyCode == 27) && game.phase == "TURN_PLAYER_SPELL") {
