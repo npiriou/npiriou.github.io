@@ -53,10 +53,10 @@ iaDebile = async function () {
     }
     // pour chaque sort on essaie de le lancer autant de fois que possible sur le joueur
     for (let i = 0; i < this.sorts.length; i++) {
-        if (this.sorts[i].estAPortee(this.pos(), player.pos())) {
+        if (this.sorts[i].estAPortee(this.pos(), player.pos(), this.POBonus)) {
             while (this.PAact >= this.sorts[i].coutPA) {
                 game.sortActif = this.sorts[i];
-                player.recevoirSort(this.bonusDo, this.pourcentDo);
+                player.recevoirSort(this);
                 await new Promise(r => setTimeout(r, 100));
                 this.PAact = this.PAact - this.sorts[i].coutPA;
             }
@@ -70,11 +70,11 @@ iaDebile = async function () {
 
             // pour chaque sort on essaie de le lancer autant de fois que possible sur l'entité
             for (let j = 0; j < this.sorts.length; j++) {
-                if (this.sorts[j].estAPortee(this.pos(), tabPosAdj[i])) {
+                if (this.sorts[j].estAPortee(this.pos(), tabPosAdj[i], this.POBonus)) {
                     while (this.PAact >= this.sorts[j].coutPA) {
                         game.sortActif = this.sorts[j];
                         if (contientEntite(tabCells[tabPosAdj[i]])) {
-                            tabCells[tabPosAdj[i]].contenu.recevoirSort(this.bonusDo, this.pourcentDo);
+                            tabCells[tabPosAdj[i]].contenu.recevoirSort(this);
                         }
                         await new Promise(r => setTimeout(r, 100));
                         this.PAact = this.PAact - this.sorts[j].coutPA;
@@ -96,10 +96,10 @@ iaDebileRange = async function () {
 
     // pour chaque sort on essaie de le lancer autant de fois que possible
     for (let i = 0; i < this.sorts.length; i++) {
-        if (this.sorts[i].estAPortee(this.pos(), player.pos())) {
+        if (this.sorts[i].estAPortee(this.pos(), player.pos(), this.POBonus)) {
             while (this.PAact >= this.sorts[i].coutPA) {
                 game.sortActif = this.sorts[i];
-                player.recevoirSort(this.bonusDo, this.pourcentDo);
+                player.recevoirSort(this);
                 await new Promise(r => setTimeout(r, 100));
                 this.PAact = this.PAact - this.sorts[i].coutPA;
             }
@@ -131,10 +131,10 @@ iaDebileRange = async function () {
 
     // pour chaque sort on essaie de le lancer autant de fois que possible
     for (let i = 0; i < this.sorts.length; i++) {
-        if (this.sorts[i].estAPortee(this.pos(), player.pos())) {
+        if (this.sorts[i].estAPortee(this.pos(), player.pos(), this.POBonus)) {
             while (this.PAact >= this.sorts[i].coutPA) {
                 game.sortActif = this.sorts[i];
-                player.recevoirSort(this.bonusDo, this.pourcentDo);
+                player.recevoirSort(this);
                 await new Promise(r => setTimeout(r, 100));
                 this.PAact = this.PAact - this.sorts[i].coutPA;
             }

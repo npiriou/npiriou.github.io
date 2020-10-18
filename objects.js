@@ -23,14 +23,18 @@ function entite(
     this.bonusDo = bonusDo;
     this.pourcentDo = pourcentDo;
     this.skin = skin;
-    this.poids=poids;
+    this.poids = poids;
+    this.effets = [];
+    this.resetEffets = function () {
+        this.effets = [];
+    }
+
     this.cdSorts = [];
     this.resetcdSorts = function () {
-    let    a = []
+        this.cdSorts = [];
         for (let i = 0; i < this.sorts.length; i++) {
-            a.push(0);
+            this.cdSorts.push(0);
         }
-        return a;
     }
     this.reduirecdSorts = function () {
         for (let i = 0; i < this.cdSorts.length; i++) {
@@ -43,12 +47,10 @@ function entite(
         }
     }
 
-    this.recevoirSort = function (bonusDo, pcDo) {
+    this.recevoirSort = function (entite) {
         game.sortActif.effet(this);
-        if (!bonusDo) bonusDo = 0;
-        if (!pcDo) pcDo = 0;
         let dommagesBase = Math.floor(Math.random() * (game.sortActif.baseDmgMax - game.sortActif.baseDmgMin + 1)) + game.sortActif.baseDmgMin;
-       let dommages = Math.round(dommagesBase * ((pcDo + 100)/100) + bonusDo);
+        let dommages = Math.round(dommagesBase * ((entite.pourcentDo + 100) / 100) + entite.bonusDo);
         this.retirerPVs(dommages);
     }
     this.pos = function () {
@@ -90,7 +92,7 @@ function entite(
         return new entite(this.nom, this.PAmax, this.PMmax, this.PVmax, this.POBonus, this.sorts, this.side, this.ia, this.bonusDo, this.pourcentDo, this.skin);
     }
     this.afficherStatsEntite = function () {
-       
+
         document.getElementById("carteStats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo, this.POBonus);
         document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.skin + `"></img>`;
         document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
@@ -100,7 +102,7 @@ function entite(
 
 
 function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
-    POModif, zoneLancer, AoE, LdV, effet, valeurEffet, dureeEffet, cooldown, logo) {
+    POModif, zoneLancer, AoE, LdV, effet, valeurEffet, dureeEffet, cooldown, logo, description) {
     this.code = code;
     this.nom = nom;
     this.coutPA = coutPA
@@ -117,11 +119,13 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
     this.dureeEffet = dureeEffet;
     this.cooldown = cooldown;
     this.logo = logo;
-    this.estAPortee = function (pos1, pos2) {
+    this.description = description;
+    this.estAPortee = function (pos1, pos2, bonusPO = 0) {
+        if (!this.POModif) { bonusPO = 0; }
         let diffX = xFromPos(pos1) - xFromPos(pos2);
-       let  diffY = yFromPos(pos1) - yFromPos(pos2)
-      let   diffTotale = Math.abs(diffX) + Math.abs(diffY);
-        if ((diffTotale <= this.porteeMax) && (diffTotale >= this.porteeMin)) return 1;
+        let diffY = yFromPos(pos1) - yFromPos(pos2)
+        let diffTotale = Math.abs(diffX) + Math.abs(diffY);
+        if ((diffTotale <= this.porteeMax + bonusPO) && (diffTotale >= this.porteeMin)) return 1;
         else return 0;
     }
     this.afficherStatsSort = function () {
@@ -132,6 +136,7 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
         document.getElementById("carteStats").innerHTML = templateSort.format(this.coutPA, this.baseDmgMin, this.baseDmgMax, this.porteeMin, this.porteeMax, pom, this.zoneLancer, this.AoE, ldv, this.cooldown);
         document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.logo + `"></img>`;
         document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
+        document.getElementsByClassName("card__ability")[0].innerHTML = this.description;
     }
 }
 

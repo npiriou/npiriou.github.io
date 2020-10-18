@@ -26,7 +26,7 @@ function cellCliqued() {
             break;
         case "TURN_PLAYER_SPELL":
 
-            if (!game.sortActif.estAPortee(player.pos(), this.id)
+            if (!game.sortActif.estAPortee(player.pos(), this.id, player.POBonus)
                 || (game.sortActif.LdV && !isInSight(player.pos(), this.id))) { //si la case cliquée n'est pas à portée du sort
                 retirerToutesPrevisuSort();                          // on désélectione le sort
                 game.sortActif = null;
@@ -39,12 +39,11 @@ function cellCliqued() {
 
 
                 if (tabCells[this.id].contenu == null) {                    // si la case est vide      
-                    //tabCells[this.id].recevoirSort();
                     console.log("voilà des PA bien gachés");
                     splash(this, "");
                 }
                 else {                                                      // si il y a une entité sur la case    
-                    tabCells[this.id].contenu.recevoirSort(player.bonusDo, player.pourcentDo);
+                    tabCells[this.id].contenu.recevoirSort(player);
                 }
                 game.sortActif = null;
             }
@@ -77,6 +76,7 @@ function onClickBonus(bouton) {
 
             break;
     }
-    playerSave = player;
+   // playerSave = copy(player);
+    playerSave = Object.assign({}, player);
 }
 

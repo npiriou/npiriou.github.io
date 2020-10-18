@@ -20,7 +20,7 @@ function previsuSort(sortClique) {
             game.sortActif = player.sorts[sortUtilise];
             for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
                let cellTestee = document.getElementsByClassName("cell")[index];
-                if (game.sortActif.estAPortee(player.pos(), index)
+                if (game.sortActif.estAPortee(player.pos(), index, player.POBonus)
                     && (!game.sortActif.LdV || isInSight(player.pos(), index))) {
                     cellTestee.classList.add("previsuSort");
                 }

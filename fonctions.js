@@ -230,10 +230,11 @@ function checkEndRound() {
 function winRound() {
 
     game.phase = "MENU";
-    playerSave.PVact = player.PVact; // on retient les PV du joueur comme il ne regen pas
-    player = playerSave; // on charge la derniere sauvegarde du joueur pour le cleanse
+    playerSave.PVact = copy(player.PVact); // on retient les PV du joueur comme il ne regen pas
+   // player = copy(playerSave);
+    player = Object.assign({}, playerSave); // on charge la derniere sauvegarde du joueur pour le cleanse
     player.resetPAPM();
-    player.cdSorts = player.resetcdSorts();
+    player.resetcdSorts();
     griserOuDegriserSorts();
     retirerToutesPrevisuSort();
     sortActif = null;
@@ -241,6 +242,7 @@ function winRound() {
 
     viderBoard();
     game.level++;
+    document.getElementById("titre").innerHTML = ("Étage "+ game.level);
 
     randomiserBonusAffiches();
     $(`#modalChooseBonus`).modal();
@@ -253,6 +255,12 @@ function looseRound() {
         location.reload();
     }
 }
+
+function copy(a) {
+    return JSON.parse(JSON.stringify(a));
+
+}
+
 
 function ajouterJoueur(){
 let randoPosPlayer = getRandomInt(20);
@@ -398,7 +406,7 @@ function splash(elem, text) {
 function initCdSorts() {
 
     for (let i = 0; i < tabCells.length; i++) {
-        if (contientEntite(tabCells[i])) { tabCells[i].contenu.cdSorts = tabCells[i].contenu.resetcdSorts(); }
+        if (contientEntite(tabCells[i])) { tabCells[i].contenu.resetcdSorts(); }
     }
 }
 
