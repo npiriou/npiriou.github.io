@@ -8,14 +8,14 @@ function initialisationSorts() {
             src ="` + player.sorts[i].logo + `" >
             </img>`
         );
-        document.getElementsByClassName("sort")[i].addEventListener( "mouseover", onHoverSort);
+        document.getElementsByClassName("sort")[i].addEventListener("mouseover", onHoverSort);
     }
     $('[data-toggle="tooltip"]').tooltip(); // active les tooltips
 }
 
 function initialisationCellules() {
     for (let index = 0; index < 100; index++) {
-       let celli = new cell(index, index % 10, Math.trunc(index / 10), null);
+        let celli = new cell(index, index % 10, Math.trunc(index / 10), null);
         tabCells.push(celli);
     }
 }
@@ -32,16 +32,16 @@ function initialiserObstacles() {
         if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom != "test")
             && (tabCells[i].contenu != player)) {
             //   on récupere les pos du joueur et du mob détecté
-         let   posxJ = xFromPos(player.pos());
-          let  posyJ = yFromPos(player.pos());
+            let posxJ = xFromPos(player.pos());
+            let posyJ = yFromPos(player.pos());
 
-           let posx = tabCells[i].posX;
-           let posy = tabCells[i].posY;
+            let posx = tabCells[i].posX;
+            let posy = tabCells[i].posY;
 
             // on trouve le chemin le plus court
             let chemin = pathfinding(posx, posy, posxJ, posyJ);
 
-            if (chemin.length == 0) aRefaire = 1;
+            if (chemin.length == 0) { aRefaire = 1; }
         }
     }
 
@@ -59,6 +59,14 @@ function supprimerTousObstacles() {
     refreshBoard();
 }
 
+function viderBoard() {
+    for (let i = 0; i < tabCells.length; i++) {
+        tabCells[i].contenu = null;
+    }
+    refreshBoard();
+}
+
+
 function estVide(cell) {
     return (cell.contenu == null);
 }
@@ -74,7 +82,7 @@ function contientEntite(cell) {
 function numeroterBoard() {
     for (let y = 0; y < 10; y++) {
         for (let index = 0; index < 10; index++) {
-          let  numero = index + 10 * y;
+            let numero = index + 10 * y;
             // document.getElementById("board").rows[y].cells[index].innerHTML = numero;
             document.getElementById("board").rows[y].cells[index].id = numero;
         }
@@ -93,9 +101,9 @@ function posFromxy(x, y) {
     return (10 * y + x);
 }
 function distance(pos1, pos2) {
-   let diffX = xFromPos(pos1) - xFromPos(pos2);
-  let  diffY = yFromPos(pos1) - yFromPos(pos2)
-  let  diffTotale = Math.abs(diffX) + Math.abs(diffY);
+    let diffX = xFromPos(pos1) - xFromPos(pos2);
+    let diffY = yFromPos(pos1) - yFromPos(pos2)
+    let diffTotale = Math.abs(diffX) + Math.abs(diffY);
     return diffTotale;
 }
 
@@ -166,7 +174,7 @@ function trouverEntites(side) {
 
 ////////////////////////////////////FONCTION PASSER TOUR/////////////////////////////////////////
 async function passerTourJoueur() {
-    if (!game.phase.includes("TURN_PLAYER")) { return;}
+    if (!game.phase.includes("TURN_PLAYER")) { return; }
     game.phase = "TURN_ENEMY";
     sortActif = null;
     retirerToutesPrevisuSort();
@@ -220,14 +228,73 @@ function checkEndRound() {
 }
 
 function winRound() {
-    alert("gg");
+
+    game.phase = "MENU";
+    playerSave.PVact = player.PVact; // on retient les PV du joueur comme il ne regen pas
+    player = playerSave; // on charge la derniere sauvegarde du joueur pour le cleanse
+    player.resetPAPM();
+    player.cdSorts = player.resetcdSorts();
+    griserOuDegriserSorts();
+    retirerToutesPrevisuSort();
+    sortActif = null;
+
+
+    viderBoard();
+    game.level++;
+
+    randomiserBonusAffiches();
+    $(`#modalChooseBonus`).modal();
 }
 
 function looseRound() {
-    alert("Vous êtes mort");
+    if (confirm("Vous êtes mort")) {
+        location.reload();
+    } else {
+        location.reload();
+    }
 }
 
+function ajouterJoueur(){
+let randoPosPlayer = getRandomInt(20);
+tabCells[randoPosPlayer].contenu=player;
+}
 
+function newRound() {
+    ajouterJoueur();
+
+    poidsSelonLevel();
+    remplirSelonPoids();
+
+    initialiserObstacles();
+    initCdSorts();
+    refreshBoard();
+    game.phase = "TURN_PLAYER_MOVE";
+}
+
+function randomiserBonusAffiches() {
+    let boutonsBonus = document.getElementsByClassName("bouton_bonus");
+    let boutonsBonusRares = document.getElementsByClassName("bouton_bonus_rare");
+    let totalBonusAffiches = 3;
+    let bonusRareAffiche = 0;
+    // on cache tous les bonus
+    for (let i = 0; i < boutonsBonus.length; i++) {
+        boutonsBonus[i].style.display = 'none';
+    }
+    for (let i = 0; i < boutonsBonusRares.length; i++) {
+        boutonsBonusRares[i].style.display = 'none';
+    }
+    if (getRandomInt(2) == 0) { // 1/3 d'avoir un bonus rare proposé
+        boutonsBonusRares[getRandomInt(boutonsBonusRares.length)].style.display = 'block';
+        bonusRareAffiche = 1;
+    }
+    for (let i = 0; i < totalBonusAffiches; i++) {
+        let a = getRandomInt(boutonsBonus.length);
+        if (boutonsBonus[a].style.display == 'none') {
+            boutonsBonus[a].style.display = 'block'
+        }
+        else { totalBonusAffiches++ }
+    }
+}
 
 
 function getCoords(elem) { // crossbrowser version
@@ -340,38 +407,89 @@ function initCdSorts() {
 
 
 function isInSight(posDep, posCible) { // check la Ligne de vue
- 
+
     function w(e, t, n, r) {
         e = parseInt(e), t = parseInt(t);
         var o = (n = parseInt(n)) > e ? 1 : -1, a = (r = parseInt(r)) > t ? 1 : -1, s = !0, i = Math.abs(n - e), c = Math.abs(r - t), l = e, u = t, d = -1 + i + c, p = i - c; i *= 2, c *= 2;
         for (var m = 0; m < 1; m++)p > 0 ? (l += o, p -= c) : p < 0 ? (u += a, p += i) : (l += o, p -= c, u += a, p += i, d--);
-        for (; d > 0 && s;)null != tabCells[u*10+l].contenu ? s = !1 : (p > 0 ? (l += o, p -= c) : p < 0 ? (u += a, p += i) : (l += o, p -= c, u += a, p += i, d--), d--);
+        for (; d > 0 && s;)null != tabCells[u * 10 + l].contenu ? s = !1 : (p > 0 ? (l += o, p -= c) : p < 0 ? (u += a, p += i) : (l += o, p -= c, u += a, p += i, d--), d--);
         return s
     }
 
     return w(xFromPos(posDep), yFromPos(posDep), xFromPos(posCible), yFromPos(posCible));
 }
 
-function estAPorteeDeDeplacement(posdep, posarr, pm){
+function estAPorteeDeDeplacement(posdep, posarr, pm) {
     //   on récupere les pos x et y
-   let posx = xFromPos(posdep);
-  let  posy = yFromPos(posdep);
+    let posx = xFromPos(posdep);
+    let posy = yFromPos(posdep);
 
-   let posxar = xFromPos(posarr);
-  let  posyar = yFromPos(posarr);
+    let posxar = xFromPos(posarr);
+    let posyar = yFromPos(posarr);
 
-   let chemin = pathfinding(posx, posy, posxar, posyar);
+    let chemin = pathfinding(posx, posy, posxar, posyar);
     if (chemin.length != 0 && chemin.length <= pm) {
-        return chemin; 
-   }
-else return 0;
+        return chemin;
+    }
+    else return 0;
 }
 
-slowMo = async function(chemin){
+slowMo = async function (chemin) {
     for (let i = 0; i < chemin.length; i++) {
         await deplacerContenu(player.pos(), posFromxy(chemin[i][0], chemin[i][1]));
         player.PMact--;
-        
+
     }
     game.phase = "TURN_PLAYER_MOVE";
+}
+
+
+function ajouterNouveauSort() {
+
+    if (player.sorts.length < 10) {
+        let sortAAjouter = listeSorts[Math.floor(Math.random() * listeSorts.length)];
+        let changerDeSort = 0;
+        for (let i = 0; i < player.sorts.length; i++) {
+
+            if (player.sorts[i] == sortAAjouter) {
+                changerDeSort = 1;
+            }
+        }
+        if (changerDeSort == 1) {
+            ajouterNouveauSort();
+        }
+        else {
+            player.sorts.push(sortAAjouter);
+            initialisationSorts();
+            addOnClicPrevisuSort();
+        }
+    }
+}
+
+function poidsSelonLevel() {
+    game.poids = parseInt((game.level) + 1);
+}
+
+function remplirSelonPoids() {
+    let poidsTerrain = 0;
+    let doItAgain = 0;
+    while (poidsTerrain < game.poids) {
+
+        let randoMob = getRandomInt(listeMobs.length);
+        let randoPos = getRandomInt(100);
+
+        if (contientEntite(tabCells[randoPos]) || randoPos < 40) {
+            continue;
+        }
+        else {
+            tabCells[randoPos].contenu = listeMobs[randoMob].clone();
+            poidsTerrain += listeMobs[randoMob].poids;
+        }
+
+    }
+    if (poidsTerrain > game.poids) {
+        viderBoard();
+        ajouterJoueur();
+        remplirSelonPoids();
+    }
 }

@@ -25,7 +25,10 @@ var template =
     <th>PM</th>
     <td>{4} / {5}</td>
 </tr>
-
+<tr>
+    <th>Portée Bonus</th>
+    <td>{8}</td>
+</tr>
 <tr>
     <th>Dommages Bonus</th>
     <td>{6}</td>

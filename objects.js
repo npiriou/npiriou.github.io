@@ -7,7 +7,7 @@ function cell(posNum, posX, posY, contenu) {
 }
 
 function entite(
-    nom, PAmax, PMmax, PVmax, sorts, side, ia, bonusDo, pourcentDo, skin
+    nom, PAmax, PMmax, PVmax, POBonus, sorts, side, ia, bonusDo, pourcentDo, skin, poids
 ) {
     this.nom = nom;
     this.PAmax = PAmax;
@@ -16,12 +16,14 @@ function entite(
     this.PMact = PMmax;
     this.PVact = PVmax;
     this.PVmax = PVmax;
+    this.POBonus = POBonus;
     this.sorts = sorts;
     this.side = side; // "ALLY" ou "ENEMY"
     this.ia = ia;
     this.bonusDo = bonusDo;
     this.pourcentDo = pourcentDo;
     this.skin = skin;
+    this.poids=poids;
     this.cdSorts = [];
     this.resetcdSorts = function () {
     let    a = []
@@ -46,7 +48,7 @@ function entite(
         if (!bonusDo) bonusDo = 0;
         if (!pcDo) pcDo = 0;
         let dommagesBase = Math.floor(Math.random() * (game.sortActif.baseDmgMax - game.sortActif.baseDmgMin + 1)) + game.sortActif.baseDmgMin;
-       let dommages = dommagesBase * (pcDo + 1) + bonusDo;
+       let dommages = Math.round(dommagesBase * ((pcDo + 100)/100) + bonusDo);
         this.retirerPVs(dommages);
     }
     this.pos = function () {
@@ -85,11 +87,11 @@ function entite(
         checkEndRound();
     }
     this.clone = function () {
-        return new entite(this.nom, this.PAmax, this.PMmax, this.PVmax, this.sorts, this.side, this.ia, this.bonusDo, this.pourcentDo, this.skin);
+        return new entite(this.nom, this.PAmax, this.PMmax, this.PVmax, this.POBonus, this.sorts, this.side, this.ia, this.bonusDo, this.pourcentDo, this.skin);
     }
     this.afficherStatsEntite = function () {
        
-        document.getElementById("carteStats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo);
+        document.getElementById("carteStats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo, this.POBonus);
         document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.skin + `"></img>`;
         document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
     }
