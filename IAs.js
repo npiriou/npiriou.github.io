@@ -32,6 +32,15 @@ function pathfinding(Xdep, Ydep, Xarr, Yarr, listeAEnlever = []) {
     return chemin;
 }
 
+function trouverChemin(posDep, posAr) {
+    let posxar = xFromPos(posAr);
+    let posyar = yFromPos(posAr);
+
+    let posx = xFromPos(posDep);
+    let posy = yFromPos(posDep);
+    return pathfinding(posx, posy, posxar, posyar);
+}
+
 
 seDeplacer = async function (entite, posAr) { // bien penser a AWAIT a chaque fois qu'on l'appelle
 
@@ -62,7 +71,7 @@ iaDebile = async function () {
     for (let i = 0; i < tabPosAdj.length; i++) {
 
         if (contientEntite(tabCells[tabPosAdj[i]]) // si une des cases adjacentes contient une entité
-            && tabCells[tabPosAdj[i]].contenu.side != "ENEMY") { // et que cette entité n'est pas un enemi
+            && tabCells[tabPosAdj[i]].contenu.side != "ENEMY") { // et que cette entité n'est pas un ennemi
 
             // pour chaque sort on essaie de le lancer autant de fois que possible sur l'entité
             for (let j = 0; j < this.sorts.length; j++) {
@@ -127,7 +136,7 @@ spamSortsSurPlayer = async function (entite) { // bien penser a AWAIT quand on l
     for (let i = 0; i < entite.sorts.length; i++) {
         if ((entite.sorts[i].estAPortee(entite.pos(), player.pos(), entite.POBonus))
             && (entite.PAact >= entite.sorts[i].coutPA)
-            &&  ((!entite.sorts[i].LdV) || isInSight(entite.pos(), player.pos()))) {
+            && ((!entite.sorts[i].LdV) || isInSight(entite.pos(), player.pos()))) {
             while (entite.PAact >= entite.sorts[i].coutPA) {
                 game.sortActif = entite.sorts[i];
                 player.recevoirSort(entite);
@@ -138,16 +147,46 @@ spamSortsSurPlayer = async function (entite) { // bien penser a AWAIT quand on l
     }
 }
 
-iaRangeMoinsDebile = async function () {
-    posPourLancer = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(player.pos(), this, this.sorts[0]);
-    if (posPourLancer != null) { // si il peut taper a ce tour
-        
-        await seDeplacer(this, posPourLancer); console.log(this.nom+" se deplace en pos pour attaquer");
-        await spamSortsSurPlayer(this);         console.log(this.nom+" a lancé tous ses sorts sur le joueur");
-        await sEloignerAuMaxDuJoueur(this);     console.log(this.nom+" recule ensuite");
+spamSortsSurEnnemi = async function (entite, ennemi) { // bien penser a AWAIT quand on l'appelle
+    for (let i = 0; i < entite.sorts.length; i++) {
+        if ((entite.sorts[i].estAPortee(entite.pos(), ennemi.pos(), entite.POBonus))
+            && (entite.PAact >= entite.sorts[i].coutPA)
+            && ((!entite.sorts[i].LdV) || isInSight(entite.pos(), ennemi.pos()))) {
+            while (entite.PAact >= entite.sorts[i].coutPA) {
+                game.sortActif = entite.sorts[i];
+                tabCells[ennemi.pos()].recevoirSort(entite);
+                await new Promise(r => setTimeout(r, 200));
+                entite.PAact = entite.PAact - entite.sorts[i].coutPA;
+                ennemi = getNearest(entite.pos(), "ENEMY"); // on refocus pour trouver un autre ennemi si il est mort
+            }
+        }
     }
-    else {await seDeplacer(this, player.pos()); console.log(this.nom+" ne sera pas a portee du joueur, il avance");}
 }
+
+
+iaRangeMoinsDebile = async function () {
+    let invocATuer = trouverInvocations("ALLY")[0];
+    let posPourLancer = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(player.pos(), this, this.sorts[0]);
+    if (posPourLancer != null) { // si il peut taper a ce tour
+
+        await seDeplacer(this, posPourLancer); console.log(this.nom + " se deplace en pos pour attaquer");
+        await spamSortsSurPlayer(this); console.log(this.nom + " a lancé tous ses sorts sur le joueur");
+        await sEloignerAuMaxDuJoueur(this); console.log(this.nom + " recule ensuite");
+    }
+    else if (invocATuer) {
+        posPourLancer = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(player.pos(), this, this.sorts[0]);
+        if (posPourLancer != null) { // si il peut taper a ce tour
+
+            await seDeplacer(this, posPourLancer); console.log(this.nom + " se deplace en pos pour attaquer");
+            await spamSortsSurPlayer(this); console.log(this.nom + " a lancé tous ses sorts sur le joueur");
+            await sEloignerAuMaxDuJoueur(this); console.log(this.nom + " recule ensuite");
+        }
+
+        else await seDeplacer(this, player.pos()); console.log(this.nom + " ne sera pas a portee du joueur, il avance");
+    }
+}
+
+
 
 // pour tester bien demander si != null car la pos retournée peut etre '0'
 function trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(posCible, entite, sort) {
@@ -222,3 +261,56 @@ sEloignerAuMaxDuJoueur = async function (entite) {
         }
     }
 }
+
+function getNearest(pos, side) {
+    let tabEntites = trouverEntites(side);
+    let plusCourtChemin = [];
+    let cheminTest;
+    let plusProcheEntite;
+    plusCourtChemin.length = 1000;
+
+    for (let i = 0; i < tabEntites.length; i++) {
+        cheminTest = trouverChemin(pos, tabEntites[i].pos());
+        if (cheminTest.length < plusCourtChemin.length) {
+            plusCourtChemin = cheminTest;
+            plusProcheEntite = tabEntites[i];
+        }
+    }
+
+    return plusProcheEntite;
+}
+
+iaDebile_ALLY = async function () {
+    ennemi = getNearest(this.pos(), "ENEMY");
+
+    await seDeplacer(this, ennemi.pos());
+
+    // pour chaque sort on essaie de le lancer autant de fois que possible sur l'ennemi
+    //  await spamSortsSurPlayer(this);
+    await spamSortsSurEnnemi(this, ennemi);
+
+    let tabPosAdj = posAdjacentes(this.pos());
+    for (let i = 0; i < tabPosAdj.length; i++) {
+
+        if (contientEntite(tabCells[tabPosAdj[i]]) // si une des cases adjacentes contient une entité
+            && tabCells[tabPosAdj[i]].contenu.side != "ALLY") { // et que cette entité n'est pas un allié
+
+            // pour chaque sort on essaie de le lancer autant de fois que possible sur l'entité
+            for (let j = 0; j < this.sorts.length; j++) {
+                if ((this.sorts[j].estAPortee(this.pos(), tabPosAdj[i], this.POBonus))
+                    && (this.PAact >= this.sorts[j].coutPA)) {
+                    while (this.PAact >= this.sorts[j].coutPA) {
+                        game.sortActif = this.sorts[j];
+                        if (contientEntite(tabCells[tabPosAdj[i]])) {
+                            tabCells[tabPosAdj[i]].contenu.recevoirSort(this);
+                        }
+                        await new Promise(r => setTimeout(r, 100));
+                        this.PAact = this.PAact - this.sorts[j].coutPA;
+                    }
+                }
+            }
+        }
+
+    }
+}
+

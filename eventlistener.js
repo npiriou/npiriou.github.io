@@ -33,9 +33,9 @@ function cellCliqued() {
                 console.log("sort pas a portee");
             }
             else {                                                   // si le clic est sur une case à portée
-                retirerToutesPrevisuSort();
-                player.retirerPASort();
+                retirerToutesPrevisuSort();               
                 player.mettreSortEnCd();
+                player.retirerPASort();
                 tabCells[this.id].recevoirSort(player);
                 game.sortActif = null;
             }

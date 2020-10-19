@@ -18,14 +18,14 @@ function cell(posNum, posX, posY, contenu) {
         }
     }
 
-    this.ajouterGlyphe = function (lanceur, nombreTours, callback, image=null) {
+    this.ajouterGlyphe = function (lanceur, nombreTours, callback, image = null) {
         this.glyphes.push([lanceur, nombreTours, callback]);
         if (image) {
             document.getElementById(this.posNum).backgroundImage = "url('" + image + "')";
         } else {
             document.getElementById(this.posNum).classList.add("glyph");
         }
-        
+
         // todo image
     }
 
@@ -33,7 +33,7 @@ function cell(posNum, posX, posY, contenu) {
         this.glyphes.forEach(infos => {
             lanceur = infos[0];
             // tours = infos[1];
-            callback = infos[2]; 
+            callback = infos[2];
             callback(this, lanceur, entite);
             // PAS TESTE
         });
@@ -58,6 +58,7 @@ function entite(
     this.pourcentDo = pourcentDo;
     this.skin = skin;
     this.poids = poids;
+    this.invocation = 0;
     this.effets = [];
     this.resetEffets = function () {
         this.effets = [];
@@ -82,7 +83,7 @@ function entite(
     }
 
     this.recevoirSort = function (entite) {
-        console.log(entite.nom + " lance le sort "+game.sortActif.nom+" sur "+this.nom);
+        console.log(entite.nom + " lance le sort " + game.sortActif.nom + " sur " + this.nom);
         if (!game.sortActif.effet(this)) {
             // sort sans dommage
             return;
@@ -167,7 +168,7 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
     this.cooldown = cooldown;
     this.logo = logo;
     this.description = description;
-    this.effetCell = function() {return 1;};
+    this.effetCell = function () { return 1; };
     this.estAPortee = function (pos1, pos2, bonusPO = 0) {
         if (!this.POModif) { bonusPO = 0; }
         let diffX = xFromPos(pos1) - xFromPos(pos2);
@@ -180,8 +181,9 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
 
         if (this.POModif) pom = "Oui"; else pom = "Non";
         if (this.LdV) ldv = "Oui"; else ldv = "Non";
+        if (this.cooldown > 999) cd = "Une fois par combat"; else cd = this.cooldown;
 
-        document.getElementById("carboiteats").innerHTML = templateSort.format(this.coutPA, this.baseDmgMin, this.baseDmgMax, this.porteeMin, this.porteeMax, pom, this.zoneLancer, this.AoE, ldv, this.cooldown);
+        document.getElementById("carboiteats").innerHTML = templateSort.format(this.coutPA, this.baseDmgMin, this.baseDmgMax, this.porteeMin, this.porteeMax, pom, this.zoneLancer, this.AoE, ldv, cd);
         document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.logo + `"></img>`;
         document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
         document.getElementsByClassName("card__ability")[0].innerHTML = this.description;

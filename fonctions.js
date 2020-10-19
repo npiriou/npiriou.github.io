@@ -160,11 +160,20 @@ async function deplacerContenu(posDepart, posArrivee) {
     await new Promise(r => setTimeout(r, 100));
 }
 
-
+function deplacerContenuInstantane(posDepart, posArrivee) {
+    if (tabCells[posArrivee].contenu != null) {
+        console.log("La cellule d'arrivée n'est pas vide");
+    }
+    else {
+        tabCells[posArrivee].contenu = tabCells[posDepart].contenu;
+        tabCells[posDepart].contenu = null;
+    }
+    refreshBoard();
+}
 
 
 function trouverEntites(side) {
-    tabMobs = [];
+  let  tabMobs = [];
     for (let i = 0; i < tabCells.length; i++) {
         if (tabCells[i].contenu != null) {
             if (tabCells[i].contenu.side == side) {
@@ -175,19 +184,43 @@ function trouverEntites(side) {
     return tabMobs;
 }
 
+function trouverInvocations(side) {
+   let tabMobs = [];
+    for (let i = 0; i < tabCells.length; i++) {
+        if (tabCells[i].contenu != null) {
+            if ((tabCells[i].contenu.side == side)&& (tabCells[i].contenu.invocation == 1)) {
+                tabMobs.push(tabCells[i].contenu);
+            }
+        }
+    }
+    return tabMobs;
+}
+
+
 ////////////////////////////////////FONCTION PASSER TOUR/////////////////////////////////////////
 async function passerTourJoueur() {
     if (!game.phase.includes("TURN_PLAYER")) { return; }
-    game.phase = "TURN_ENEMY";
     sortActif = null;
     retirerToutesPrevisuSort();
-
-    var tabMobs = trouverEntites("ENEMY");
     player.resetPAPM();
     player.reduirecdSorts();
     griserOuDegriserSorts();
     refreshBoard();
 
+    game.phase = "TURN_ALLY_INVOCATIONS";
+    var tabMobs = trouverInvocations("ALLY");
+    for (let i = 0; i < tabMobs.length; i++) {
+        game.mobActif = tabMobs[i];
+        // faire jouer chaque ia ici
+        console.log(tabMobs[i].nom + " joue son tour.");
+        await tabMobs[i].ia();
+        tabMobs[i].resetPAPM(); 
+        game.mobActif = null;
+        game.sortActif = null;
+    }
+
+    game.phase = "TURN_ENEMY";
+     tabMobs = trouverEntites("ENEMY");
     // faire jouer ennemis ici
     for (let i = 0; i < tabMobs.length; i++) {
         game.mobActif = tabMobs[i];
