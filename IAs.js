@@ -127,7 +127,7 @@ spamSortsSurPlayer = async function (entite) { // bien penser a AWAIT quand on l
     for (let i = 0; i < entite.sorts.length; i++) {
         if ((entite.sorts[i].estAPortee(entite.pos(), player.pos(), entite.POBonus))
             && (entite.PAact >= entite.sorts[i].coutPA)
-            && isInSight(entite.pos(), player.pos())) {
+            &&  ((!entite.sorts[i].LdV) || isInSight(entite.pos(), player.pos()))) {
             while (entite.PAact >= entite.sorts[i].coutPA) {
                 game.sortActif = entite.sorts[i];
                 player.recevoirSort(entite);
@@ -139,14 +139,14 @@ spamSortsSurPlayer = async function (entite) { // bien penser a AWAIT quand on l
 }
 
 iaRangeMoinsDebile = async function () {
-    console.log("debut du tour de "+this.nom+" il a "+this.PMact+" PM");
     posPourLancer = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(player.pos(), this, this.sorts[0]);
     if (posPourLancer != null) { // si il peut taper a ce tour
-        await seDeplacer(this, posPourLancer);
-        await spamSortsSurPlayer(this);
-        await sEloignerAuMaxDuJoueur(this);
+        
+        await seDeplacer(this, posPourLancer); console.log(this.nom+" se deplace en pos pour attaquer");
+        await spamSortsSurPlayer(this);         console.log(this.nom+" a lancé tous ses sorts sur le joueur");
+        await sEloignerAuMaxDuJoueur(this);     console.log(this.nom+" recule ensuite");
     }
-    else await seDeplacer(this, player.pos());
+    else {await seDeplacer(this, player.pos()); console.log(this.nom+" ne sera pas a portee du joueur, il avance");}
 }
 
 // pour tester bien demander si != null car la pos retournée peut etre '0'
@@ -165,7 +165,8 @@ function trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(posCible, enti
 
 
     for (let i = 0; i < tabPos.length; i++) {
-        if (sort.estAPortee(tabPos[i], posCible, entite.POBonus) && estVide(tabCells[tabPos[i]])) {
+        // on recupere toutes les cases a portee qui sont vide (ou qui sont la pos de l'entite qui tire)
+        if (sort.estAPortee(tabPos[i], posCible, entite.POBonus) && (estVide(tabCells[tabPos[i]]) || tabPos[i] == entite.pos())) {
             tabPos2.push(tabPos[i]);
         }
     }
