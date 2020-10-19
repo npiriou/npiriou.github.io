@@ -58,7 +58,7 @@ player = new entite("Player", 6, 3, 50, 0, [cac], "ALLY", null, 0, 0, "img/playe
 
 mannequin = new entite("Mannequin", 3, 1, 10, 0, [cac], "ENEMY", iaDebile,0, 0, "img/mannequin.png", 1);
 ogre = new entite("Ogre", 9, 2, 50, 0, [cac], "ENEMY", iaDebile,0, 0, "img/ogre.png", 3);
-orc = new entite("Orc", 7, 3, 30, 0, [cac, pression], "ENEMY", iaRangeMoinsDebile,0, 0, "img/orc.png", 5);
+orc = new entite("Orc", 7, 3, 30, 0, [cac, pression], "ENEMY", iaDebile,0, 0, "img/orc.png", 5);
 artillerie = new entite("Artillerie", 8, 1, 30, 0, [missile], "ENEMY", iaRangeMoinsDebile, 0, 0,"img/arti.png", 7);
 sorcier = new entite("Sorcier", 8, 3, 25, 0, [fireball], "ENEMY", iaRangeMoinsDebile, 0, 0,"img/wizard.png", 6);
 gobelin= new entite("Gobelin", 4, 5, 12, 0, [gifle], "ENEMY", iaDebile,0, 0, "img/gobelin.png", 2);
