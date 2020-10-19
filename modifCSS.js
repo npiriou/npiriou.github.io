@@ -19,10 +19,10 @@ function previsuSort(sortClique) {
 
             game.sortActif = player.sorts[sortUtilise];
             for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
-               let cellTestee = document.getElementsByClassName("cell")[index];
+               let cellboiteee = document.getElementsByClassName("cell")[index];
                 if (game.sortActif.estAPortee(player.pos(), index, player.POBonus)
                     && (!game.sortActif.LdV || isInSight(player.pos(), index))) {
-                    cellTestee.classList.add("previsuSort");
+                    cellboiteee.classList.add("previsuSort");
                 }
             }
         }
@@ -39,14 +39,14 @@ function retirerToutesPrevisuSort() {
 
 function addHoverCell() {
     for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
-        //if (contientEntite(tabCells[index]) && (tabCells[index].contenu.nom != "test")) {
+        //if (contientEntite(tabCells[index]) && (tabCells[index].contenu.nom != "boite")) {
         document.getElementsByClassName("cell")[index].addEventListener("mouseover", onHoverCell);
         document.getElementsByClassName("cell")[index].addEventListener("mouseout", onMouseOutOfCell);
     }
 }
 function onHoverCell() {
 
-    if (contientEntite(tabCells[this.id]) && tabCells[this.id].contenu.nom != "test") {
+    if (contientEntite(tabCells[this.id]) && tabCells[this.id].contenu.nom != "boite") {
         tabCells[this.id].contenu.afficherStatsEntite();
     }
     else if (estVide(tabCells[this.id])) {

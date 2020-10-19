@@ -138,9 +138,10 @@ function entite(
     }
     this.afficherStatsEntite = function () {
 
-        document.getElementById("carteStats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo, this.POBonus);
+        document.getElementById("carboiteats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo, this.POBonus);
         document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.skin + `"></img>`;
         document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
+        document.getElementsByClassName("card__ability")[0].innerHTML = "";
     }
 
 }
@@ -179,7 +180,7 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
         if (this.POModif) pom = "Oui"; else pom = "Non";
         if (this.LdV) ldv = "Oui"; else ldv = "Non";
 
-        document.getElementById("carteStats").innerHTML = templateSort.format(this.coutPA, this.baseDmgMin, this.baseDmgMax, this.porteeMin, this.porteeMax, pom, this.zoneLancer, this.AoE, ldv, this.cooldown);
+        document.getElementById("carboiteats").innerHTML = templateSort.format(this.coutPA, this.baseDmgMin, this.baseDmgMax, this.porteeMin, this.porteeMax, pom, this.zoneLancer, this.AoE, ldv, this.cooldown);
         document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.logo + `"></img>`;
         document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
         document.getElementsByClassName("card__ability")[0].innerHTML = this.description;

@@ -26,10 +26,10 @@ function initialiserObstacles() {
         if (contientEntite(tabCells[i]))
             continue;
         if (getRandomInt(4) == 0)
-            tabCells[i].contenu = test.clone();
+            tabCells[i].contenu = boite.clone();
     }
     for (let i = 0; i < tabCells.length; i++) {
-        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom != "test")
+        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom != "boite")
             && (tabCells[i].contenu != player)) {
             //   on récupere les pos du joueur et du mob détecté
             let posxJ = xFromPos(player.pos());
@@ -53,7 +53,7 @@ function initialiserObstacles() {
 
 function supprimerTousObstacles() {
     for (let i = 0; i < tabCells.length; i++) {
-        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == "test"))
+        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == "boite"))
             tabCells[i].contenu = null;
     }
     refreshBoard();
@@ -189,10 +189,10 @@ async function passerTourJoueur() {
     console.log(" aux ennemis de jouer");
     for (let i = 0; i < tabMobs.length; i++) {
         game.mobActif = tabMobs[i];
-        // faire jouer chaque ia ici, comment faire ?
+        // faire jouer chaque ia ici
         console.log(tabMobs[i].nom + " joue son tour.");
         await tabMobs[i].ia();
-        tabMobs[i].resetPAPM();
+        tabMobs[i].resetPAPM(); console.log(tabMobs[i].nom +" a bien reset ses PA et PM, il lui reste "+tabMobs[i].PMact+" PM");
         game.mobActif = null;
         game.sortActif = null;
     }
@@ -233,7 +233,7 @@ function winRound() {
 
     game.phase = "MENU";
     playerSave.PVact = copy(player.PVact); // on retient les PV du joueur comme il ne regen pas
-   // player = copy(playerSave);
+    // player = copy(playerSave);
     player = Object.assign({}, playerSave); // on charge la derniere sauvegarde du joueur pour le cleanse
     player.resetPAPM();
     player.resetcdSorts();
@@ -244,7 +244,7 @@ function winRound() {
 
     viderBoard();
     game.level++;
-    document.getElementById("titre").innerHTML = ("Étage "+ game.level);
+    document.getElementById("titre").innerHTML = ("Étage " + game.level);
 
     randomiserBonusAffiches();
     $(`#modalChooseBonus`).modal();
@@ -264,9 +264,9 @@ function copy(a) {
 }
 
 
-function ajouterJoueur(){
-let randoPosPlayer = getRandomInt(20);
-tabCells[randoPosPlayer].contenu=player;
+function ajouterJoueur() {
+    let randoPosPlayer = getRandomInt(20);
+    tabCells[randoPosPlayer].contenu = player;
 }
 
 function newRound() {
@@ -470,7 +470,7 @@ function splash_heal(elem, text) {
 
             for (var i = 0; i < bubbles; i++) {
                 particles.push({
-                    x: r(c.width/2 - c.width*0.2, c.width/2 + c.width*0.2),
+                    x: r(c.width / 2 - c.width * 0.2, c.width / 2 + c.width * 0.2),
                     y: r(startY * 0.9, startY * 1.2),
                     radius: r(20, 40),
                     color: colors[Math.floor(Math.random() * colors.length)],
@@ -497,14 +497,14 @@ function splash_heal(elem, text) {
                 var y = p.y;
                 var width = p.radius;
                 var height = p.radius;
-                
+
                 p.y -= p.speed;
                 //p.x += p.speed * Math.sin(p.rotation * Math.PI / 180);
 
                 p.opacity -= 0.01;
 
                 if (p.opacity < 0 || p.radius < 0) return;
-                
+
                 ctx.save();
                 ctx.beginPath();
                 ctx.globalAlpha = p.opacity;
@@ -512,32 +512,32 @@ function splash_heal(elem, text) {
                 ctx.moveTo(x, y + topCurveHeight);
                 // top left curve
                 ctx.bezierCurveTo(
-                    x, y, 
-                    x - width / 2, y, 
+                    x, y,
+                    x - width / 2, y,
                     x - width / 2, y + topCurveHeight
                 );
-                
+
                 // bottom left curve
                 ctx.bezierCurveTo(
-                    x - width / 2, y + (height + topCurveHeight) / 2, 
-                    x, y + (height + topCurveHeight) / 2, 
+                    x - width / 2, y + (height + topCurveHeight) / 2,
+                    x, y + (height + topCurveHeight) / 2,
                     x, y + height
                 );
-                
+
                 // bottom right curve
                 ctx.bezierCurveTo(
-                    x, y + (height + topCurveHeight) / 2, 
-                    x + width / 2, y + (height + topCurveHeight) / 2, 
+                    x, y + (height + topCurveHeight) / 2,
+                    x + width / 2, y + (height + topCurveHeight) / 2,
                     x + width / 2, y + topCurveHeight
                 );
-                
+
                 // top right curve
                 ctx.bezierCurveTo(
-                    x + width / 2, y, 
-                    x, y, 
+                    x + width / 2, y,
+                    x, y,
                     x, y + topCurveHeight
                 );
-                
+
                 ctx.closePath();
                 ctx.fillStyle = p.color;
                 ctx.fill();
@@ -630,7 +630,8 @@ function poidsSelonLevel() {
 
 function remplirSelonPoids() {
     let poidsTerrain = 0;
-    let doItAgain = 0;
+    let tropDuMeme = 0;
+
     while (poidsTerrain < game.poids) {
 
         let randoMob = getRandomInt(listeMobs.length);
@@ -642,10 +643,20 @@ function remplirSelonPoids() {
         else {
             tabCells[randoPos].contenu = listeMobs[randoMob].clone();
             poidsTerrain += listeMobs[randoMob].poids;
-        }
+            let nBExemplaire = 0;
 
+
+            for (let i = 0; i < tabCells.length; i++) {
+                if ((contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == listeMobs[randoMob].nom))){
+                    nBExemplaire++;
+                    if (nBExemplaire > 2) {
+                        tropDuMeme = 1;
+                    }
+                }
+            }
+        }
     }
-    if (poidsTerrain > game.poids) {
+    if ((poidsTerrain > game.poids)||tropDuMeme ==1){
         viderBoard();
         ajouterJoueur();
         remplirSelonPoids();
