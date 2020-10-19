@@ -8,6 +8,8 @@ effetSoin = function(entite){
     console.log(entite.nom+" gagne "+this.valeurEffet+ " PV");
     return 0;
 }
+
+
 pasdEffet = function(){return 1;}
 
 // sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax, POModif, zoneLancer, AoE, LdV, 
@@ -18,7 +20,7 @@ missile = new sort("MISSILE", "Missile", 4, 3, 4, 4, 10, 1, "Aucune", "Case", 0,
 rage = new sort("RAGE", "Rage", 4, 0, 0, 0, 0, 0, "Aucune", "Case", 1, effetBoostDo,  2, 2, 3,"img/rage.png", "Augmente ses dommages de 2");
 fireball = new sort("FIREBALL", "Boule de feu", 6, 5, 9, 2, 5, 1, "Aucune", "Case", 1, pasdEffet, 0,0,0, "img/fireball.png", "Une boule de feu tout ce qu'il y a de plus classique");
 doom = new sort("DOOM", "Doom", 0, 1000, 1000, 0, 100, 1, "Aucune", "Case", 0, pasdEffet, 0,0,0,"img/doom.jpg", "BOOOOOM");
-gifle = new sort("GIFLE", "Gifle", 2, 1, 2, 1, 1, 0, "Aucune", "Case", 1, pasdEffet, 0,0,0,"img/gifle.png", "Met une petite claque humiliante à la cible");
+gifle = new sort("GIFLE", "Gifle", 2, 2, 2, 1, 1, 0, "Aucune", "Case", 1, pasdEffet, 0,0,0,"img/gifle.png", "Met une petite claque humiliante à la cible");
 pansements = new sort("PANSEMENTS", "Pansements", 4, 0, 0, 0, 0, 1, "Aucune", "Case", 1, effetSoin,  5, 0, 3,"img/pansement.png", "Un petit pansement et ça va mieux, soigne de 5 PV");
 
 

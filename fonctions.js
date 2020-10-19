@@ -77,7 +77,10 @@ function contientEntite(cell) {
     if ((cell.contenu) && (typeof cell.contenu === "object")) { return true; }
     else return false;
 }
-
+function sontEnLigne(posa, posb){
+    if (xFromPos(posa) == xFromPos(posb) || yFromPos(posa) == yFromPos(posb)) return 1;
+    else return 0;
+}
 
 function numeroterBoard() {
     for (let y = 0; y < 10; y++) {
@@ -186,13 +189,12 @@ async function passerTourJoueur() {
     refreshBoard();
 
     // faire jouer ennemis ici
-    console.log(" aux ennemis de jouer");
     for (let i = 0; i < tabMobs.length; i++) {
         game.mobActif = tabMobs[i];
         // faire jouer chaque ia ici
         console.log(tabMobs[i].nom + " joue son tour.");
         await tabMobs[i].ia();
-        tabMobs[i].resetPAPM(); console.log(tabMobs[i].nom +" a bien reset ses PA et PM, il lui reste "+tabMobs[i].PMact+" PM");
+        tabMobs[i].resetPAPM(); 
         game.mobActif = null;
         game.sortActif = null;
     }

@@ -82,6 +82,7 @@ function entite(
     }
 
     this.recevoirSort = function (entite) {
+        console.log(entite.nom + " lance le sort "+game.sortActif.nom+" sur "+this.nom);
         if (!game.sortActif.effet(this)) {
             // sort sans dommage
             return;
