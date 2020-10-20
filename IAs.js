@@ -89,8 +89,10 @@ seDeplacerCommeSiSeulementBlocs = async function (entite, posAr) { // bien pense
     let chemin = trouverCheminATraversEntites(entite.pos(), posAr);
     for (let i = 0; i < chemin.length; i++) {
         if (tabCells[entite.pos()].contenu.PMact > 0) {
+            if ( !estVide(tabCells[posFromxy(chemin[i][0], chemin[i][1])]) ){
             await deplacerContenu(entite.pos(), posFromxy(chemin[i][0], chemin[i][1]));
-            tabCells[entite.pos()].contenu.PMact--;
+            tabCells[entite.pos()].contenu.PMact--;}
+            else break;
         }
     }
 }
