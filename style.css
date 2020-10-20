@@ -259,3 +259,8 @@ img {
   overflow: auto;
   height: 810px;
 }
+
+#status{
+  font-size: 20px;
+  text-align: left;
+}
