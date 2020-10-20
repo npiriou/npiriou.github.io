@@ -29,10 +29,57 @@
 
 <body>
     <div id="divHeader">
-        <h1 id="titre">Bienvenue sur le jeu des cases</h1>
+        <h1 id="titre">Triomphez du mannequin pour choisir votre classe</h1>
     </div>
     <div id="divBody">
         <div class="row">
+            <div id="divStats" class="col">
+                <figure class="card card--normal col">
+                    <div class="card__image-container">
+                        <img id="img_stats" src="img/player.png" alt="Joueur" class="card__image">
+                    </div>
+
+                    <figcaption class="card__caption">
+                        <div class="card__name card_title">Joueur</div>
+
+                        <table class="card__stats">
+                            <tbody id="carboiteats">
+                                <tr>
+                                    <th>PV</th>
+                                    <td>55 / 55</td>
+                                </tr>
+                                <tr>
+                                    <th>PA</th>
+                                    <td>6 / 6</td>
+                                </tr>
+
+                                <tr>
+                                    <th>PM</th>
+                                    <td>3 / 3</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Dommages Bonus</th>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <th>% Dommages Supplémentaires</th>
+                                    <td>0</td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+
+                        <div class="card__abilities card_title">
+                            <div class="card__ability">
+                                <span class="card__label">
+                                    <!-- Sorts--> </span><!-- Liste des sorts-->
+                            </div>
+                        </div>
+                    </figcaption>
+                </figure>
+            </div>
             <div id="divSorts" class="col">
                 <table id="tabSorts">
                     <tbody>
@@ -193,52 +240,9 @@
                     </tbody>
                 </table>
             </div>
-            <div id="divStats" class="col">
-                <figure class="card card--normal">
-                    <div class="card__image-container">
-                        <img id="img_stats" src="img/player.png" alt="Joueur" class="card__image">
-                    </div>
-
-                    <figcaption class="card__caption">
-                        <div class="card__name card_title">Joueur</div>
-
-                        <table class="card__stats">
-                            <tbody id="carboiteats">
-                                <tr>
-                                    <th>PV</th>
-                                    <td>55 / 55</td>
-                                </tr>
-                                <tr>
-                                    <th>PA</th>
-                                    <td>6 / 6</td>
-                                </tr>
-
-                                <tr>
-                                    <th>PM</th>
-                                    <td>3 / 3</td>
-                                </tr>
-
-                                <tr>
-                                    <th>Dommages Bonus</th>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <th>% Dommages Supplémentaires</th>
-                                    <td>0</td>
-                                </tr>
-
-
-                            </tbody>
-                        </table>
-
-                        <div class="card__abilities card_title">
-                            <div class="card__ability">
-                                <span class="card__label">
-                                    <!-- Sorts--> </span><!-- Liste des sorts-->
-                            </div>
-                        </div>
-                    </figcaption>
-                </figure>
+            <div id="statusenrobage" class="col">
+                <p id="status">Bienvenue sur le jeu des cases
+                </p>
             </div>
         </div>
     </div>
@@ -260,7 +264,7 @@
                             +1 dommages </button></div>
                     <div class="col bouton_bonus"><button id="buttonPourcentDo" type="button"
                             class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            +10% dommages </button></div>
+                            +15% dommages </button></div>
                     <div class="col bouton_bonus"><button id="buttonPVmax" type="button" class="btn btn-warning choice"
                             data-dismiss="modal" onclick="onClickBonus(this)">
                             +10 PV maximum </button></div>
@@ -269,7 +273,7 @@
                             Récupérer tous mes PV </button></div>
                     <div class="col bouton_bonus"><button id="buttonNouveauSort" type="button"
                             class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            1 nouveau sort</button></div>
+                            Nouveau sort</button></div>
                     <div class="col bouton_bonus_rare"><button id="buttonPA" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
                             +1 PA </button></div>
@@ -279,18 +283,31 @@
                     <div class="col bouton_bonus_rare"><button id="buttonPO" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
                             +1 de Portée</button></div>
-
-
-
+                    <!-- bonus choix de classe -->
+                    <div class="col bouton_bonus_classe"><button id="buttonGuerrier" type="button"
+                            class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            Guerrier :</br>Sort Pression</br>+ 20 PVmax </button></div>
+                    <div class="col bouton_bonus_classe"><button id="buttonMage" type="button"
+                            class="btn btn-info choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            Mage :</br>Sort Boule de feu</br>+ 30 % Dommages</button></div>
+                    <div class="col bouton_bonus_classe"><button id="buttonChatteux" type="button"
+                            class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            Chatteux :</br>Sort Lancé de dé</br>+ 2 bonus aléatoires</button></div>
+                    <div class="col bouton_bonus_classe"><button id="buttonCostaud" type="button"
+                            class="btn btn-danger choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            Costaud :</br>Sort Gifle</br>+ 2 Dommages</button></div>
+                    <div class="col bouton_bonus_classe"><button id="buttonLache" type="button"
+                            class="btn btn-dark choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            Lâche :</br>Sort Invocation d'Ogre</br>+ 1 PM</button></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary choice" data-dismiss="modal"> Je n'ai besoin de
-                        rien.</button>
+
 
                 </div>
             </div>
         </div>
     </div>
+
 
 </body>
 

@@ -13,7 +13,7 @@ function cell(posNum, posX, posY, contenu) {
         if (this.contenu) {
             this.contenu.recevoirSort(bonusDo, pcDo);
         } else {
-            console.log("voilà des PA bien gachés");
+            ajouterAuChatType("Voilà des PA bien gachés à lancer un sort dans le vide", 1);
             splash(document.getElementById(this.posNum), "");
         }
     }
@@ -83,7 +83,7 @@ function entite(
     }
 
     this.recevoirSort = function (entite) {
-        console.log(entite.nom + " lance le sort " + game.sortActif.nom + " sur " + this.nom);
+        ajouterAuChatType(entite.nom + " lance le sort " + game.sortActif.nom + " sur " + this.nom, 0);
         if (!game.sortActif.effet(this)) {
             // sort sans dommage
             return;
@@ -113,8 +113,7 @@ function entite(
 
         splash(celltarget, " - " + PVPerdus);
         refreshBoard();
-        console.log(this.nom + " perd " + PVPerdus + " PVs. Il lui reste " + this.PVact + " PVs.");
-
+        ajouterAuChatType(this.nom + " perd " + PVPerdus + " PVs. Il lui reste " + this.PVact + " PVs.", 0);
         if (this.PVact <= 0) {
             this.PVact = 0;
             this.mort();
@@ -127,10 +126,10 @@ function entite(
 
         splash_heal(celltarget, " + " + PVGagnes);
         refreshBoard();
-        console.log(this.nom + " gagne " + PVGagnes + " PVs. Il lui reste " + this.PVact + " PVs.");
+        ajouterAuChatType(this.nom + " gagne " + PVGagnes + " PVs. Il lui reste " + this.PVact + " PVs.",0);
     }
     this.mort = function () {
-        console.log(this.nom + " est mort.");
+        ajouterAuChatType(this.nom + " est mort.", 0);
         tabCells[this.pos()].contenu = null;
         refreshBoard();
         checkEndRound();

@@ -1,4 +1,6 @@
-
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
 function initialisationSorts() {
 
     for (let i = 0; i < player.sorts.length; i++) {
@@ -25,11 +27,11 @@ function initialiserObstacles() {
     for (let i = 0; i < tabCells.length; i++) {
         if (contientEntite(tabCells[i]))
             continue;
-        if (getRandomInt(4) == 0)
+        if (getRandomInt(4) == 0) // changer ici pour modifier le nb d'obstacles sur la map
             tabCells[i].contenu = boite.clone();
     }
     for (let i = 0; i < tabCells.length; i++) {
-        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom != "boite")
+        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom != "Boite")
             && (tabCells[i].contenu != player)) {
             //   on récupere les pos du joueur et du mob détecté
             let posxJ = xFromPos(player.pos());
@@ -53,7 +55,7 @@ function initialiserObstacles() {
 
 function supprimerTousObstacles() {
     for (let i = 0; i < tabCells.length; i++) {
-        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == "boite"))
+        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == "Boite"))
             tabCells[i].contenu = null;
     }
     refreshBoard();
@@ -77,7 +79,7 @@ function contientEntite(cell) {
     if ((cell.contenu) && (typeof cell.contenu === "object")) { return true; }
     else return false;
 }
-function sontEnLigne(posa, posb){
+function sontEnLigne(posa, posb) {
     if (xFromPos(posa) == xFromPos(posb) || yFromPos(posa) == yFromPos(posb)) return 1;
     else return 0;
 }
@@ -150,7 +152,7 @@ function refreshBoard() {
 
 async function deplacerContenu(posDepart, posArrivee) {
     if (tabCells[posArrivee].contenu != null) {
-        console.log("La cellule d'arrivée n'est pas vide");
+        ajouterAuChatType("La cellule d'arrivée n'est pas vide", 0);
     }
     else {
         tabCells[posArrivee].contenu = tabCells[posDepart].contenu;
@@ -162,7 +164,8 @@ async function deplacerContenu(posDepart, posArrivee) {
 
 function deplacerContenuInstantane(posDepart, posArrivee) {
     if (tabCells[posArrivee].contenu != null) {
-        console.log("La cellule d'arrivée n'est pas vide");
+        ajouterAuChatType("La cellule d'arrivée n'est pas vide", 0);
+
     }
     else {
         tabCells[posArrivee].contenu = tabCells[posDepart].contenu;
@@ -173,7 +176,7 @@ function deplacerContenuInstantane(posDepart, posArrivee) {
 
 
 function trouverEntites(side) {
-  let  tabMobs = [];
+    let tabMobs = [];
     for (let i = 0; i < tabCells.length; i++) {
         if (tabCells[i].contenu != null) {
             if (tabCells[i].contenu.side == side) {
@@ -185,10 +188,10 @@ function trouverEntites(side) {
 }
 
 function trouverInvocations(side) {
-   let tabMobs = [];
+    let tabMobs = [];
     for (let i = 0; i < tabCells.length; i++) {
         if (tabCells[i].contenu != null) {
-            if ((tabCells[i].contenu.side == side)&& (tabCells[i].contenu.invocation == 1)) {
+            if ((tabCells[i].contenu.side == side) && (tabCells[i].contenu.invocation == 1)) {
                 tabMobs.push(tabCells[i].contenu);
             }
         }
@@ -212,22 +215,22 @@ async function passerTourJoueur() {
     for (let i = 0; i < tabMobs.length; i++) {
         game.mobActif = tabMobs[i];
         // faire jouer chaque ia ici
-        console.log(tabMobs[i].nom + " joue son tour.");
+        ajouterAuChatType(tabMobs[i].nom + " joue son tour.", 0);
         await tabMobs[i].ia();
-        tabMobs[i].resetPAPM(); 
+        tabMobs[i].resetPAPM();
         game.mobActif = null;
         game.sortActif = null;
     }
 
     game.phase = "TURN_ENEMY";
-     tabMobs = trouverEntites("ENEMY");
+    tabMobs = trouverEntites("ENEMY");
     // faire jouer ennemis ici
     for (let i = 0; i < tabMobs.length; i++) {
         game.mobActif = tabMobs[i];
         // faire jouer chaque ia ici
-        console.log(tabMobs[i].nom + " joue son tour.");
+        ajouterAuChatType(tabMobs[i].nom + " joue son tour.", 0);
         await tabMobs[i].ia();
-        tabMobs[i].resetPAPM(); 
+        tabMobs[i].resetPAPM();
         game.mobActif = null;
         game.sortActif = null;
     }
@@ -282,7 +285,8 @@ function winRound() {
     document.getElementById("titre").innerHTML = ("Étage " + game.level);
 
     randomiserBonusAffiches();
-    $(`#modalChooseBonus`).modal();
+    player.afficherStatsEntite();
+    $(`#modalChooseBonus`).modal({ backdrop: 'static', keyboard: false });
 }
 
 function looseRound() {
@@ -317,8 +321,10 @@ function newRound() {
 }
 
 function randomiserBonusAffiches() {
+
     let boutonsBonus = document.getElementsByClassName("bouton_bonus");
     let boutonsBonusRares = document.getElementsByClassName("bouton_bonus_rare");
+    let boutonsBonusClasses = document.getElementsByClassName("bouton_bonus_classe");
     let totalBonusAffiches = 3;
     let bonusRareAffiche = 0;
     // on cache tous les bonus
@@ -328,16 +334,26 @@ function randomiserBonusAffiches() {
     for (let i = 0; i < boutonsBonusRares.length; i++) {
         boutonsBonusRares[i].style.display = 'none';
     }
-    if (getRandomInt(2) == 0) { // 1/3 d'avoir un bonus rare proposé
-        boutonsBonusRares[getRandomInt(boutonsBonusRares.length)].style.display = 'block';
-        bonusRareAffiche = 1;
+    for (let i = 0; i < boutonsBonusClasses.length; i++) {
+        boutonsBonusClasses[i].style.display = 'none';
     }
-    for (let i = 0; i < totalBonusAffiches; i++) {
-        let a = getRandomInt(boutonsBonus.length);
-        if (boutonsBonus[a].style.display == 'none') {
-            boutonsBonus[a].style.display = 'block'
+
+    if (game.level > 1) {
+        if (getRandomInt(2) == 0) { // 1/3 d'avoir un bonus rare proposé
+            boutonsBonusRares[getRandomInt(boutonsBonusRares.length)].style.display = 'block';
+            bonusRareAffiche = 1;
         }
-        else { totalBonusAffiches++ }
+        for (let i = 0; i < totalBonusAffiches; i++) {
+            let a = getRandomInt(boutonsBonus.length);
+            if (boutonsBonus[a].style.display == 'none') {
+                boutonsBonus[a].style.display = 'block'
+            }
+            else { totalBonusAffiches++ }
+        }
+    }
+
+    else for (let i = 0; i < boutonsBonusClasses.length; i++) {
+        boutonsBonusClasses[i].style.display = 'block';
     }
 }
 
@@ -637,26 +653,30 @@ slowMo = async function (chemin) {
 }
 
 
-function ajouterNouveauSort() {
+function ajouterNouveauSort(sort = 0) {
+    if (!sort) {
+        if (player.sorts.length < 10) {
+            let sortAAjouter = listeSorts[Math.floor(Math.random() * listeSorts.length)];
+            let changerDeSort = 0;
+            for (let i = 0; i < player.sorts.length; i++) {
 
-    if (player.sorts.length < 10) {
-        let sortAAjouter = listeSorts[Math.floor(Math.random() * listeSorts.length)];
-        let changerDeSort = 0;
-        for (let i = 0; i < player.sorts.length; i++) {
-
-            if (player.sorts[i] == sortAAjouter) {
-                changerDeSort = 1;
+                if (player.sorts[i] == sortAAjouter) {
+                    changerDeSort = 1;
+                }
+            }
+            if (changerDeSort == 1) {
+                ajouterNouveauSort();
+            }
+            else {
+                player.sorts.push(sortAAjouter);
+                initialisationSorts();
+                addOnClicPrevisuSort();
             }
         }
-        if (changerDeSort == 1) {
-            ajouterNouveauSort();
-        }
-        else {
-            player.sorts.push(sortAAjouter);
-            initialisationSorts();
-            addOnClicPrevisuSort();
-        }
     }
+    else player.sorts.push(sort);
+    initialisationSorts();
+    addOnClicPrevisuSort();
 }
 
 function poidsSelonLevel() {
@@ -682,7 +702,7 @@ function remplirSelonPoids() {
 
 
             for (let i = 0; i < tabCells.length; i++) {
-                if ((contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == listeMobs[randoMob].nom))){
+                if ((contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == listeMobs[randoMob].nom))) {
                     nBExemplaire++;
                     if (nBExemplaire > 2) {
                         tropDuMeme = 1;
@@ -691,9 +711,35 @@ function remplirSelonPoids() {
             }
         }
     }
-    if ((poidsTerrain > game.poids)||tropDuMeme ==1){
+    if ((poidsTerrain > game.poids) || tropDuMeme == 1) {
         viderBoard();
         ajouterJoueur();
         remplirSelonPoids();
     }
+}
+
+
+function ajouterAuChatType(ecriture, type) {
+    var status = document.getElementById("status");
+    var statusenrobage = document.getElementById("statusenrobage");
+
+    var t = document.createElement('p');
+    t.innerText = ecriture;
+
+    if (type == 0) //description
+    {
+        t.style.fontStyle = "italic"
+        t.style.color = "#006600"
+    }
+
+    if (type == 1) //injonction
+    {
+        t.style.fontStyle = "bold"
+        t.style.color = "#800000"
+    }
+    status.appendChild(t);
+
+    //descend la scrolleuse
+    statusenrobage.scrollTop = statusenrobage.scrollHeight;
+
 }

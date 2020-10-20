@@ -39,14 +39,14 @@ function retirerToutesPrevisuSort() {
 
 function addHoverCell() {
     for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
-        //if (contientEntite(tabCells[index]) && (tabCells[index].contenu.nom != "boite")) {
+        //if (contientEntite(tabCells[index]) && (tabCells[index].contenu.nom != "Boite")) {
         document.getElementsByClassName("cell")[index].addEventListener("mouseover", onHoverCell);
         document.getElementsByClassName("cell")[index].addEventListener("mouseout", onMouseOutOfCell);
     }
 }
 function onHoverCell() {
 
-    if (contientEntite(tabCells[this.id]) && tabCells[this.id].contenu.nom != "boite") {
+    if (contientEntite(tabCells[this.id]) && tabCells[this.id].contenu.nom != "Boite") {
         tabCells[this.id].contenu.afficherStatsEntite();
     }
     else if (estVide(tabCells[this.id])) {
@@ -114,6 +114,11 @@ window.onkeydown = function (event) {
     }
 };
 
+window.addEventListener('keydown', function(e) { // empeche le scrolling quand on tape espace
+    if(e.keyCode == 32 && e.target == document.body) {
+      e.preventDefault();
+    }
+  });
 
 
 

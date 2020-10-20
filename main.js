@@ -4,9 +4,7 @@ initialisationCellules();
 initialisationSorts();
 numeroterBoard();
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
+
 playerSave = player.clone();
 
 let game = {};

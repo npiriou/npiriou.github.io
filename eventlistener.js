@@ -30,10 +30,9 @@ function cellCliqued() {
                 || (game.sortActif.LdV && !isInSight(player.pos(), this.id))) { //si la case cliquée n'est pas à portée du sort
                 retirerToutesPrevisuSort();                          // on désélectione le sort
                 game.sortActif = null;
-                console.log("sort pas a portee");
             }
             else {                                                   // si le clic est sur une case à portée
-                retirerToutesPrevisuSort();               
+                retirerToutesPrevisuSort();
                 player.mettreSortEnCd();
                 player.retirerPASort();
                 tabCells[this.id].recevoirSort(player);
@@ -52,7 +51,7 @@ function onClickBonus(bouton) {
     switch (bouton.id) {
         case "buttonDo": player.bonusDo += 1;
             break;
-        case "buttonPourcentDo": player.pourcentDo += 10;
+        case "buttonPourcentDo": player.pourcentDo += 15;
             break;
         case "buttonPVmax": player.PVmax += 10; player.PVact += 10;
             break;
@@ -62,13 +61,39 @@ function onClickBonus(bouton) {
             break;
         case "buttonPM": player.PMmax++; player.PMact++;
             break;
-        case "buttonPO": player.PO++;
+        case "buttonPO": player.POBonus++;
             break;
         case "buttonNouveauSort": ajouterNouveauSort();
-
+            break;
+        case "buttonGuerrier": ajouterNouveauSort(pression); player.PVmax += 20; player.PVact += 20;
+            break;
+        case "buttonMage": ajouterNouveauSort(fireball); player.pourcentDo += 30;
+            break;
+        case "buttonCostaud": ajouterNouveauSort(gifle); player.bonusDo += 2;
+            break;
+        case "buttonLache": ajouterNouveauSort(invoquerOgre); player.PMmax++; player.PMact++;
+            break;
+        case "buttonChatteux": ajouterNouveauSort(diceThrow);
+            let random = getRandomInt(6);
+            if (random == 0) { player.bonusDo += 1; }
+            if (random == 1) { player.pourcentDo += 15; }
+            if (random == 2) { player.PVmax += 10; player.PVact += 10; }
+            if (random == 3) { player.PAmax++; player.PAact++; }
+            if (random == 4) { player.PMmax++; player.PMact++; }
+            if (random == 5) { player.POBonus++; }
+            random = getRandomInt(6);
+            if (random == 0) { player.bonusDo += 1; }
+            if (random == 1) { player.pourcentDo += 15; }
+            if (random == 2) { player.PVmax += 10; player.PVact += 10; }
+            if (random == 3) { player.PAmax++; player.PAact++; }
+            if (random == 4) { player.PMmax++; player.PMact++; }
+            if (random == 5) { player.POBonus++; }
+            ajouterAuChatType("Le Chatteux est un malin, il jette un oeil à ses stats pour voir quel bonus il a gagné.", 0);
             break;
     }
-   // playerSave = copy(player);
+    player.afficherStatsEntite();
+
+    // playerSave = copy(player);
     playerSave = Object.assign({}, player);
 }
 
