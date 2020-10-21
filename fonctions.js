@@ -63,6 +63,7 @@ function supprimerTousObstacles() {
 
 function viderBoard() {
     for (let i = 0; i < tabCells.length; i++) {
+        if (tabCells[i].contenu){delete tabCells[i].contenu;}
         tabCells[i].contenu = null;
     }
     refreshBoard();

@@ -98,7 +98,7 @@ nain = new entite("Nain", 7, 3, 40, 0, [ecrasement], "ENEMY", iaRangeMoinsDebile
 apprentiSorcier = new entite("Apprenti sorcier", 3, 2, 15, 0, [diceThrow], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/petitmage.png", 3);
 
 
-boite = new entite("Boite", 0, 0, 10, 0, [], "NEUTRAL", null, 0, 0, "img/boite.png", 0);
+boite = new entite("Boite", 0, 0, 10, 0, [], "NEUTRAL", null, 0, 0, "img/box.png", 0);
 ogreInvoque = new entite("Ogre Invoqué", 6, 2, 30, 0, [cac], "ALLY", iaDebile_ALLY, 0, 0, "img/ogre2.png", 0);
 
 
