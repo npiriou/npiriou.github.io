@@ -1,6 +1,6 @@
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
-  }
+}
 function initialisationSorts() {
 
     for (let i = 0; i < player.sorts.length; i++) {
@@ -27,7 +27,7 @@ function initialiserObstacles() {
     for (let i = 0; i < tabCells.length; i++) {
         if (contientEntite(tabCells[i]))
             continue;
-        if (getRandomInt(4) == 0) // changer ici pour modifier le nb d'obstacles sur la map
+        if (getRandomInt(6) == 0) // changer ici pour modifier le nb d'obstacles sur la map
             tabCells[i].contenu = boite.clone();
     }
     for (let i = 0; i < tabCells.length; i++) {
@@ -88,8 +88,9 @@ function numeroterBoard() {
     for (let y = 0; y < 10; y++) {
         for (let index = 0; index < 10; index++) {
             let numero = index + 10 * y;
-            // document.getElementById("board").rows[y].cells[index].innerHTML = numero;
-            document.getElementById("board").rows[y].cells[index].id = numero;
+          //  document.getElementById("board").rows[y].cells[index].id = numero;
+            document.getElementById("board").rows[y].cells[index].innerHTML = `<div id=${numero} class='divCell'></div>`;
+            
         }
     }
 }
@@ -137,13 +138,23 @@ function posAdjacentes(pos) {
 function refreshBoard() {
     for (let index = 0; index < tabCells.length; index++) {
         if (tabCells[index].contenu != null) {
-            document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].innerHTML = (
-                `<img id="art" data-toggle="tooltip" data-placement="top"
+            document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].children[0].innerHTML = (
+                `<img id="art"class="artEntite" data-toggle="tooltip" data-placement="top"
                  src ="` + tabCells[index].contenu.skin + `" 
                  title="` + tabCells[index].contenu.nom + ` (` + tabCells[index].contenu.PVact + ` / ` + tabCells[index].contenu.PVmax + `)"
                  </img>`);
+            if (tabCells[index].contenu.side == "ALLY") {
+                document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].classList.add("cellAlly");
+            }
+            if (tabCells[index].contenu.side == "ENEMY") {
+                document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].classList.add("cellEnemy");
+            }
         }
-        else document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].innerHTML = "";
+        else {
+            document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].children[0].innerHTML = "";
+            document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].classList.remove("cellAlly");
+            document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].classList.remove("cellEnemy");
+        }
     }
     $('.tooltip').remove(); //supprime toutes les tooltips affichées
     $('[data-toggle="tooltip"]').tooltip(); // refresh les tooltips
@@ -289,7 +300,9 @@ function winRound() {
     $(`#modalChooseBonus`).modal({ backdrop: 'static', keyboard: false });
 }
 
-function looseRound() {
+async function looseRound() {
+    game.phase = "END";
+    await new Promise(r => setTimeout(r, 600));
     if (confirm("Vous êtes mort")) {
         location.reload();
     } else {
@@ -386,7 +399,7 @@ function splash_img(elem, imgpath) {
         ctx.clearRect(0, 0, width, height);
         ctx.globalAlpha = ctx.opacity;
         ctx.opacity -= 0.01;
-        base_image = new Image();
+        let base_image = new Image();
         base_image.src = imgpath;
         // TODO offset et size devrait etre configurable
         ctx.drawImage(base_image, 50, 50, 50, 70);
@@ -742,4 +755,114 @@ function ajouterAuChatType(ecriture, type) {
     //descend la scrolleuse
     statusenrobage.scrollTop = statusenrobage.scrollHeight;
 
+}
+
+function splash_projectile(elem, elemCible, img) {
+    //EXEMPLE splash_projectile($("#9")[0], $("#39")[0], {path:"img/arti.png", width: 50, height:50, nb:15})
+    {
+        let coords = getCoords(elem);
+        let coordsCible = getCoords(elemCible);
+        const bubbles = img.nb; //nb de projectiles 10k c'est trop
+
+
+
+        const explode = (x, y, xCible, yCible, img) => {
+            let particles = [];
+            let ratio = window.devicePixelRatio;
+            let c = document.createElement('canvas');
+            let ctx = c.getContext('2d');
+            let xCanva = 100;
+            let yCanva = 100;
+            let xCanvaArr = 100;
+            let yCanvaArr = 100;
+
+            c.style.position = 'absolute';
+            c.style.left = Math.min(x, xCible) - 100 + 'px';
+            c.style.top = Math.min(y, yCible) - 100 + 'px';
+            c.style.pointerEvents = 'none';
+            c.style.width = Math.max(x, xCible) - Math.min(x, xCible) + 200 + 'px';
+            c.style.height = Math.max(y, yCible) - Math.min(y, yCible) + 200 + 'px';
+            c.style.zIndex = 100;
+            c.width = (Math.max(x, xCible) - Math.min(x, xCible) + 200) * ratio;
+            c.height = (Math.max(y, yCible) - Math.min(y, yCible) + 200) * ratio;
+            c.style.zIndex = "9999999"
+            document.body.appendChild(c);
+
+
+            if (x > xCible) {
+                xCanva = c.width - 100;
+                xCanvaArr = 100;
+            }
+            else xCanvaArr = c.width - 100;
+            if (y > yCible) {
+                yCanva = c.height - 100;
+                yCanvaArr = 100;
+            }
+            else yCanvaArr = c.height - 100;
+
+            var dx = (xCible - x);
+            var dy = (yCible - y);
+
+            for (var i = 0; i < bubbles; i++) {
+                particles.push({
+                    dx: dx,
+                    dy: dy,
+
+                    x: xCanva, // pos de depart, legerement randomisable
+                    y: yCanva, // pos de depart, legerement randomisable
+                    xArr: xCanvaArr, // pos d'arrivee, legerement randomisable
+                    yArr: yCanvaArr, // pos d'arrivee, legerement randomisable
+
+                    delay: 0,
+                    speed: 0.06, // randomisable
+                    opacity: 1, // randomisable
+                });
+
+            }
+
+            render(particles, ctx, c.width, c.height, img);
+            setTimeout(() => document.body.removeChild(c), 1500); // temps d'animation au bout duquel tout est delete
+        };
+
+        const render = (particles, ctx, width, height, img) => {
+            requestAnimationFrame(() => render(particles, ctx, width, height, img));
+            ctx.clearRect(0, 0, width, height);
+            // ctx.globalAlpha = 1.0;
+            // ctx.font = 'bold 48px serif';
+            // ctx.fillStyle = 'black';
+            // ctx.fillText(text, width / 4, ctx.textY);
+            // ctx.textY -= height / 100;
+            particles.forEach((p, i) => {
+                p.delay--;
+                if (p.delay > 0) {
+                    return;
+                }
+                p.x = p.x + p.dx * p.speed;
+                p.y = p.y + p.dy * p.speed;
+
+                //p.opacity -= 0.01;
+                if (p.dx > 0 && p.x > p.xArr) {
+                    return;
+                }
+                if (p.dx < 0 && p.x < p.xArr) {
+                    return;
+                }
+                if (p.dy > 0 && p.y > p.yArr) {
+                    return;
+                }
+                if (p.dy < 0 && p.y < p.yArr) {
+                    return;
+                }
+                let base_image = new Image();
+                base_image.src = img.path;
+                // TODO offset et size devrait etre configurable
+                ctx.drawImage(base_image, p.x - img.width / 2, p.y - img.height / 2, img.width, img.height); // (base_image, p.x, p.y, LARGEUR, HAUTEUR)
+            });
+
+            return ctx;
+        };
+
+        const r = (a, b, c) => parseFloat((Math.random() * ((a ? a : 1) - (b ? b : 0)) + (b ? b : 0)).toFixed(c ? c : 0));
+        explode(coords.left, coords.top, coordsCible.left, coordsCible.top, img);
+    }
 }

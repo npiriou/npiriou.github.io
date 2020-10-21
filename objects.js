@@ -5,13 +5,14 @@ function cell(posNum, posX, posY, contenu) {
     this.contenu = contenu;
     this.glyphes = [];
 
-    this.recevoirSort = function (bonusDo, pcDo) {
-        if (!game.sortActif.effetCell(this)) {
+    this.recevoirSort = function (entite) {
+        if (!game.sortActif.effetCell(this, entite)) {
             // sort sans dommage
             return;
         }
+        if (game.sortActif.animation){splash_projectile($("#"+entite.pos())[0], $("#"+this.posNum)[0], game.sortActif.animation)}
         if (this.contenu) {
-            this.contenu.recevoirSort(bonusDo, pcDo);
+            this.contenu.recevoirSort(entite);
         } else {
             ajouterAuChatType("Voilà des PA bien gachés à lancer un sort dans le vide", 1);
             splash(document.getElementById(this.posNum), "");
@@ -108,12 +109,13 @@ function entite(
         griserOuDegriserSorts();
     }
     this.retirerPVs = function (PVPerdus) {
-        this.PVact = this.PVact - PVPerdus;
+        this.PVact = Math.max(this.PVact - PVPerdus, 0);
         let celltarget = document.getElementById(this.pos());
 
         splash(celltarget, " - " + PVPerdus);
         refreshBoard();
-        ajouterAuChatType(this.nom + " perd " + PVPerdus + " PVs. Il lui reste " + this.PVact + " PVs.", 0);
+        this.afficherStatsEntite();
+        ajouterAuChatType(this.nom + " perd " + PVPerdus + " PVs.", 0);
         if (this.PVact <= 0) {
             this.PVact = 0;
             this.mort();

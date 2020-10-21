@@ -40,12 +40,12 @@ function retirerToutesPrevisuSort() {
 function addHoverCell() {
     for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
         //if (contientEntite(tabCells[index]) && (tabCells[index].contenu.nom != "Boite")) {
-        document.getElementsByClassName("cell")[index].addEventListener("mouseover", onHoverCell);
-        document.getElementsByClassName("cell")[index].addEventListener("mouseout", onMouseOutOfCell);
+        document.getElementsByClassName("cell")[index].children[0].addEventListener("mouseover", onHoverCell);
+        document.getElementsByClassName("cell")[index].children[0].addEventListener("mouseout", onMouseOutOfCell);
     }
 }
 function onHoverCell() {
-
+debugger;
     if (contientEntite(tabCells[this.id]) && tabCells[this.id].contenu.nom != "Boite") {
         tabCells[this.id].contenu.afficherStatsEntite();
     }

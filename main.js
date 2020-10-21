@@ -1,8 +1,9 @@
 
 let tabCells = [];
+numeroterBoard();
 initialisationCellules();
 initialisationSorts();
-numeroterBoard();
+
 
 
 playerSave = player.clone();

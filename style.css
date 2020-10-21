@@ -6,15 +6,23 @@ div {
 #board {
   width: 800px;
   height: 800px;
+  table-layout: fixed;
 }
 
 td.cell {
   border: 1px solid rgb(71, 65, 43);
-  /* height: 10%;
-    width: 10%; */
-  height: 79px;
-  width: 79px;
+   height: 80px;
+    width: 80px; 
 }
+.cellAlly{
+  border-bottom : 1px solid rgb(17, 0, 255) !important ;
+}
+
+.cellEnemy{
+  border-bottom: 1px solid rgb(255, 0, 0) !important;
+}
+
+
 
 #tabSorts {
   width: 200px;
@@ -43,6 +51,11 @@ img {
   /* width: 100%;
     height: 100%; */
   border-radius: 10px;
+}
+
+.artEntite{
+  height:78px;
+  width:78px;
 }
 
 .disabled {
@@ -89,7 +102,11 @@ body {
   justify-content: center;
   align-items: center;
 }
-
+.divCell{
+  height:79px;
+  width:79px;
+  overflow:hidden;
+}
 .previsuPM:hover {
   background-color: darkgreen;
   cursor: pointer;

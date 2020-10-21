@@ -1,6 +1,6 @@
 function addOnClic() {
     for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
-        document.getElementsByClassName("cell")[index].addEventListener("click", cellCliqued);
+        document.getElementsByClassName("cell")[index].children[0].addEventListener("click", cellCliqued);
     }
 
     $(`#modalChooseBonus`).on('hidden.bs.modal', function () {
