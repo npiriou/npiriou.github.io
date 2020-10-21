@@ -113,12 +113,13 @@ window.onkeydown = function (event) {
     }
 };
 
-window.addEventListener('keydown', function(e) { // empeche le scrolling quand on tape espace
-    if(e.keyCode == 32 && e.target == document.body) {
-      e.preventDefault();
+window.addEventListener('keydown', function (e) { // empeche le scrolling quand on tape espace
+    if (e.keyCode == 32 && e.target == document.body) {
+        e.preventDefault();
     }
+});
+
+document.addEventListener('contextmenu', event => {
+    event.preventDefault();
+retirerToutesPrevisuSort();
   });
-
-
-
-

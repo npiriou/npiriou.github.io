@@ -65,7 +65,8 @@ img {
 }
 
 body {
-  background: rgb(165, 149, 98)
+  background: rgb(165, 149, 98);
+  user-select: none;
 }
 
 #divHeader {
