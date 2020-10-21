@@ -27,7 +27,7 @@ function initialiserObstacles() {
     for (let i = 0; i < tabCells.length; i++) {
         if (contientEntite(tabCells[i]))
             continue;
-        if (getRandomInt(6) == 0) // changer ici pour modifier le nb d'obstacles sur la map
+        if (getRandomInt(4) == 0) // changer ici pour modifier le nb d'obstacles sur la map
             tabCells[i].contenu = boite.clone();
     }
     for (let i = 0; i < tabCells.length; i++) {
@@ -164,7 +164,8 @@ function refreshBoard() {
 
 async function deplacerContenu(posDepart, posArrivee) {
     if (tabCells[posArrivee].contenu != null) {
-        ajouterAuChatType("La cellule d'arrivée n'est pas vide", 0);
+        console.log("La cellule d'arrivée n'est pas vide");
+        return 0;
     }
     else {
         tabCells[posArrivee].contenu = tabCells[posDepart].contenu;
@@ -172,6 +173,7 @@ async function deplacerContenu(posDepart, posArrivee) {
     }
     refreshBoard();
     await sleep(100);
+    return 1;
 }
 
 function deplacerContenuInstantane(posDepart, posArrivee) {
@@ -228,8 +230,9 @@ async function passerTourJoueur() {
         game.mobActif = tabMobs[i];
         // faire jouer chaque ia ici
         ajouterAuChatType(tabMobs[i].nom + " joue son tour.", 0);
-        await tabMobs[i].ia();
-        tabMobs[i].resetPAPM();
+        await game.mobActif.ia();
+        game.mobActif.resetPAPM();
+        game.mobActif.reduirecdSorts();
         game.mobActif = null;
         game.sortActif = null;
     }
@@ -241,8 +244,9 @@ async function passerTourJoueur() {
         game.mobActif = tabMobs[i];
         // faire jouer chaque ia ici
         ajouterAuChatType(tabMobs[i].nom + " joue son tour.", 0);
-        await tabMobs[i].ia();
-        tabMobs[i].resetPAPM();
+        await game.mobActif.ia();
+        game.mobActif.resetPAPM();
+        game.mobActif.reduirecdSorts();
         game.mobActif = null;
         game.sortActif = null;
     }
@@ -260,8 +264,6 @@ function griserOuDegriserSorts() {
         if ((player.sorts[i].coutPA <= player.PAact) && (player.cdSorts[i] <= 0)) {
             document.getElementsByClassName("sort")[i].children[0].classList.remove("disabled");
         }
-
-
     }
 }
 
@@ -618,6 +620,180 @@ function splash_heal(elem, text) {
     }
 }
 
+function splash_rage(elem, text) {
+    {
+        let coords = getCoords(elem);
+        const colors = ['#740001', '#ae0001', '#eeba30', '#d3a625', '#000000'];
+        const bubbles = 20;
+
+        const explode = (x, y, text) => {
+            let particles = [];
+            let ratio = window.devicePixelRatio;
+            let c = document.createElement('canvas');
+            let ctx = c.getContext('2d');
+
+            c.style.position = 'absolute';
+            c.style.left = x - 100 + 'px';
+            c.style.top = y - 100 + 'px';
+            c.style.pointerEvents = 'none';
+            c.style.width = 200 + 'px';
+            c.style.height = 200 + 'px';
+            c.style.zIndex = 100;
+            c.width = 200 * ratio;
+            c.height = 200 * ratio;
+            c.style.zIndex = "9999999"
+            let startY = c.height * 6 / 10;
+            ctx.textY = startY;
+            document.body.appendChild(c);
+
+
+            for (var i = 0; i < bubbles; i++) {
+                particles.push({
+                    x: r(c.width / 2 - c.width * 0.2, c.width / 2 + c.width * 0.2),
+                    y: r(startY * 0.9, startY * 1.2),
+                    radius: r(20, 40),
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: r(2, 3),
+                    opacity: r(0.5, 1, true),
+                });
+
+            }
+
+            render(particles, ctx, c.width, c.height, text);
+            setTimeout(() => document.body.removeChild(c), 1000);
+        };
+
+        const render = (particles, ctx, width, height, text) => {
+            requestAnimationFrame(() => render(particles, ctx, width, height, text));
+            ctx.clearRect(0, 0, width, height);
+            ctx.globalAlpha = 1.0;
+            ctx.font = 'bold 48px serif';
+            ctx.fillStyle = 'black';
+            ctx.fillText(text, width / 4, ctx.textY);
+            ctx.textY -= height / 100;
+            particles.forEach((p, i) => {
+                var x = p.x;
+                var y = p.y;
+                var width = p.radius;
+                var height = p.radius;
+
+                p.y -= p.speed;
+                //p.x += p.speed * Math.sin(p.rotation * Math.PI / 180);
+
+                p.opacity -= 0.01;
+
+                if (p.opacity < 0 || p.radius < 0) return;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.globalAlpha = p.opacity;
+                var topCurveHeight = height * 0.3;
+                ctx.moveTo(x, y + topCurveHeight);
+
+                ctx.beginPath();
+                ctx.rect(r(60,120), r(50,120), r(1,10), r(1,10));
+                ctx.stroke();
+
+                ctx.closePath();
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                ctx.restore();
+
+            });
+
+            return ctx;
+        };
+
+        const r = (a, b, c) => parseFloat((Math.random() * ((a ? a : 1) - (b ? b : 0)) + (b ? b : 0)).toFixed(c ? c : 0));
+        explode(coords.left, coords.top, text);
+    }
+}
+function splash_flash(elem) {
+    {
+        let coords = getCoords(elem);
+        const colors = ['#fff'];
+        const bubbles = 20;
+
+        const explode = (x, y) => {
+            let particles = [];
+            let ratio = window.devicePixelRatio;
+            let c = document.createElement('canvas');
+            let ctx = c.getContext('2d');
+
+            c.style.position = 'absolute';
+            c.style.left = x - 100 + 'px';
+            c.style.top = y - 100 + 'px';
+            c.style.pointerEvents = 'none';
+            c.style.width = 200 + 'px';
+            c.style.height = 200 + 'px';
+            c.style.zIndex = 100;
+            c.width = 200 * ratio;
+            c.height = 200 * ratio;
+            c.style.zIndex = "9999999"
+            let startY = c.height * 6 / 10;
+            ctx.textY = startY;
+            document.body.appendChild(c);
+
+
+            for (var i = 0; i < bubbles; i++) {
+                particles.push({
+                    x: r(c.width / 2 - c.width * 0.2, c.width / 2 + c.width * 0.2),
+                    y: r(startY * 0.9, startY * 1.2),
+                    radius: r(20, 40),
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: r(2, 3),
+                    opacity: r(0.5, 1, true),
+                });
+
+            }
+
+            render(particles, ctx, c.width, c.height);
+            setTimeout(() => document.body.removeChild(c), 1000);
+        };
+
+        const render = (particles, ctx, width, height) => {
+            requestAnimationFrame(() => render(particles, ctx, width, height));
+            ctx.clearRect(0, 0, width, height);
+
+            particles.forEach((p, i) => {
+                var x = p.x;
+                var y = p.y;
+                var width = p.radius;
+                var height = p.radius;
+
+                p.y -= p.speed;
+                //p.x += p.speed * Math.sin(p.rotation * Math.PI / 180);
+
+                p.opacity -= 0.01;
+
+                if (p.opacity < 0 || p.radius < 0) return;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.globalAlpha = p.opacity;
+                var topCurveHeight = height * 0.3;
+                ctx.moveTo(x, y + topCurveHeight);
+
+                ctx.beginPath();
+                ctx.rect(r(60,120), r(50,120), r(1,10), r(1,10));
+                ctx.stroke();
+
+                ctx.closePath();
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                ctx.restore();
+
+            });
+
+            return ctx;
+        };
+
+        const r = (a, b, c) => parseFloat((Math.random() * ((a ? a : 1) - (b ? b : 0)) + (b ? b : 0)).toFixed(c ? c : 0));
+        explode(coords.left, coords.top);
+    }
+}
+
+
 function initCdSorts() {
 
     for (let i = 0; i < tabCells.length; i++) {
@@ -629,17 +805,17 @@ function initCdSorts() {
 
 
 
-function isInSight(posDep, posCible) { // check la Ligne de vue
+function isInSight(posDep, posCible, posAIgnorer = 100) { // check la Ligne de vue
 
-    function w(e, t, n, r) {
+    function w(e, t, n, r, posAIgnorer) {
         e = parseInt(e), t = parseInt(t);
         var o = (n = parseInt(n)) > e ? 1 : -1, a = (r = parseInt(r)) > t ? 1 : -1, s = !0, i = Math.abs(n - e), c = Math.abs(r - t), l = e, u = t, d = -1 + i + c, p = i - c; i *= 2, c *= 2;
         for (var m = 0; m < 1; m++)p > 0 ? (l += o, p -= c) : p < 0 ? (u += a, p += i) : (l += o, p -= c, u += a, p += i, d--);
-        for (; d > 0 && s;)null != tabCells[u * 10 + l].contenu ? s = !1 : (p > 0 ? (l += o, p -= c) : p < 0 ? (u += a, p += i) : (l += o, p -= c, u += a, p += i, d--), d--);
+        for (; d > 0 && s;)((null != tabCells[u * 10 + l].contenu) && u * 10 + l != posAIgnorer) ? s = !1 : (p > 0 ? (l += o, p -= c) : p < 0 ? (u += a, p += i) : (l += o, p -= c, u += a, p += i, d--), d--);
         return s
     }
 
-    return w(xFromPos(posDep), yFromPos(posDep), xFromPos(posCible), yFromPos(posCible));
+    return w(xFromPos(posDep), yFromPos(posDep), xFromPos(posCible), yFromPos(posCible), posAIgnorer);
 }
 
 function estAPorteeDeDeplacement(posdep, posarr, pm) {
@@ -858,7 +1034,7 @@ function splash_projectile(elem, elemCible, img) {
                 base_image.src = img.path;
                 // TODO offset et size devrait etre configurable
                 ctx.drawImage(base_image, p.x - img.width / 2, p.y - img.height / 2, img.width, img.height); // (base_image, p.x, p.y, LARGEUR, HAUTEUR)
-            delete  base_image;
+                delete base_image;
             });
 
             return ctx;
@@ -869,8 +1045,8 @@ function splash_projectile(elem, elemCible, img) {
     }
 }
 
-async function sleep(time){
-let  a= new Promise(r => setTimeout(r, time));
-await a;
-delete a;
+async function sleep(time) {
+    let a = new Promise(r => setTimeout(r, time));
+    await a;
+    delete a;
 }

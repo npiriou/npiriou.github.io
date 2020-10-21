@@ -6,6 +6,8 @@ function cell(posNum, posX, posY, contenu) {
     this.glyphes = [];
 
     this.recevoirSort = function (entite) {
+        ajouterAuChatType(entite.nom +" lance "+game.sortActif.nom, 0);
+        entite.mettreSortEnCd();
         if (!game.sortActif.effetCell(this, entite)) {
             // sort sans dommage
             return;
@@ -130,6 +132,15 @@ function entite(
         refreshBoard();
         ajouterAuChatType(this.nom + " gagne " + PVGagnes + " PVs. Il lui reste " + this.PVact + " PVs.",0);
     }
+
+this.ajouterDo = function(DoAAjouter){
+    this.bonusDo += DoAAjouter;
+    let celltarget = document.getElementById(this.pos());
+    splash_rage( celltarget," + " + DoAAjouter);
+    ajouterAuChatType(this.nom + " gagne " + DoAAjouter + " dommages", 0);
+
+}
+
     this.mort = function () {
         ajouterAuChatType(this.nom + " est mort.", 0);
         tabCells[this.pos()].contenu = null;
