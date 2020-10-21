@@ -25,6 +25,7 @@ function pathfinding(Xdep, Ydep, Xarr, Yarr, listeAEnlever = []) {
         var cellule = [result[i].y, result[i].x]
         chemin.push(cellule);
     }
+    delete graph;
     return chemin;
 }
 
@@ -73,6 +74,7 @@ function pathfindingAcrossEntities(Xdep, Ydep, Xarr, Yarr, listeAEnlever = []) {
         var cellule = [result[i].y, result[i].x]
         chemin.push(cellule);
     }
+    delete graph;
     return chemin;
 }
 
@@ -121,7 +123,7 @@ iaDebile = async function () {
                         if (contientEntite(tabCells[tabPosAdj[i]])) {
                             tabCells[tabPosAdj[i]].recevoirSort(this);
                         }
-                        await new Promise(r => setTimeout(r, 100));
+                        await sleep(100);
                         this.PAact = this.PAact - this.sorts[j].coutPA;
                     }
                 }
@@ -179,7 +181,7 @@ spamSortsSurPlayer = async function (entite) { // bien penser a AWAIT quand on l
             while (entite.PAact >= entite.sorts[i].coutPA) {
                 game.sortActif = entite.sorts[i];
                 tabCells[player.pos()].recevoirSort(entite);
-                await new Promise(r => setTimeout(r, 200));
+                await sleep(200);;
                 entite.PAact = entite.PAact - entite.sorts[i].coutPA;
             }
         }
@@ -194,7 +196,7 @@ spamSortsSurEnnemi = async function (entite, ennemi) { // bien penser a AWAIT qu
             while (entite.PAact >= entite.sorts[i].coutPA) {
                 game.sortActif = entite.sorts[i];
                 tabCells[ennemi.pos()].recevoirSort(entite);
-                await new Promise(r => setTimeout(r, 200));
+                await sleep(200);;
                 entite.PAact = entite.PAact - entite.sorts[i].coutPA;
                 ennemi = getNearest(entite.pos(), ennemi.side); // on refocus pour trouver un autre ennemi si il est mort
             }
@@ -398,7 +400,7 @@ iaDebile_ALLY = async function () {
                         if (contientEntite(tabCells[tabPosAdj[i]])) {
                             tabCells[tabPosAdj[i]].recevoirSort(this);
                         }
-                        await new Promise(r => setTimeout(r, 100));
+                        await sleep(100);;
                         this.PAact = this.PAact - this.sorts[j].coutPA;
                     }
                 }

@@ -45,7 +45,6 @@ function addHoverCell() {
     }
 }
 function onHoverCell() {
-debugger;
     if (contientEntite(tabCells[this.id]) && tabCells[this.id].contenu.nom != "Boite") {
         tabCells[this.id].contenu.afficherStatsEntite();
     }

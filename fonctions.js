@@ -63,7 +63,7 @@ function supprimerTousObstacles() {
 
 function viderBoard() {
     for (let i = 0; i < tabCells.length; i++) {
-        if (tabCells[i].contenu){delete tabCells[i].contenu;}
+        if (tabCells[i].contenu) { delete tabCells[i].contenu; }
         tabCells[i].contenu = null;
     }
     refreshBoard();
@@ -89,9 +89,9 @@ function numeroterBoard() {
     for (let y = 0; y < 10; y++) {
         for (let index = 0; index < 10; index++) {
             let numero = index + 10 * y;
-          //  document.getElementById("board").rows[y].cells[index].id = numero;
+            //  document.getElementById("board").rows[y].cells[index].id = numero;
             document.getElementById("board").rows[y].cells[index].innerHTML = `<div id=${numero} class='divCell'></div>`;
-            
+
         }
     }
 }
@@ -171,7 +171,7 @@ async function deplacerContenu(posDepart, posArrivee) {
         tabCells[posDepart].contenu = null;
     }
     refreshBoard();
-    await new Promise(r => setTimeout(r, 100));
+    await sleep(100);
 }
 
 function deplacerContenuInstantane(posDepart, posArrivee) {
@@ -303,7 +303,7 @@ function winRound() {
 
 async function looseRound() {
     game.phase = "END";
-    await new Promise(r => setTimeout(r, 600));
+    await sleep(600);
     if (confirm("Vous êtes mort")) {
         location.reload();
     } else {
@@ -404,7 +404,7 @@ function splash_img(elem, imgpath) {
         base_image.src = imgpath;
         // TODO offset et size devrait etre configurable
         ctx.drawImage(base_image, 50, 50, 50, 70);
-
+        delete base_image;
         return ctx;
     };
 
@@ -858,6 +858,7 @@ function splash_projectile(elem, elemCible, img) {
                 base_image.src = img.path;
                 // TODO offset et size devrait etre configurable
                 ctx.drawImage(base_image, p.x - img.width / 2, p.y - img.height / 2, img.width, img.height); // (base_image, p.x, p.y, LARGEUR, HAUTEUR)
+            delete  base_image;
             });
 
             return ctx;
@@ -866,4 +867,10 @@ function splash_projectile(elem, elemCible, img) {
         const r = (a, b, c) => parseFloat((Math.random() * ((a ? a : 1) - (b ? b : 0)) + (b ? b : 0)).toFixed(c ? c : 0));
         explode(coords.left, coords.top, coordsCible.left, coordsCible.top, img);
     }
+}
+
+async function sleep(time){
+let  a= new Promise(r => setTimeout(r, time));
+await a;
+delete a;
 }

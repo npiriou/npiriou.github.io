@@ -135,6 +135,7 @@ function entite(
         tabCells[this.pos()].contenu = null;
         refreshBoard();
         checkEndRound();
+        delete this;
     }
     this.clone = function () {
         return new entite(this.nom, this.PAmax, this.PMmax, this.PVmax, this.POBonus, this.sorts, this.side, this.ia, this.bonusDo, this.pourcentDo, this.skin);
