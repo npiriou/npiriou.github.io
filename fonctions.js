@@ -27,7 +27,7 @@ function initialiserObstacles() {
     for (let i = 0; i < tabCells.length; i++) {
         if (contientEntite(tabCells[i]))
             continue;
-        if (getRandomInt(4) == 0) // changer ici pour modifier le nb d'obstacles sur la map
+        if (getRandomInt(5) == 0) // changer ici pour modifier le nb d'obstacles sur la map
             tabCells[i].contenu = boite.clone();
     }
     for (let i = 0; i < tabCells.length; i++) {
@@ -392,20 +392,22 @@ function getCoords(elem) { // crossbrowser version
     return { top: Math.round(top), left: Math.round(left) };
 }
 
-function splash_img(elem, imgpath) {
+function splash_img(elem, img) {
     let coords = getCoords(elem);
     let c = document.createElement('canvas');
     let ctx = c.getContext('2d');
 
-    const render = (width, height, imgpath) => {
-        requestAnimationFrame(() => render(width, height, imgpath));
+    const render = (width, height, img) => {
+        requestAnimationFrame(() => render(width, height, img));
         ctx.clearRect(0, 0, width, height);
         ctx.globalAlpha = ctx.opacity;
-        ctx.opacity -= 0.01;
+        if (!img.nofade) {
+            ctx.opacity -= 0.01;
+        }
         let base_image = new Image();
-        base_image.src = imgpath;
-        // TODO offset et size devrait etre configurable
-        ctx.drawImage(base_image, 50, 50, 50, 70);
+        base_image.src = img.path;
+        // TODO offset devrait etre configurable
+        ctx.drawImage(base_image, 50, 50, img.width, img.height);
         delete base_image;
         return ctx;
     };
@@ -423,8 +425,11 @@ function splash_img(elem, imgpath) {
     ctx.opacity = 1.0;
     document.body.appendChild(c);
 
-    render(c.width, c.height, imgpath);
-    setTimeout(() => document.body.removeChild(c), 1000);
+    render(c.width, c.height, img);
+    if (!img.timeout) {
+        img.timeout = 1000;
+    }
+    setTimeout(() => document.body.removeChild(c), img.timeout);
 }
 
 function splash(elem, text) {
@@ -1049,4 +1054,23 @@ async function sleep(time) {
     let a = new Promise(r => setTimeout(r, time));
     await a;
     delete a;
+}
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
 }

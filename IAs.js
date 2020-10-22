@@ -223,7 +223,7 @@ lancerUnSortSurEnnemi = async function (entite, ennemi) { // bien penser a AWAIT
     }
 }
 lancerUnSortSurCell = async function (entite, cell, i = 0) { // bien penser a AWAIT quand on l'appelle
-    for (i ; i < entite.sorts.length; i++) {// on peut rentrer direct le num du sort si on le connait
+    if (i < entite.sorts.length) { // on peut rentrer direct le num du sort si on le connait
         if ((entite.sorts[i].estAPortee(entite.pos(), cell.posNum, entite.POBonus))
             && (entite.PAact >= entite.sorts[i].coutPA)
             && (entite.cdSorts[i] <= 0)
@@ -232,15 +232,20 @@ lancerUnSortSurCell = async function (entite, cell, i = 0) { // bien penser a AW
             cell.recevoirSort(entite);
             entite.PAact = entite.PAact - entite.sorts[i].coutPA;
             entite.mettreSortEnCd();
-            await sleep(200);;
-
-            break;
+            await sleep(200);
         }
     }
 }
 
+lancerUnSortSurCellParCode = async function(entite, cell, code) {
+    let i = entite.sorts.findIndex((sort) => sort.code == code);
+    if (i == -1) {
+        return 0;
+    }
 
-
+    await lancerUnSortSurCell(entite, cell, i);
+    return 1;
+}
 
 
 iaRangeMoinsDebile = async function () {
@@ -520,4 +525,121 @@ async function boostRage(entite) {
         }
     }
     return 0;
+}
+
+
+iaManeki = async function () {
+    let carterie = this.sorts.filter(sort => sort.code == "CARTERIE")[0];
+    let mapRoulette = this.sorts.filter(sort => sort.code == "MAPROULETTE")[0];
+
+    let carterieEstAPorteeAvecLDV = () => {
+        if (carterie.estAPortee(this.pos(), player.pos())
+            && (!carterie.LdV || isInSight(this.pos(), player.pos()))) {
+            return 1;
+        }
+        return 0;
+    };
+    const lancerCateries = async () => {
+        if (carterieEstAPorteeAvecLDV()) {
+            while (this.PAact >= carterie.coutPA) {
+                game.sortActif = carterie;
+                player.recevoirSort(this);
+                await new Promise(r => setTimeout(r, 500));
+                this.PAact = this.PAact - carterie.coutPA;
+                // reset l'IA qui se fait chier
+                this.toursPrecedents = [];
+            }
+        }
+    };
+    // Verifier si quelqu'un le ponce de loin sans qu'il reagisse
+    var aEteAttackeSansReponse = false;
+    if (!this.toursPrecedents) {
+        this.toursPrecedents = [this.PVact];
+    } else {
+        if (this.toursPrecedents.length >= 2) {
+            // s'il s'est fait tape 2 tours sans reponse OU 5 tours sans tapper, on va casser des gueules
+            if (this.toursPrecedents.length >= 5 ||
+                ((this.PVact < this.toursPrecedents[0] && this.toursPrecedents[0] < this.toursPrecedents[1])))
+                aEteAttackeSansReponse = 1;
+        }
+        this.toursPrecedents.push(this.PVact);
+    }
+
+    // lance mapRoulette sur sa propre cell
+    await lancerUnSortSurCellParCode(this, tabCells[this.pos()], "MAPROULETTE");
+    if (!this.premiereRoulette) {
+        await sleep(3300); // c'est long
+        this.premiereRoulette = 1;
+    } else {
+        await sleep(1000); 
+    }
+    
+
+    //   on récupere les pos du joueur et du mob qui joue
+    let posxJ = xFromPos(player.pos());
+    let posyJ = yFromPos(player.pos());
+
+    let posx = () => {return xFromPos(this.pos())};
+    let posy = () => {return yFromPos(this.pos())};
+
+    if (getRandomInt(3) == 0 || aEteAttackeSansReponse) {
+        // 33% attack
+        // rush et teste carterie ensuite fuite
+        let chemin = pathfinding(posx(), posy(), posxJ, posyJ);
+        chemin.pop(); // remove last cell
+        for (let i = 0; i < chemin.length; i++) {
+            if (this.PMact > 0) {
+                await deplacerContenu(this.pos(), posFromxy(chemin[i][0], chemin[i][1]));
+                this.PMact--;
+                if (carterieEstAPorteeAvecLDV()){
+                    break;
+                }                
+            }
+        }
+        await spamSortsSurPlayer(this);
+        // si le mec est planque
+        await casserBoiteGenante(this, player.pos());
+        // au cas ou
+        await spamSortsSurPlayer(this);
+    } else if (carterieEstAPorteeAvecLDV()) {
+        // si on est a portee, go taper
+        await spamSortsSurPlayer(this);
+    } else {
+        // sinon 66% on reste loin sauf si on peut attaquer
+        
+        // verifie si on peut attaquer sur une case reachable
+        var distanceAct = pathfinding(posx(), posy(), posxJ, posyJ).length;
+        var PMUtilise = this.PMact;
+        var MeilleurPos = [];
+        for (let i = 0; i < tabCells.length; i++) {
+            if (tabCells[i].contenu)
+                continue;
+            var distanceCurrent = pathfinding(tabCells[i].posX, tabCells[i].posY, posxJ, posyJ).length;
+            if (distanceCurrent != 0 && distanceCurrent <= PMUtilise && carterieEstAPorteeAvecLDV()) {
+                PMUtilise = distanceCurrent;
+                MeilleurPos = [tabCells[i].posX, tabCells[i].posY];
+            }
+        }
+        if (MeilleurPos.length) {
+            // on trouve le chemin le plus court et on s'y déplace case par case
+            let chemin = pathfinding(posx(), posy(), MeilleurPos[0], MeilleurPos[1]);
+            chemin.pop(); // remove last cell
+            for (let j = 0; j < chemin.length; j++) {
+                if (this.PMact > 0) {
+                    await deplacerContenu(this.pos(), posFromxy(chemin[j][0], chemin[j][1]));
+                    this.PMact--;
+                }
+            }
+        }
+        // lance attaque
+        await spamSortsSurPlayer(this);
+        // si le mec est planque
+        await casserBoiteGenante(this, player.pos());
+        // au cas ou
+        await spamSortsSurPlayer(this);
+    }
+
+    // full fuite ici
+    await sEloignerAuMax(this, player);
+
 }

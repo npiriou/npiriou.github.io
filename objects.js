@@ -24,20 +24,19 @@ function cell(posNum, posX, posY, contenu) {
     this.ajouterGlyphe = function (lanceur, nombreTours, callback, image = null) {
         this.glyphes.push([lanceur, nombreTours, callback]);
         if (image) {
-            document.getElementById(this.posNum).backgroundImage = "url('" + image + "')";
+            document.getElementById(this.posNum).style.backgroundImage = "url('" + image + "')";
+            document.getElementById(this.posNum).style.backgroundSize="78px 78px";
         } else {
             document.getElementById(this.posNum).classList.add("glyph");
         }
-
-        // todo image
     }
 
     this.triggerGlyphe = function (entite) {
         this.glyphes.forEach(infos => {
-            lanceur = infos[0];
-            // tours = infos[1];
-            callback = infos[2];
-            callback(this, lanceur, entite);
+            // lanceur = infos[0];
+            // // tours = infos[1];
+            // callback = infos[2];
+            // callback(this, lanceur, entite);
             // PAS TESTE
         });
     }
@@ -117,7 +116,7 @@ function entite(
         splash(celltarget, " - " + PVPerdus);
         refreshBoard();
         this.afficherStatsEntite();
-        ajouterAuChatType(this.nom + " perd " + PVPerdus + " PVs.", 0);
+        ajouterAuChatType(this.nom + " perd " + PVPerdus + " PVs. Il lui reste " + this.PVact + " PVs.", 0);
         if (this.PVact <= 0) {
             this.PVact = 0;
             this.mort();
