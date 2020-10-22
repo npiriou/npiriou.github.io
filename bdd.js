@@ -100,7 +100,7 @@ gobelin = new entite("Gobelin", 4, 5, 12, 0, [gifle], "ENEMY", iaDebile, 0, 0, "
 nain = new entite("Nain", 7, 3, 40, 0, [ecrasement], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/nain.png", 6);
 apprentiSorcier = new entite("Apprenti sorcier", 3, 2, 15, 0, [diceThrow], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/petitmage.png", 3);
 chien = new entite("Chien zombie", 8, 4, 30, 0, [cac, flash, rage], "ENEMY", iaDebile, 0, 0, "img/chien.png", 8);
-Maneki = new entite("Maneki Neko", 8, 4, 150, 0, [mapRoulette, carterie], "ENEMY", iaManeki, 0, 0, "img/Maneki.png", 15);
+Maneki = new entite("Maneki Neko", 8, 4, 150, 0, [carterie, mapRoulette], "ENEMY", iaManeki, 0, 0, "img/Maneki.png", 15);
 
 
 boite = new entite("Boite", 0, 0, 10, 0, [], "NEUTRAL", null, 0, 0, "img/box.png", 0);

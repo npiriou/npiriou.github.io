@@ -127,7 +127,7 @@ casserBoiteGenante = async function (entite, posAr) { // bien penser a AWAIT a c
     for (let i = 0; i < chemin.length; i++) {
         cellTestee = tabCells[posFromxy(chemin[i][0], chemin[i][1])];
         if ((cellTestee.contenu) && (cellTestee.contenu.side == "NEUTRAL")) {
-            posPourTaper = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(cellTestee.posNum, entite, entite.sorts[0])
+            posPourTaper = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(cellTestee.posNum, entite, entite.sorts[0]); // ?? Pourquoi que sort[0]?
             if (posPourTaper != null) {
                 await seDeplacer(entite, posPourTaper);
                 await lancerUnSortSurEnnemi(entite, cellTestee.contenu);
@@ -175,6 +175,7 @@ seDeplacerPoidsBoites = async function (entite, posAr) { // bien penser a AWAIT 
 
 
 spamSortsSurPlayer = async function (entite) { // bien penser a AWAIT quand on l'appelle
+    let sortLance = 0;
     for (let i = 0; i < entite.sorts.length; i++) {
         if ((entite.sorts[i].estAPortee(entite.pos(), player.pos(), entite.POBonus))
             && (entite.PAact >= entite.sorts[i].coutPA)
@@ -183,12 +184,14 @@ spamSortsSurPlayer = async function (entite) { // bien penser a AWAIT quand on l
             while (entite.PAact >= entite.sorts[i].coutPA) {
                 game.sortActif = entite.sorts[i];
                 tabCells[player.pos()].recevoirSort(entite);
-                await sleep(200);;
+                await sleep(200);
+                sortLance = 1;
                 entite.PAact = entite.PAact - entite.sorts[i].coutPA;
                 entite.mettreSortEnCd();
             }
         }
     }
+    return sortLance;
 }
 
 spamSortsSurEnnemi = async function (entite, ennemi) { // bien penser a AWAIT quand on l'appelle
@@ -539,18 +542,23 @@ iaManeki = async function () {
         }
         return 0;
     };
-    const lancerCateries = async () => {
-        if (carterieEstAPorteeAvecLDV()) {
-            while (this.PAact >= carterie.coutPA) {
-                game.sortActif = carterie;
-                player.recevoirSort(this);
-                await new Promise(r => setTimeout(r, 500));
-                this.PAact = this.PAact - carterie.coutPA;
+    const lancerCateriesEtDebloquerLePassage = async () => {
+        if (await spamSortsSurPlayer(this)) {
+            // reset l'IA qui se fait chier
+            this.toursPrecedents = [];
+        } else {
+            await casserBoiteGenante(this, player.pos()); // lance 1 seul sort
+            // on retente si on peut lancer une derniere carterie
+            if (await spamSortsSurPlayer(this)) {
                 // reset l'IA qui se fait chier
                 this.toursPrecedents = [];
+            } else {
+                // reteste de casser la boite
+                await casserBoiteGenante(this, player.pos());
             }
         }
     };
+
     // Verifier si quelqu'un le ponce de loin sans qu'il reagisse
     var aEteAttackeSansReponse = false;
     if (!this.toursPrecedents) {
@@ -596,14 +604,10 @@ iaManeki = async function () {
                 }                
             }
         }
-        await spamSortsSurPlayer(this);
-        // si le mec est planque
-        await casserBoiteGenante(this, player.pos());
-        // au cas ou
-        await spamSortsSurPlayer(this);
+        await lancerCateriesEtDebloquerLePassage(this);
     } else if (carterieEstAPorteeAvecLDV()) {
         // si on est a portee, go taper
-        await spamSortsSurPlayer(this);
+        await lancerCateriesEtDebloquerLePassage(this);
     } else {
         // sinon 66% on reste loin sauf si on peut attaquer
         
@@ -632,11 +636,7 @@ iaManeki = async function () {
             }
         }
         // lance attaque
-        await spamSortsSurPlayer(this);
-        // si le mec est planque
-        await casserBoiteGenante(this, player.pos());
-        // au cas ou
-        await spamSortsSurPlayer(this);
+        await lancerCateriesEtDebloquerLePassage(this);
     }
 
     // full fuite ici
