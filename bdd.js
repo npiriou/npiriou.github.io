@@ -126,7 +126,7 @@ boite = new entite("Boite", 0, 0, 10, 0, [], "NEUTRAL", null, 0, 0, "img/box.png
 ogreInvoque = new entite("Ogre Invoqué", 9, 2, 50, 0, [cac, rage], "ALLY", iaDebile_ALLY, 0, 0, "img/ogre2.png", 0);
 
 
-var listeMobs = [mannequin, ogre, orc, artillerie, sorcier, gobelin, nain, apprentiSorcier, chien, gobpriest];
+var listeMobs = [mannequin, ogre, orc, artillerie, sorcier, gobelin, nain, apprentiSorcier, chien];
 
 
 
