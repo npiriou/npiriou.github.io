@@ -12,7 +12,7 @@ function initialisationSorts() {
         );
         document.getElementsByClassName("sort")[i].addEventListener("mouseover", onHoverSort);
     }
-    $('[data-toggle="tooltip"]').tooltip(); // active les tooltips
+    //  $('[data-toggle="tooltip"]').tooltip(); // active les tooltips
 }
 
 function initialisationCellules() {
@@ -139,11 +139,17 @@ function posAdjacentes(pos) {
 function refreshBoard() {
     for (let index = 0; index < tabCells.length; index++) {
         if (tabCells[index].contenu != null) {
-            document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].children[0].innerHTML = (
-                `<img id="art"class="artEntite" data-toggle="tooltip" data-placement="top"
-                 src ="` + tabCells[index].contenu.skin + `" 
-                 title="` + tabCells[index].contenu.nom + ` (` + tabCells[index].contenu.PVact + ` / ` + tabCells[index].contenu.PVmax + `)"
-                 </img>`);
+
+            let img = new Image();
+            img.src = tabCells[index].contenu.skin;
+            img.classList.add("artEntite");
+            img.id = "art";
+            img.dataset.toggle = "tooltip";
+            img.dataset.placement = "top";
+            img.title = tabCells[index].contenu.nom + ` (` + tabCells[index].contenu.PVact + ` / ` + tabCells[index].contenu.PVmax + `)`;
+            document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].children[0].appendChild(img);
+            delete img;
+
             if (tabCells[index].contenu.side == "ALLY") {
                 document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].classList.add("cellAlly");
             }
@@ -157,8 +163,8 @@ function refreshBoard() {
             document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].classList.remove("cellEnemy");
         }
     }
-    $('.tooltip').remove(); //supprime toutes les tooltips affichées
-    $('[data-toggle="tooltip"]').tooltip(); // refresh les tooltips
+    //    $('.tooltip').remove(); //supprime toutes les tooltips affichées
+    //     $('[data-toggle="tooltip"]').tooltip(); // refresh les tooltips
 
 }
 
@@ -484,7 +490,7 @@ function remplirSelonPoids() {
     let randoMob;
     let randoPos;
     let bossPose = 0;
-    if (game.poids == gobpriest.poids+10) {listeMobs.push(gobpriest);}
+    if (game.poids == gobpriest.poids + 10) { listeMobs.push(gobpriest); }
 
 
     if (game.poids == Maneki.poids) { // round du boss
@@ -492,7 +498,7 @@ function remplirSelonPoids() {
             randoPos = randomInteger(40, 99);
             if (!contientEntite(tabCells[randoPos])) {
                 tabCells[randoPos].contenu = Maneki.clone();
-                bossPose =1;
+                bossPose = 1;
             }
         }
     }
@@ -501,7 +507,7 @@ function remplirSelonPoids() {
             randoPos = randomInteger(40, 99);
             if (!contientEntite(tabCells[randoPos])) {
                 tabCells[randoPos].contenu = gobpriest.clone();
-                bossPose =1;
+                bossPose = 1;
             }
         }
     }
