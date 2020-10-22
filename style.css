@@ -58,6 +58,8 @@ img {
   width:78px;
 }
 
+
+
 .disabled {
   filter: grayscale(1);
   -webkit-filter: grayscale(1);
@@ -67,6 +69,7 @@ img {
 body {
   background: rgb(165, 149, 98);
   user-select: none;
+  overflow : hidden;
 }
 
 #divHeader {
@@ -108,6 +111,8 @@ body {
   width:79px;
   overflow:hidden;
 }
+
+
 .previsuPM:hover {
   background-color: darkgreen;
   cursor: pointer;
@@ -116,6 +121,10 @@ body {
 .previsuPMPlusieurs {
   background-color: darkgreen !important;
   cursor: pointer;
+}
+
+.previsuPMMob{
+  background-color: rgba(41, 182, 41);
 }
 
 .previsuSort {
@@ -282,3 +291,8 @@ img {
   font-size: 20px;
   text-align: left;
 }
+
+/* footer{
+  min-height: 20px;
+  width: 100%;
+} */

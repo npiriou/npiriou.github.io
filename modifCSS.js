@@ -30,9 +30,13 @@ function previsuSort(sortClique) {
 }
 
 function retirerToutesPrevisuSort() {
-
     for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
         document.getElementsByClassName("cell")[index].classList.remove("previsuSort");
+    }
+}
+function retirerToutesPrevisuPMMob() {
+    for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
+        document.getElementsByClassName("cell")[index].classList.remove("previsuPMMob");
     }
 }
 
@@ -47,6 +51,7 @@ function addHoverCell() {
 function onHoverCell() {
     if (contientEntite(tabCells[this.id]) && tabCells[this.id].contenu.nom != "Boite") {
         tabCells[this.id].contenu.afficherStatsEntite();
+        tabCells[this.id].contenu.afficherPrevisuPMMob();
     }
     else if (estVide(tabCells[this.id])) {
         if (game.phase != "TURN_PLAYER_MOVE") { return; }
@@ -60,8 +65,10 @@ function onHoverCell() {
 }
 
 function onMouseOutOfCell() {
-    for (let index = 0; index < document.getElementsByClassName("cell").length; index++)
+    for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
         document.getElementsByClassName("cell")[index].classList.remove("previsuPMPlusieurs");
+    }
+    retirerToutesPrevisuPMMob();
 }
 
 function onHoverSort() {
@@ -121,5 +128,13 @@ window.addEventListener('keydown', function (e) { // empeche le scrolling quand 
 
 document.addEventListener('contextmenu', event => {
     event.preventDefault();
-retirerToutesPrevisuSort();
-  });
+    retirerToutesPrevisuSort();
+});
+
+
+$("body").swipe({
+    //Generic swipe handler for all directions
+    swipeRight: function () {
+        passerTourJoueur();
+    }
+});

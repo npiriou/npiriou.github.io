@@ -196,19 +196,20 @@ spamSortsSurPlayer = async function (entite) { // bien penser a AWAIT quand on l
 
 spamSortsSurEnnemi = async function (entite, ennemi) { // bien penser a AWAIT quand on l'appelle
     for (let i = 0; i < entite.sorts.length; i++) {
+
         if ((entite.sorts[i].estAPortee(entite.pos(), ennemi.pos(), entite.POBonus))
             && (entite.PAact >= entite.sorts[i].coutPA)
             && (entite.cdSorts[i] <= 0)
             && ((!entite.sorts[i].LdV) || isInSight(entite.pos(), ennemi.pos()))) {
-            while (entite.PAact >= entite.sorts[i].coutPA) {
-                game.sortActif = entite.sorts[i];
-                tabCells[ennemi.pos()].recevoirSort(entite);
-                await sleep(200);;
-                entite.PAact = entite.PAact - entite.sorts[i].coutPA;
-                entite.mettreSortEnCd();
-                ennemi = getNearest(entite.pos(), ennemi.side); // on refocus pour trouver un autre ennemi si il est mort
-            }
+            game.sortActif = entite.sorts[i];
+            tabCells[ennemi.pos()].recevoirSort(entite);
+            await sleep(200);;
+            entite.PAact = entite.PAact - entite.sorts[i].coutPA;
+            entite.mettreSortEnCd();
+            ennemi = getNearest(entite.pos(), ennemi.side); // on refocus pour trouver un autre ennemi si il est mort
+            await spamSortsSurEnnemi(entite, ennemi); 
         }
+
     }
 }
 lancerUnSortSurEnnemi = async function (entite, ennemi) { // bien penser a AWAIT quand on l'appelle
@@ -240,7 +241,7 @@ lancerUnSortSurCell = async function (entite, cell, i = 0) { // bien penser a AW
     }
 }
 
-lancerUnSortSurCellParCode = async function(entite, cell, code) {
+lancerUnSortSurCellParCode = async function (entite, cell, code) {
     let i = entite.sorts.findIndex((sort) => sort.code == code);
     if (i == -1) {
         return 0;
@@ -429,6 +430,7 @@ function getNearest(pos, side) {
 
 iaDebile_ALLY = async function () {
     ennemi = getNearest(this.pos(), "ENEMY");
+    await boostRage(this);
 
     await seDeplacer(this, ennemi.pos());
     await seDeplacerCommeSiSeulementBlocs(this, ennemi.pos());
@@ -522,13 +524,45 @@ async function flashIn(entite) {
 async function boostRage(entite) {
     for (let i = 0; i < entite.sorts.length; i++) {
         if (entite.sorts[i] == rage) {
-            debugger;
             await lancerUnSortSurCell(entite, tabCells[entite.pos()], i);
             return 1;
         }
     }
     return 0;
 }
+
+async function soinBossGob(entite) {
+    if (entite.PVact < (entite.PVmax - 50)) {
+        for (let i = 0; i < entite.sorts.length; i++) {
+            if (entite.sorts[i] == soingob) {
+                await lancerUnSortSurCell(entite, tabCells[entite.pos()], i);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+function premiereCellAdjLibre(entite) {
+    let tabPosAdj = posAdjacentes(entite.pos());
+    for (let i = 0; i < tabPosAdj.length; i++) {
+        if (!contientEntite(tabCells[tabPosAdj[i]])) {
+            return tabCells[tabPosAdj[i]];
+        }
+        return null;
+    }
+}
+
+async function invoquerGob(entite, cell) {
+    for (let i = 0; i < entite.sorts.length; i++) {
+        if (entite.sorts[i] == invoquerGobelin) {
+            await lancerUnSortSurCell(entite, cell, i);
+            return 1;
+        }
+    }
+    return 0;
+}
+
 
 
 iaManeki = async function () {
@@ -579,16 +613,16 @@ iaManeki = async function () {
         await sleep(3300); // c'est long
         this.premiereRoulette = 1;
     } else {
-        await sleep(1000); 
+        await sleep(1000);
     }
-    
+
 
     //   on récupere les pos du joueur et du mob qui joue
     let posxJ = xFromPos(player.pos());
     let posyJ = yFromPos(player.pos());
 
-    let posx = () => {return xFromPos(this.pos())};
-    let posy = () => {return yFromPos(this.pos())};
+    let posx = () => { return xFromPos(this.pos()) };
+    let posy = () => { return yFromPos(this.pos()) };
 
     if (getRandomInt(3) == 0 || aEteAttackeSansReponse) {
         // 33% attack
@@ -599,9 +633,9 @@ iaManeki = async function () {
             if (this.PMact > 0) {
                 await deplacerContenu(this.pos(), posFromxy(chemin[i][0], chemin[i][1]));
                 this.PMact--;
-                if (carterieEstAPorteeAvecLDV()){
+                if (carterieEstAPorteeAvecLDV()) {
                     break;
-                }                
+                }
             }
         }
         await lancerCateriesEtDebloquerLePassage(this);
@@ -610,7 +644,7 @@ iaManeki = async function () {
         await lancerCateriesEtDebloquerLePassage(this);
     } else {
         // sinon 66% on reste loin sauf si on peut attaquer
-        
+
         // verifie si on peut attaquer sur une case reachable
         var distanceAct = pathfinding(posx(), posy(), posxJ, posyJ).length;
         var PMUtilise = this.PMact;
@@ -642,4 +676,60 @@ iaManeki = async function () {
     // full fuite ici
     await sEloignerAuMax(this, player);
 
+}
+
+iaBossGob = async function () {
+
+    await soinBossGob(this);
+    await boostRage(this);
+    let cellPourInvoc = premiereCellAdjLibre(this);
+    if (cellPourInvoc != null) await invoquerGob(this, cellPourInvoc);
+    let sortDAttaque = this.sorts[0];
+    let invocATuer = trouverInvocations("ALLY")[0];
+    let posPourLancer = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(player.pos(), this, sortDAttaque);
+    let posPourLancer2;
+    if (invocATuer) { posPourLancer2 = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(invocATuer.pos(), this, sortDAttaque); }
+
+    if (posPourLancer != null) { // si il peut taper a ce tour
+
+        await seDeplacer(this, posPourLancer);
+
+        await lancerUnSortSurCellParCode(this, tabCells[player.pos()], "PRESSION");
+
+        await sEloignerAuMax(this, player);
+    }
+    else if (posPourLancer2 != null) { // si il peut taper une invoc a ce tour
+
+        await seDeplacer(this, posPourLancer2);
+        await spamSortsSurEnnemi(this, invocATuer);
+
+        // on refresh le focus au cas ou on a tué l'invoc
+        invocATuer = trouverInvocations("ALLY")[0];
+        if (invocATuer) {
+            await sEloignerAuMax(this, invocATuer);
+        }
+        else {
+            await seDeplacer(this, player.pos());
+            await seDeplacerCommeSiSeulementBlocs(this, player.pos());
+        }
+    }
+    else { // si il ne peut taper personne
+        await seDeplacer(this, player.pos());
+        await seDeplacerCommeSiSeulementBlocs(this, player.pos());
+        if (invocATuer) {
+            await seDeplacer(this, invocATuer.pos());
+            await seDeplacerCommeSiSeulementBlocs(this, invocATuer.pos());
+        }
+
+        // si vraiment y'a pas de ldv, on casse une boite genante
+        await casserBoiteGenante(this, player.pos());
+        // si y'a une LdV trop loin pour se tour, on va vers elle pour le prochain
+        posPourLancer = trouverPosLaPlusProchePourLancerSort(player.pos(), this, sortDAttaque);
+        if (posPourLancer != null) {
+            await seDeplacer(this, posPourLancer);
+        }
+
+
+    }
+    await sEloignerAuMax(this, this); // si le player etait inaccessible mais en ldv, on sort de ldv
 }

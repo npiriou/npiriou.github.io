@@ -6,13 +6,13 @@ function cell(posNum, posX, posY, contenu) {
     this.glyphes = [];
 
     this.recevoirSort = function (entite) {
-        ajouterAuChatType(entite.nom +" lance "+game.sortActif.nom, 0);
+        ajouterAuChatType(entite.nom + " lance " + game.sortActif.nom, 0);
         entite.mettreSortEnCd();
         if (!game.sortActif.effetCell(this, entite)) {
             // sort sans dommage
             return;
         }
-        if (game.sortActif.animation){splash_projectile($("#"+entite.pos())[0], $("#"+this.posNum)[0], game.sortActif.animation)}
+        if (game.sortActif.animation) { splash_projectile($("#" + entite.pos())[0], $("#" + this.posNum)[0], game.sortActif.animation) }
         if (this.contenu) {
             this.contenu.recevoirSort(entite);
         } else {
@@ -25,12 +25,21 @@ function cell(posNum, posX, posY, contenu) {
         this.glyphes.push([lanceur, nombreTours, callback]);
         if (image) {
             document.getElementById(this.posNum).style.backgroundImage = "url('" + image + "')";
-            document.getElementById(this.posNum).style.backgroundSize="78px 78px";
+            document.getElementById(this.posNum).style.backgroundSize = "78px 78px";
         } else {
             document.getElementById(this.posNum).classList.add("glyph");
         }
     }
-
+    this.retirerGlyphe = function (lanceur) {
+        for (let i = this.glyphes.length-1; i >=0; i--) {
+            if (this.glyphes[i][0] == lanceur) {
+                document.getElementById(this.posNum).style.backgroundImage = "";
+                document.getElementById(this.posNum).style.backgroundSize = "";
+                document.getElementById(this.posNum).classList.remove("glyph");
+                this.glyphes.splice(i, 1);
+            }
+        }
+    }
     this.triggerGlyphe = function (entite) {
         this.glyphes.forEach(infos => {
             // lanceur = infos[0];
@@ -73,6 +82,7 @@ function entite(
             this.cdSorts.push(0);
         }
     }
+    this.resetcdSorts();
     this.reduirecdSorts = function () {
         for (let i = 0; i < this.cdSorts.length; i++) {
             if (this.cdSorts[i] > 0) this.cdSorts[i]--;
@@ -112,10 +122,11 @@ function entite(
     this.retirerPVs = function (PVPerdus) {
         this.PVact = Math.max(this.PVact - PVPerdus, 0);
         let celltarget = document.getElementById(this.pos());
-
         splash(celltarget, " - " + PVPerdus);
         refreshBoard();
         this.afficherStatsEntite();
+
+
         ajouterAuChatType(this.nom + " perd " + PVPerdus + " PVs. Il lui reste " + this.PVact + " PVs.", 0);
         if (this.PVact <= 0) {
             this.PVact = 0;
@@ -129,20 +140,23 @@ function entite(
 
         splash_heal(celltarget, " + " + PVGagnes);
         refreshBoard();
-        ajouterAuChatType(this.nom + " gagne " + PVGagnes + " PVs. Il lui reste " + this.PVact + " PVs.",0);
+        ajouterAuChatType(this.nom + " gagne " + PVGagnes + " PVs. Il lui reste " + this.PVact + " PVs.", 0);
     }
 
-this.ajouterDo = function(DoAAjouter){
-    this.bonusDo += DoAAjouter;
-    let celltarget = document.getElementById(this.pos());
-    splash_rage( celltarget," + " + DoAAjouter);
-    ajouterAuChatType(this.nom + " gagne " + DoAAjouter + " dommages", 0);
+    this.ajouterDo = function (DoAAjouter) {
+        this.bonusDo += DoAAjouter;
+        let celltarget = document.getElementById(this.pos());
+        splash_rage(celltarget, " + " + DoAAjouter);
+        ajouterAuChatType(this.nom + " gagne " + DoAAjouter + " dommages", 0);
 
-}
+    }
 
     this.mort = function () {
         ajouterAuChatType(this.nom + " est mort.", 0);
         tabCells[this.pos()].contenu = null;
+        tabCells.forEach(cell => {
+            cell.retirerGlyphe(this);
+        });
         refreshBoard();
         checkEndRound();
         delete this;
@@ -150,6 +164,26 @@ this.ajouterDo = function(DoAAjouter){
     this.clone = function () {
         return new entite(this.nom, this.PAmax, this.PMmax, this.PVmax, this.POBonus, this.sorts, this.side, this.ia, this.bonusDo, this.pourcentDo, this.skin);
     }
+    this.afficherPrevisuPMMob = function () {
+        let posAEclairer;
+        if (game.phase != "TURN_PLAYER_MOVE"
+            || !(contientEntite(tabCells[this.pos()]))) { return; }
+        else {
+            let chemin;
+            for (let i = 0; i < tabCells.length; i++) {
+                chemin = trouverChemin(this.pos(), i);
+                if (chemin && chemin.length <= this.PMact) {
+                    for (let j = 0; j < chemin.length; j++) {
+                        posAEclairer = posFromxy(chemin[j][0], chemin[j][1]);
+                        if (estVide(tabCells[posAEclairer])) {
+                            document.getElementsByClassName("cell")[posAEclairer].classList.add("previsuPMMob");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     this.afficherStatsEntite = function () {
 
         document.getElementById("carboiteats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo, this.POBonus);
@@ -186,7 +220,7 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
         let diffX = xFromPos(pos1) - xFromPos(pos2);
         let diffY = yFromPos(pos1) - yFromPos(pos2)
         let diffTotale = Math.abs(diffX) + Math.abs(diffY);
-        if ((diffTotale <= this.porteeMax + bonusPO) && (diffTotale >= this.porteeMin)) return 1;
+        if ((diffTotale <= Math.max(this.porteeMax + bonusPO, this.porteeMin)) && (diffTotale >= this.porteeMin)) return 1;
         else return 0;
     }
     this.afficherStatsSort = function () {
