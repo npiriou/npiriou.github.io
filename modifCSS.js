@@ -129,6 +129,7 @@ window.addEventListener('keydown', function (e) { // empeche le scrolling quand 
 document.addEventListener('contextmenu', event => {
     event.preventDefault();
     retirerToutesPrevisuSort();
+    game.phase = "TURN_PLAYER_MOVE";
 });
 
 
