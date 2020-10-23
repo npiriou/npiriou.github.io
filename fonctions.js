@@ -12,7 +12,7 @@ function initialisationSorts() {
         );
         document.getElementsByClassName("sort")[i].addEventListener("mouseover", onHoverSort);
     }
-    $('[data-toggle="tooltip"]').tooltip(); // active les tooltips
+      $('[data-toggle="tooltip"]').tooltip(); // active les tooltips
 }
 
 function initialisationCellules() {
@@ -170,8 +170,8 @@ function refreshBoard() {
             document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].classList.remove("cellEnemy");
         }
     }
-    $('.tooltip').remove(); //supprime toutes les tooltips affichées
-    $('[data-toggle="tooltip"]').tooltip(); // refresh les tooltips
+      $('.tooltip').remove(); //supprime toutes les tooltips affichées
+         $('[data-toggle="tooltip"]').tooltip(); // refresh les tooltips
 
 }
 
