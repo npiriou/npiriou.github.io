@@ -13,7 +13,7 @@ function addOnClic() {
 
 }
 
-function cellCliqued() {
+ async function cellCliqued() {
     switch (game.phase) {
         case "TURN_PLAYER_MOVE":
             game.sortActif = null;
@@ -38,7 +38,10 @@ function cellCliqued() {
                 retirerToutesPrevisuSort();
                 player.mettreSortEnCd();
                 player.retirerPASort();
-                tabCells[this.id].recevoirSort(player);
+
+                game.phase = "SLOWMO_PLAYER";
+             await    slowSort(tabCells[this.id]);
+
                 game.sortActif = null;
             }
             if (game.phase == "TURN_PLAYER_SPELL") { // si on est toujours en phase de sort, donc que le round 

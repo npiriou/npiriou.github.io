@@ -5,17 +5,19 @@ function cell(posNum, posX, posY, contenu) {
     this.contenu = contenu;
     this.glyphes = [];
 
-    this.recevoirSort = function (entite) {
-        ajouterAuChatType(entite.nom + " lance " + game.sortActif.nom, 0);
+    this.recevoirSort = async function (entite) {
+       
         entite.mettreSortEnCd();
-        if (!game.sortActif.effetCell(this, entite)) {
+        if (!await game.sortActif.effetCell(this, entite)) {
             // sort sans dommage
+            ajouterAuChatType(entite.nom + " lance " + game.sortActif.nom, 0);
             return;
         }
         if (game.sortActif.animation) { splash_projectile($("#" + entite.pos())[0], $("#" + this.posNum)[0], game.sortActif.animation) }
         if (this.contenu) {
-            this.contenu.recevoirSort(entite);
+            await  this.contenu.recevoirSort(entite);
         } else {
+            ajouterAuChatType(entite.nom + " lance " + game.sortActif.nom, 0);
             ajouterAuChatType("Voilà des PA bien gachés à lancer un sort dans le vide", 1);
             splash(document.getElementById(this.posNum), "");
         }
@@ -31,7 +33,7 @@ function cell(posNum, posX, posY, contenu) {
         }
     }
     this.retirerGlyphe = function (lanceur) {
-        for (let i = this.glyphes.length-1; i >=0; i--) {
+        for (let i = this.glyphes.length - 1; i >= 0; i--) {
             if (this.glyphes[i][0] == lanceur) {
                 document.getElementById(this.posNum).style.backgroundImage = "";
                 document.getElementById(this.posNum).style.backgroundSize = "";
@@ -70,9 +72,25 @@ function entite(
     this.skin = skin;
     this.poids = poids;
     this.invocation = 0;
-    this.effets = [];
+    this.effets = []; // ex : [{nom : "poison5dmg", dureeRestante : "3"}, {nom : "puissance", dureeRestante : "2"}]
     this.resetEffets = function () {
         this.effets = [];
+    }
+    this.reduireDureeEffets = async function () {
+        for (let i = this.effets.length - 1; i >= 0; i--) {
+            if (this.effets[i].dureeRestante > 0) {
+                this.effets[i].dureeRestante--;
+                if (this.effets[i].debutTour) {
+                    await this.effets[i].debutTour();
+
+                }
+            }
+            if (this.effets[i].dureeRestante == 0) {
+                if (this.effets[i].fin) { this.effets[i].fin() }
+                this.effets.splice(i, 1);
+            }
+            if (this.PVact > 0) { continue; } else { break; }
+        }
     }
 
     this.cdSorts = [];
@@ -94,9 +112,9 @@ function entite(
         }
     }
 
-    this.recevoirSort = function (entite) {
+    this.recevoirSort = async function (entite) {
         ajouterAuChatType(entite.nom + " lance le sort " + game.sortActif.nom + " sur " + this.nom, 0);
-        if (!game.sortActif.effet(this)) {
+        if (!await game.sortActif.effet(this)) {
             // sort sans dommage
             return;
         }
@@ -143,13 +161,87 @@ function entite(
         ajouterAuChatType(this.nom + " gagne " + PVGagnes + " PVs. Il lui reste " + this.PVact + " PVs.", 0);
     }
 
-    this.ajouterDo = function (DoAAjouter) {
+    this.ajouterDo = function (nom, DoAAjouter, duree) {
+        let receveur = this;
+        this.effets.push({
+            nom: nom, valeur: DoAAjouter, dureeRestante: duree, fin: function () {
+                receveur.bonusDo -= DoAAjouter;
+            }
+        });
         this.bonusDo += DoAAjouter;
         let celltarget = document.getElementById(this.pos());
         splash_rage(celltarget, " + " + DoAAjouter);
-        ajouterAuChatType(this.nom + " gagne " + DoAAjouter + " dommages", 0);
-
+        ajouterAuChatType(this.nom + " gagne " + DoAAjouter + " dommages pour " + duree + " tours.", 0);
     }
+
+    this.ajouterPCDo = function (nom, DoAAjouter, duree) {
+        let receveur = this;
+        this.effets.push({
+            nom: nom, valeur: DoAAjouter, dureeRestante: duree, fin: function () {
+                receveur.pourcentDo -= DoAAjouter;
+            }
+        });
+        this.pourcentDo += DoAAjouter;
+        let celltarget = document.getElementById(this.pos());
+        splash_feuint(celltarget, " + " + DoAAjouter + " %");
+        ajouterAuChatType(this.nom + " gagne " + DoAAjouter + "  % dommages pour " + duree + " tours.", 0);
+    }
+
+    this.poison = function (nom, dommagesBase, duree, lanceur) {
+        let receveur = this;
+
+        this.effets.push({
+            nom: nom, valeur: dommagesBase, dureeRestante: duree, debutTour: async function () {
+                receveur.retirerPVs(Math.round(dommagesBase * ((lanceur.pourcentDo + 100) / 100) + lanceur.bonusDo));
+                await sleep(200);
+            }
+        });
+
+        let celltarget = document.getElementById(this.pos());
+        splash_invo(celltarget);
+        ajouterAuChatType(this.nom + " est empoisonné pour " + duree + " tours.", 0);
+    }
+
+    this.pousser = async function (distPou, poslanceur) {
+        let xl = xFromPos(poslanceur);
+        let yl = yFromPos(poslanceur);
+        let xr = xFromPos(this.pos());
+        let yr = yFromPos(this.pos());
+        let xd = 0;
+        let yd = 0;
+
+        (xl == xr) ? xd = 0 : (xl > xr) ? xd = -1 : xd = 1;
+        (yl == yr) ? yd = 0 : (yl > yr) ? yd = -1 : yd = 1;
+
+        for (let i = 0; i < distPou; i++) {
+            if (estVide(tabCells[posFromxy(xr + xd, yr + yd)])) {
+                await deplacerContenu(posFromxy(xr, yr), posFromxy(xr + xd, yr + yd));
+                xr = xr + xd;
+                yr = yr + yd;
+            }
+        }
+    }
+    this.grab = async function (distGrab, poslanceur) {
+        await sleep(400);
+        let xl = xFromPos(poslanceur);
+        let yl = yFromPos(poslanceur);
+        let xr = xFromPos(this.pos());
+        let yr = yFromPos(this.pos());
+        let xd = 0;
+        let yd = 0;
+
+        (xl == xr) ? xd = 0 : (xl > xr) ? xd = 1 : xd = -1;
+        (yl == yr) ? yd = 0 : (yl > yr) ? yd = 1 : yd = -1;
+        for (let i = 0; i < distGrab; i++) {
+            if (estVide(tabCells[posFromxy(xr + xd, yr + yd)])) {
+                await deplacerContenu(posFromxy(xr, yr), posFromxy(xr + xd, yr + yd));
+                xr = xr + xd;
+                yr = yr + yd;
+            }
+        }
+    }
+
+
 
     this.mort = function () {
         ajouterAuChatType(this.nom + " est mort.", 0);
@@ -218,6 +310,7 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
     this.description = description;
     this.effetCell = function () { return 1; };
     this.estAPortee = function (pos1, pos2, bonusPO = 0) {
+        if (this.zoneLancer == "Ligne" && !sontEnLigne(pos1, pos2)) { return 0; }
         if (!this.POModif) { bonusPO = 0; }
         let diffX = xFromPos(pos1) - xFromPos(pos2);
         let diffY = yFromPos(pos1) - yFromPos(pos2)
@@ -226,12 +319,17 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
         else return 0;
     }
     this.afficherStatsSort = function () {
+        dmg2 = "";
+        if (this.baseDmgMax) { dmg = this.baseDmgMin + " à " + this.baseDmgMax; }
+        else dmg = "-";
 
         if (this.POModif) pom = "Oui"; else pom = "Non";
         if (this.LdV) ldv = "Oui"; else ldv = "Non";
         if (this.cooldown > 999) cd = "Une fois par combat"; else cd = this.cooldown;
+        if (this.dureeEffet) duree = this.dureeEffet + " tours"; else duree = "-";
+        if (this.zoneLancer) c = zoneLancer; else c = "Non";
 
-        document.getElementById("carboiteats").innerHTML = templateSort.format(this.coutPA, this.baseDmgMin, this.baseDmgMax, this.porteeMin, this.porteeMax, pom, this.zoneLancer, this.AoE, ldv, cd);
+        document.getElementById("carboiteats").innerHTML = templateSort.format(this.coutPA, dmg, dmg2, this.porteeMin, this.porteeMax, pom, c, this.AoE, ldv, cd, duree);
         document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.logo + `"></img>`;
         document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
         document.getElementsByClassName("card__ability")[0].innerHTML = this.description;

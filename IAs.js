@@ -183,7 +183,7 @@ spamSortsSurPlayer = async function (entite) { // bien penser a AWAIT quand on l
             && ((!entite.sorts[i].LdV) || isInSight(entite.pos(), player.pos()))) {
             while (entite.PAact >= entite.sorts[i].coutPA) {
                 game.sortActif = entite.sorts[i];
-                tabCells[player.pos()].recevoirSort(entite);
+                await tabCells[player.pos()].recevoirSort(entite);
                 await sleep(200);
                 sortLance = 1;
                 entite.PAact = entite.PAact - entite.sorts[i].coutPA;
@@ -202,12 +202,13 @@ spamSortsSurEnnemi = async function (entite, ennemi) { // bien penser a AWAIT qu
             && (entite.cdSorts[i] <= 0)
             && ((!entite.sorts[i].LdV) || isInSight(entite.pos(), ennemi.pos()))) {
             game.sortActif = entite.sorts[i];
-            tabCells[ennemi.pos()].recevoirSort(entite);
+            await tabCells[ennemi.pos()].recevoirSort(entite);
             await sleep(200);;
             entite.PAact = entite.PAact - entite.sorts[i].coutPA;
             entite.mettreSortEnCd();
             ennemi = getNearest(entite.pos(), ennemi.side); // on refocus pour trouver un autre ennemi si il est mort
-            await spamSortsSurEnnemi(entite, ennemi); 
+            if (!ennemi) return 0;
+            await spamSortsSurEnnemi(entite, ennemi);
         }
 
     }
@@ -219,10 +220,11 @@ lancerUnSortSurEnnemi = async function (entite, ennemi) { // bien penser a AWAIT
             && (entite.cdSorts[i] <= 0)
             && ((!entite.sorts[i].LdV) || isInSight(entite.pos(), ennemi.pos()))) {
             game.sortActif = entite.sorts[i];
-            tabCells[ennemi.pos()].recevoirSort(entite);
+            await tabCells[ennemi.pos()].recevoirSort(entite);
             await sleep(200);;
             entite.PAact = entite.PAact - entite.sorts[i].coutPA;
             entite.mettreSortEnCd();
+            return;
         }
     }
 }
@@ -233,7 +235,7 @@ lancerUnSortSurCell = async function (entite, cell, i = 0) { // bien penser a AW
             && (entite.cdSorts[i] <= 0)
             && ((!entite.sorts[i].LdV) || isInSight(entite.pos(), cell.posNum))) {
             game.sortActif = entite.sorts[i];
-            cell.recevoirSort(entite);
+            await cell.recevoirSort(entite);
             entite.PAact = entite.PAact - entite.sorts[i].coutPA;
             entite.mettreSortEnCd();
             await sleep(200);
@@ -256,12 +258,29 @@ iaRangeMoinsDebile = async function () {
     let invocATuer = trouverInvocations("ALLY")[0];
     let posPourLancer = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(player.pos(), this, this.sorts[0]);
     let posPourLancer2;
+
+    await flashIn(this);
+    await boostRage(this);
+    await boostFeuInt(this);
+
     if (invocATuer) { posPourLancer2 = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(invocATuer.pos(), this, this.sorts[0]); }
 
     if (posPourLancer != null) { // si il peut taper a ce tour
 
         await seDeplacer(this, posPourLancer);
-        await spamSortsSurPlayer(this);
+        await lancerUnSortSurEnnemi(this, player);
+        await seDeplacer(this, posPourLancer);
+        await lancerUnSortSurEnnemi(this, player);
+
+        if (this.sorts[1]){
+        posPourLancer = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(player.pos(), this, this.sorts[1]);
+    }
+        await seDeplacer(this, posPourLancer);
+        await lancerUnSortSurEnnemi(this, player);
+        await seDeplacer(this, posPourLancer);
+        await lancerUnSortSurEnnemi(this, player);
+
+
         await sEloignerAuMax(this, player);
     }
     else if (posPourLancer2 != null) { // si il peut taper une invoc a ce tour
@@ -414,7 +433,7 @@ function getNearest(pos, side) {
     let tabEntites = trouverEntites(side);
     let plusCourtChemin = [];
     let cheminTest;
-    let plusProcheEntite;
+    let plusProcheEntite = null;
     plusCourtChemin.length = 1000;
 
     for (let i = 0; i < tabEntites.length; i++) {
@@ -452,7 +471,7 @@ iaDebile_ALLY = async function () {
                     while (this.PAact >= this.sorts[j].coutPA) {
                         game.sortActif = this.sorts[j];
                         if (contientEntite(tabCells[tabPosAdj[i]])) {
-                            tabCells[tabPosAdj[i]].recevoirSort(this);
+                            await tabCells[tabPosAdj[i]].recevoirSort(this);
                         }
                         await sleep(100);
                         this.PAact = this.PAact - this.sorts[j].coutPA;
@@ -492,7 +511,7 @@ iaDebile = async function () {
                     while (this.PAact >= this.sorts[j].coutPA) {
                         game.sortActif = this.sorts[j];
                         if (contientEntite(tabCells[tabPosAdj[i]])) {
-                            tabCells[tabPosAdj[i]].recevoirSort(this);
+                            await tabCells[tabPosAdj[i]].recevoirSort(this);
                         }
                         await sleep(100);
                         this.PAact = this.PAact - this.sorts[j].coutPA;
@@ -524,6 +543,16 @@ async function flashIn(entite) {
 async function boostRage(entite) {
     for (let i = 0; i < entite.sorts.length; i++) {
         if (entite.sorts[i] == rage) {
+            await lancerUnSortSurCell(entite, tabCells[entite.pos()], i);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+async function boostFeuInt(entite) {
+    for (let i = 0; i < entite.sorts.length; i++) {
+        if (entite.sorts[i] == feuint) {
             await lancerUnSortSurCell(entite, tabCells[entite.pos()], i);
             return 1;
         }

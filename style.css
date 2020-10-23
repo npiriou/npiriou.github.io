@@ -186,8 +186,8 @@ img {
 }
 
 .card__image-container {
-  /* background-color: rgba(0, 0, 0, 0.7); */
-  background-color: white;
+  background-color: rgba(49, 42, 32, 0.7); 
+  
   text-align: center;
   padding: 1em 1em 0;
   border-radius: 3px 3px 0 0;
