@@ -88,14 +88,14 @@ cac = new sort("CAC", "Attaque au CaC", 3, 3, 4, 1, 1, 0, "Aucune", "Case", 1, p
 missile = new sort("MISSILE", "Missile", 4, 3, 4, 4, 10, 1, "Aucune", "Case", 0, pasdEffet, 0, 0, 0, "img/missile.png", "Tire un missile sans ligne de vue");
 rage = new sort("RAGE", "Rage", 4, 0, 0, 0, 0, 0, "Aucune", "Case", 1, effetBoostDo, 2, 2, 3, "img/rage.png", "Augmente ses dommages de 2");
 fireball = new sort("FIREBALL", "Boule de feu", 5, 8, 12, 2, 5, 1, "Aucune", "Case", 1, pasdEffet, 0, 0, 0, "img/fireball.png", "Une boule de feu tout ce qu'il y a de plus classique");
-mjtp = new sort("mjtp", "mjtp", 0, 0, 0, 1, 1000, 0, "Aucune", "Case", 0, effetTP, 0, 0, 0, "img/tp.jpg", "Téléporte. Faites le en direction des ennemis pour un effet de surprise !");
+mjtp = new sort("MJTP", "mjtp", 0, 0, 0, 1, 1000, 0, "Aucune", "Case", 0, effetTP, 0, 0, 0, "img/tp.jpg", "Téléporte. Faites le en direction des ennemis pour un effet de surprise !");
 mjdoom = new sort("DOOM", "Doom", 0, 1000, 1000, 0, 100, 1, "Aucune", "Case", 0, pasdEffet, 0, 0, 0, "img/doom.jpg", "BOOOOOM");
 gifle = new sort("GIFLE", "Gifle", 1, 1, 1, 1, 1, 0, "Aucune", "Case", 1, pasdEffet, 0, 0, 0, "img/gifle.png", "Met une petite claque humiliante à la cible");
 pansements = new sort("PANSEMENTS", "Pansements", 4, 0, 0, 0, 0, 1, "Aucune", "Case", 1, effetSoin, 10, 0, 1000, "img/pansement.png", "Un petit pansement et ça va mieux, soigne de 10 PV");
 ecrasement = new sort("ECRASEMENT", "Ecrasement", 6, 15, 30, 2, 2, 0, "Aucune", "Case", 1, pasdEffet, 0, 0, 0, "img/hammer.png", "Aïe, ça doit faire mal");
 flash = new sort("FLASH", "Flash", 1, 0, 0, 1, 2, 0, "Aucune", "Case", 0, effetTP, 0, 0, 6, "img/flash.png", "Téléporte. Faites le en direction des ennemis pour un effet de surprise !");
 invoquerOgre = new sort("INVOC_OGRE", "Invocation d'Ogre", 6, 0, 0, 1, 1, 1, "Aucune", "Case", 1, effetInvocOgre, 0, 0, 10, "img/invoc.jpg", "Invoque un Ogre affamé");
-mjposerBoite = new sort("mjposerboite", "mjposerboite", 0, 0, 0, 1, 1000, 0, "Aucune", "Case", 0, pasdEffet, 0, 0, 0, "img/boite.png", "Pose une boite");
+mjposerBoite = new sort("MJPOSERBOITE", "mjposerboite", 0, 0, 0, 1, 1000, 0, "Aucune", "Case", 0, pasdEffet, 0, 0, 0, "img/boite.png", "Pose une boite");
 poserBoite = new sort("POSER_BOITE", "Invocation de boite", 3, 0, 0, 1, 5, 1, "Aucune", "Case", 0, pasdEffet, 0, 0, 2, "img/boite.png", "Pose une boite");
 diceThrow = new sort("DICETHROW", "Lancé de dé", 3, 1, 6, 1, 6, 1, "Aucune", "Case", 1, pasdEffet, 0, 0, 0, "img/dice.png", "Faites parler votre skill");
 
@@ -118,7 +118,7 @@ sorcier = new entite("Puissant Sorcier", 10, 3, 25, 0, [fireball], "ENEMY", iaRa
 gobelin = new entite("Gobelin", 4, 5, 12, 0, [gifle], "ENEMY", iaDebile, 0, 0, "img/gobelin.png", 2);
 nain = new entite("Nain", 7, 3, 40, 0, [ecrasement], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/nain.png", 6);
 apprentiSorcier = new entite("Apprenti sorcier", 3, 2, 15, 0, [diceThrow], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/petitmage.png", 3);
-chien = new entite("Chien zombie", 10, 4, 30, 0, [cac, flash, rage], "ENEMY", iaDebile, 0, 0, "img/chien.png", 8);
+chien = new entite("Chien zombie", 10, 4, 35, 0, [cac, flash, rage], "ENEMY", iaDebile, 0, 0, "img/chien.png", 8);
 Maneki = new entite("Maneki Neko", 8, 4, 150, 0, [carterie, mapRoulette], "ENEMY", iaManeki, 0, 0, "img/Maneki.png", 11);
 gobpriest = new entite("Prêtresse", 10, 5, 200, 0, [pression, invoquerGobelin, rage, soingob], "ENEMY", iaBossGob, 0, 0, "img/gobshaman.png", 21);
 
@@ -126,7 +126,7 @@ boite = new entite("Boite", 0, 0, 10, 0, [], "NEUTRAL", null, 0, 0, "img/box.png
 ogreInvoque = new entite("Ogre Invoqué", 9, 2, 50, 0, [cac, rage], "ALLY", iaDebile_ALLY, 0, 0, "img/ogre2.png", 0);
 
 
-var listeMobs = [mannequin, ogre, orc, artillerie, sorcier, gobelin, nain, apprentiSorcier, chien, gobpriest];
+var listeMobs = [mannequin, ogre, orc, artillerie, sorcier, gobelin, nain, apprentiSorcier, chien];
 
 
 

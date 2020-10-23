@@ -302,8 +302,7 @@ function splash_rage(elem, text) {
                 ctx.moveTo(x, y + topCurveHeight);
 
                 ctx.beginPath();
-                ctx.rect(r(60,120), r(50,120), r(1,10), r(1,10));
-                ctx.stroke();
+                ctx.strokeRect(r(60,120), r(50,120), r(1,10), r(1,10));
 
                 ctx.closePath();
                 ctx.fillStyle = p.color;
@@ -386,8 +385,7 @@ function splash_flash(elem) {
                 ctx.moveTo(x, y + topCurveHeight);
 
                 ctx.beginPath();
-                ctx.rect(r(60,140), r(50,140), r(1,6), r(1,6));
-                ctx.stroke();
+                ctx.strokeRect(r(60,140), r(50,140), r(1,6), r(1,6));
 
                 ctx.closePath();
                 ctx.fillStyle = p.color;
@@ -403,7 +401,6 @@ function splash_flash(elem) {
         explode(coords.left, coords.top);
     }
 }
-// ['#394053', '#4E4A59', '#6E6362', '#839073', '#7CAE7A'];
 function splash_invo(elem) {
     {
         let coords = getCoords(elem);
@@ -471,8 +468,7 @@ function splash_invo(elem) {
                 ctx.moveTo(x, y + topCurveHeight);
 
                 ctx.beginPath();
-                ctx.rect(r(50,140), r(50,140), r(1,20), r(1,20));
-                ctx.stroke();
+                ctx.strokeRect(r(50,140), r(50,140), r(1,20), r(1,20));
 
                 ctx.closePath();
                 ctx.fillStyle = p.color;

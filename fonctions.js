@@ -139,11 +139,24 @@ function posAdjacentes(pos) {
 function refreshBoard() {
     for (let index = 0; index < tabCells.length; index++) {
         if (tabCells[index].contenu != null) {
+
             document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].children[0].innerHTML = (
                 `<img id="art"class="artEntite" data-toggle="tooltip" data-placement="top"
                  src ="` + tabCells[index].contenu.skin + `" 
                  title="` + tabCells[index].contenu.nom + ` (` + tabCells[index].contenu.PVact + ` / ` + tabCells[index].contenu.PVmax + `)"
                  </img>`);
+
+
+            // let img = new Image();
+            // img.src = tabCells[index].contenu.skin;
+            // img.classList.add("artEntite");
+            // img.id = "art";
+            // img.dataset.toggle = "tooltip";
+            // img.dataset.placement = "top";
+            // img.title = tabCells[index].contenu.nom + ` (` + tabCells[index].contenu.PVact + ` / ` + tabCells[index].contenu.PVmax + `)`;
+            // document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].children[0].appendChild(img);
+            // delete img;
+
             if (tabCells[index].contenu.side == "ALLY") {
                 document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].classList.add("cellAlly");
             }
@@ -337,6 +350,39 @@ function newRound() {
     game.phase = "TURN_PLAYER_MOVE";
 }
 
+function sauvegarde() {
+    let save = { player: player, level: game.level };
+    localStorage.setItem("sauvegarde", JSON.stringify(save));
+}
+
+function charger() {
+    let chargement = localStorage.getItem('sauvegarde');
+    if (!chargement) return;
+    chargement = JSON.parse(chargement);
+    localStorage.clear();
+    game.level = chargement.level;
+    player.PAmax = chargement.player.PAmax;
+    player.PMmax = chargement.player.PMmax;
+    player.PVmax = chargement.player.PVmax;
+    player.PVact = chargement.player.PVact;
+    player.POBonus = chargement.player.POBonus;
+    player.bonusDo = chargement.player.bonusDo;
+    player.pourcentDo = chargement.player.pourcentDo;
+
+    for (let i = 0; i < chargement.player.sorts.length; i++) {
+
+        if (["CAC", "MJPOSERBOITE", "DOOM", "MJTP"].includes(chargement.player.sorts[i].code)) continue;
+        let sort = listeSorts.filter((sort) => sort.code == chargement.player.sorts[i].code)[0];
+
+        if (!sort) debugger;
+        ajouterNouveauSort(sort);
+    }
+    player.resetPAPM();
+    document.getElementById("titre").innerHTML = ("Étage " + game.level);
+
+}
+
+
 function randomiserBonusAffiches() {
 
     let boutonsBonus = document.getElementsByClassName("bouton_bonus");
@@ -484,7 +530,7 @@ function remplirSelonPoids() {
     let randoMob;
     let randoPos;
     let bossPose = 0;
-    if (game.poids == gobpriest.poids+10) {listeMobs.push(gobpriest);}
+    if (game.poids >= gobpriest.poids + 10 && !listeMobs.includes(gobpriest)) { listeMobs.push(gobpriest); }
 
 
     if (game.poids == Maneki.poids) { // round du boss
@@ -492,7 +538,7 @@ function remplirSelonPoids() {
             randoPos = randomInteger(40, 99);
             if (!contientEntite(tabCells[randoPos])) {
                 tabCells[randoPos].contenu = Maneki.clone();
-                bossPose =1;
+                bossPose = 1;
             }
         }
     }
@@ -501,7 +547,7 @@ function remplirSelonPoids() {
             randoPos = randomInteger(40, 99);
             if (!contientEntite(tabCells[randoPos])) {
                 tabCells[randoPos].contenu = gobpriest.clone();
-                bossPose =1;
+                bossPose = 1;
             }
         }
     }

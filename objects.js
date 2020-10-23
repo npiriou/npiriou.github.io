@@ -164,6 +164,8 @@ function entite(
     this.clone = function () {
         return new entite(this.nom, this.PAmax, this.PMmax, this.PVmax, this.POBonus, this.sorts, this.side, this.ia, this.bonusDo, this.pourcentDo, this.skin);
     }
+
+
     this.afficherPrevisuPMMob = function () {
         let posAEclairer;
         if (game.phase != "TURN_PLAYER_MOVE"

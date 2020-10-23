@@ -5,7 +5,10 @@ function addOnClic() {
 
     $(`#modalChooseBonus`).on('hidden.bs.modal', function () {
         // quand la modal d'entre deux round se ferme, on envoie un nouveau round
-        newRound();
+        if (game.level % 5 == 0) {
+            sauvegarde(); location.reload();
+        }
+        else newRound();
     });
 
 }
