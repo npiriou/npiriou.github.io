@@ -140,7 +140,7 @@ invoquerGobelin = new sort("INVOC_GOB", "Invocation de Gobelin", 4, 0, 0, 1, 1, 
 soingob = new sort("SOIN_GOB", "Soin gobelesque", 4, 0, 0, 0, 0, 1, null, "Case", 1, effetSoin, 20, 0, 4, "img/pansement.png", "Sort du boss");
 
 
-var listeSorts = [pression, cac, missile, rage, fireball, pansements, diceThrow, ecrasement, flash, invoquerOgre, poserBoite, feuint, poisonflech, kick,grab];
+var listeSorts = [pression, cac, missile, rage, fireball, pansements, diceThrow, ecrasement, flash, invoquerOgre, poserBoite, feuint, poisonflech, kick];
 
 // Entites  nom, PAmax, PMmax, PVmax, POBonus, sorts, side, ia, bonusDo, pourcentDo, skin, poids
 player = new entite("Player", 6, 3, 50, 0, [cac], "ALLY", null, 0, 0, "img/player.png", 0); // player
