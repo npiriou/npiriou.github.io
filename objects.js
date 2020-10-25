@@ -69,6 +69,7 @@ function entite(
     this.pourcentDo = pourcentDo;
     this.skin = skin;
     this.poids = poids;
+    this.pourcentCrit = 5;
     this.invocation = 0;
     this.effets = []; // ex : [{nom : "poison5dmg", dureeRestante : "3"}, {nom : "puissance", dureeRestante : "2"}]
     this.resetEffets = function () {
@@ -116,7 +117,7 @@ function entite(
             // sort sans dommage
             return;
         }
-        this.retirerPVs(calculDommages(game.sortActif, entite)); debugger;
+        this.retirerPVs(calculDommages(game.sortActif, entite)); 
         if (entite) await triggerDommagesSubis(entite, this);
     }
     this.aDejaSort = function (sort) {
@@ -158,7 +159,9 @@ function entite(
             refreshBoard();
         }
     }
-    this.ajouterPVs = function (PVGagnes) {
+    this.ajouterPVs = function (PVGagnesBase) {
+        //     let crit = coupCritique(Lanceur);
+        let PVGagnes = PVGagnesBase;//*crit;
         this.PVact = Math.min(this.PVact + PVGagnes, this.PVmax); // max PVmax
         let celltarget = document.getElementById(this.pos());
 
@@ -197,6 +200,7 @@ function entite(
         let receveur = this;
         this.effets.push({
             nom: nom, valeur: dommagesBase, dureeRestante: duree, debutTour: async function () {
+                // on utilise pas calcul dommages pour ne pas trigger les crit par exemple
                 receveur.retirerPVs(Math.round(dommagesBase * ((lanceur.pourcentDo + 100) / 100) + lanceur.bonusDo));
                 await sleep(200);
             }
@@ -210,7 +214,7 @@ function entite(
     this.attGluantes = function () {
         this.effets.push({
             nom: "Attaques gluantes", dureeRestante: 999, dommagesSubis: async function (cible) {
-                if (getRandomInt(5) != 0 || !cible || cible.PVact==0) { return; }
+                if (getRandomInt(5) != 0 || !cible || cible.PVact == 0) { return; }
                 let add = - 1;
                 if (add < 0 && Math.abs(add) > cible.PMact) add = 0 - cible.PMact; // on ne peut pas retirer plus que ce qu'il a
                 if (cible.PMact > 0 && (add != 0)) {
@@ -225,8 +229,8 @@ function entite(
     }
     this.attGlacees = function () {
         this.effets.push({
-            nom: "Attaques gluantes", dureeRestante: 999, dommagesSubis: async function (cible) {
-                if (getRandomInt(5) != 0 || !cible|| cible.PVact==0) { return; }
+            nom: "Attaques glacées", dureeRestante: 999, dommagesSubis: async function (cible) {
+                if (Math.random() > (1 / 3) || !cible || cible.PVact == 0) { return; }
                 let add = - 1;
                 if (add < 0 && Math.abs(add) > cible.PAact) add = 0 - cible.PAact; // on ne peut pas retirer plus que ce qu'il a
                 if (cible.PAact > 0 && (add != 0)) {
@@ -236,6 +240,14 @@ function entite(
                     ajouterAuChatType(cible.nom + " perd " + Math.abs(add) + " PA.", 0);
                 }
                 await sleep(100);
+            }
+        });
+    }
+    this.charognard = function () {
+        lanceur = this;
+        this.effets.push({
+            nom: "Charognard", dureeRestante: 999, onKill: async function () {
+                lanceur.ajouterPVs(2);
             }
         });
     }
@@ -291,6 +303,7 @@ function entite(
         tabCells.forEach(cell => {
             cell.retirerGlyphe(this);
         });
+        if (this.side == "ENEMY"){triggeronKill();}
         refreshBoard();
         checkEndRound();
         delete this;

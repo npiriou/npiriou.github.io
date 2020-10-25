@@ -870,3 +870,8 @@ function splash_PA(elem, text) {
         explode(coords.left, coords.top, text);
     }
 }
+function anim_crit(Lanceur){
+    let imgs = ["img/crit1.png", "img/crit2.png", "img/crit3.png", "img/crit4.png"]
+         let img = imgs[Math.floor(Math.random() * imgs.length)];
+         splash_img(document.getElementById(Lanceur.pos()), { path: img, width: 50, height: 50, timeout: 200, nofade: 0 });
+}

@@ -380,6 +380,7 @@ function charger() {
     player.POBonus = chargement.player.POBonus;
     player.bonusDo = chargement.player.bonusDo;
     player.pourcentDo = chargement.player.pourcentDo;
+    player.pourcentCrit = chargement.player.pourcentCrit;
 
     for (let i = 0; i < chargement.effets.length; i++) {
         let effet = listeGameEffets.filter((effet) => effet.nom == chargement.effets[i].nom)[0];
@@ -517,9 +518,22 @@ slowSort = async function (cell) {
     game.phase = "TURN_PLAYER_MOVE";
 }
 
-function calculDommages(sort, Lanceur) {
-    let dommagesBase = Math.floor(Math.random() * (sort.baseDmgMax - sort.baseDmgMin + 1)) + sort.baseDmgMin;
-    return (Math.round(dommagesBase * ((Lanceur.pourcentDo + 100) / 100) + Lanceur.bonusDo));
+function coupCritique(Lanceur){
+    // crit ou pas 
+    let crit = 1
+    if (randomInteger(0, 99)< Lanceur.pourcentCrit){
+         crit = 1.5;
+         ajouterAuChatType("Coup critique !", 0);
+         anim_crit(Lanceur);         
+    }  
+    return crit;
+}
+
+function calculDommages(sort, Lanceur, dobase = null) {
+let crit = coupCritique(Lanceur);
+    let dommagesBase = Math.floor((Math.random() * (sort.baseDmgMax - sort.baseDmgMin + 1) + sort.baseDmgMin));
+    if (dobase) {dommagesBase = dobase;} // dobase permet de choisir les dommages de base a l'avance, utile pour dicethroww
+    return (Math.round(crit *dommagesBase * ((Lanceur.pourcentDo + 100) / 100) + Lanceur.bonusDo));
 }
 
 function ajouterNouveauSort(liste = listeSorts, sort = 0) {
@@ -663,6 +677,14 @@ async function triggerDommagesSubis(lanceur, cible) {
     for (let i = 0; i < lanceur.effets.length; i++) {
         if (lanceur.effets[i].dommagesSubis) {
             await lanceur.effets[i].dommagesSubis(cible);
+        }
+    }
+}
+
+async function triggeronKill() {
+    for (let i = 0; i < player.effets.length; i++) {
+        if (player.effets[i].onKill) {
+            await player.effets[i].onKill();
         }
     }
 }

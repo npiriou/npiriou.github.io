@@ -453,12 +453,15 @@ iaDebile_ALLY = async function () {
     ennemi = getNearest(this.pos(), "ENEMY");
     await boostRage(this);
 
-    await seDeplacer(this, ennemi.pos());
-    await seDeplacerCommeSiSeulementBlocs(this, ennemi.pos());
+    await spamSortsSurEnnemi(this, ennemi);  ennemi = getNearest(this.pos(), "ENEMY");
+   if (ennemi) await seDeplacer(this, ennemi.pos());
 
     // pour chaque sort on essaie de le lancer autant de fois que possible sur l'ennemi
     //  await spamSortsSurPlayer(this);
-    await spamSortsSurEnnemi(this, ennemi);
+    if (ennemi)  await spamSortsSurEnnemi(this, ennemi);  ennemi = getNearest(this.pos(), "ENEMY");
+    if (ennemi)  await seDeplacer(this, ennemi.pos());
+    if (ennemi)  await spamSortsSurEnnemi(this, ennemi);  ennemi = getNearest(this.pos(), "ENEMY");
+    if (ennemi)  await seDeplacerCommeSiSeulementBlocs(this, ennemi.pos());
 
     let tabPosAdj = posAdjacentes(this.pos());
     for (let i = 0; i < tabPosAdj.length; i++) {

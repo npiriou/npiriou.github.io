@@ -256,7 +256,7 @@
        Modal -->
     <div class="modal fade" id="modalChooseBonus" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Bien joué ! Choisissez un bonus :</h5>
@@ -280,6 +280,11 @@
                     <div class="col bouton_bonus"><button id="buttonNouveauSortU" type="button"
                             class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
                             Nouveau sort utilitaire</button></div>
+                    <div class="col bouton_bonus"><button id="buttonCrit" type="button" class="btn btn-warning choice"
+                            data-dismiss="modal" data-toggle="tooltip" data-placement="top"
+                            title="Les coups critiques augmentent les dégâts (et soins) de base des sorts de 50%"
+                            onclick="onClickBonus(this)">
+                            +15% de chances de coup critique</button></div>
                     <div class="col bouton_bonus_rare"><button id="buttonPA" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
                             +1 PA </button></div>
@@ -294,29 +299,38 @@
                             +10 PV maximum et récupérer tous mes PV</button></div>
                     <div class="col bouton_bonus_rare"><button id="buttonAttGlu" type="button"
                             class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
-                            data-placement="top" title="20% de chances de retirer un PM à la cible à chaque attaque" onclick="onClickBonus(this)">
+                            data-placement="top" title="20% de chances de retirer un PM à la cible à chaque attaque"
+                            onclick="onClickBonus(this)">
                             Attaques gluantes</button></div>
                     <div class="col bouton_bonus_rare"><button id="buttonAttGla" type="button"
                             class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
-                            data-placement="top" title="20% de chances de retirer un PA à la cible à chaque attaque"
+                            data-placement="top" title="33% de chances de retirer un PA à la cible à chaque attaque"
                             onclick="onClickBonus(this)">
                             Attaques glacees</button></div>
+                    <div class="col bouton_bonus_rare"><button id="buttonCharo" type="button"
+                            class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
+                            data-placement="top" title="Quand vous tuez un ennemi, récupérez 2 PV"
+                            onclick="onClickBonus(this)">
+                            Charognard</button></div>
+
                     <!-- bonus choix de classe -->
                     <div class="col bouton_bonus_classe"><button id="buttonGuerrier" type="button"
-                            class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            Guerrier :</br>Sort Pression</br>Sort Pansements</br>+ 10 PV max </button></div>
+                            class="btn btn-danger choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            <strong>Guerrier</strong></br>Sort Pression</br>+1 PA</br>+ 10 PV max </button></div>
                     <div class="col bouton_bonus_classe"><button id="buttonMage" type="button"
                             class="btn btn-info choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            Mage :</br>Sort Boule de feu</br>+ 30 % Dommages</button></div>
+                            <strong>Mage</strong></br>Sort Boule de feu</br>+ 30 % Dommages</button></div>
                     <div class="col bouton_bonus_classe"><button id="buttonChatteux" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            Chatteux :</br>Sort Lancé de dé</br>+ 2 bonus aléatoires</button></div>
+                            <strong>Chatteux</strong></br>Sort Lancé de dé</br>+15% de chances de coup critique</button>
+                    </div>
                     <div class="col bouton_bonus_classe"><button id="buttonIndecis" type="button"
-                            class="btn btn-danger choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            Indecis :</br>Sort d'attaque aléatoire</br>Sort utilitaire aléatoire</button></div>
+                            class="btn btn-primary choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            <strong>Oracle</strong></br>Sort d'attaque aléatoire</br>Sort utilitaire aléatoire</br>1
+                            Bonus Rare aléatoire</button></div>
                     <div class="col bouton_bonus_classe"><button id="buttonLache" type="button"
                             class="btn btn-dark choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            Lâche :</br>Sort Invocation d'Ogre</br>+ 1 PM</button></div>
+                            <strong>Lâche</strong></br>Sort Invocation d'Ogre</br>+ 1 PM</button></div>
                 </div>
                 <div class="modal-footer">
 

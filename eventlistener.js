@@ -75,37 +75,34 @@ function onClickBonus(bouton) {
             break;
         case "buttonAttGla": game.effets.push(effetAttGla);
             break;
+        case "buttonCharo": game.effets.push(effetCharo);
+            break;
         case "buttonNouveauSortA": ajouterNouveauSort(listeSortsAttaque);
             break;
         case "buttonNouveauSortU": ajouterNouveauSort(listeSortsUtil);
             break;
-        case "buttonGuerrier": ajouterNouveauSort(listeSorts, pression); ajouterNouveauSort(listeSorts, pansements); player.PVmax += 10; player.PVact += 10;
+        case "buttonCrit": player.pourcentCrit += 15;
+            break;
+
+
+        case "buttonGuerrier": ajouterNouveauSort(listeSorts, pression); player.PAmax++; player.PAact++; player.PVmax += 10; player.PVact += 10;
             break;
         case "buttonMage": ajouterNouveauSort(listeSorts, fireball); player.pourcentDo += 30;
             break;
         case "buttonIndecis": {
             ajouterNouveauSort(listeSortsAttaque);
             ajouterNouveauSort(listeSortsUtil);
+            let random = getRandomInt(5);
+            if (random == 0) { player.POBonus++; ajouterAuChatType("Vous gagnez 1 de portée !", 1); }
+            if (random == 1) { game.effets.push(effetAttGlu); ajouterAuChatType("Vous gagnez l'effet Attaques gluantes !", 1); }
+            if (random == 2) { game.effets.push(effetAttGla); ajouterAuChatType("Vous gagnez l'effet Attaques glacées !", 1); }
+            if (random == 3) { player.PAmax++; player.PAact++; ajouterAuChatType("Vous gagnez 1 PA !", 1); }
+            if (random == 4) { player.PMmax++; player.PMact++; ajouterAuChatType("Vous gagnez 1 PM !", 1); }
             break;
         }
         case "buttonLache": ajouterNouveauSort(listeSorts, invoquerOgre); player.PMmax++; player.PMact++;
             break;
-        case "buttonChatteux": ajouterNouveauSort(listeSorts, diceThrow);
-            let random = getRandomInt(6);
-            if (random == 0) { player.bonusDo += 1; }
-            if (random == 1) { player.pourcentDo += 15; }
-            if (random == 2) { player.PVmax += 10; player.PVact += 10; }
-            if (random == 3) { player.PAmax++; player.PAact++; }
-            if (random == 4) { player.PMmax++; player.PMact++; }
-            if (random == 5) { player.POBonus++; }
-            random = getRandomInt(6);
-            if (random == 0) { player.bonusDo += 1; }
-            if (random == 1) { player.pourcentDo += 15; }
-            if (random == 2) { player.PVmax += 10; player.PVact += 10; }
-            if (random == 3) { player.PAmax++; player.PAact++; }
-            if (random == 4) { player.PMmax++; player.PMact++; }
-            if (random == 5) { player.POBonus++; }
-            ajouterAuChatType("Le Chatteux est un malin, il jette un oeil à ses stats pour voir quel bonus il a gagné.", 0);
+        case "buttonChatteux": ajouterNouveauSort(listeSorts, diceThrow); player.pourcentCrit += 15;
             break;
     }
     player.afficherStatsEntite();
