@@ -13,11 +13,7 @@ function addOnClic() {
 
 }
 
-<<<<<<< HEAD
 async function cellCliqued() {
-=======
- async function cellCliqued() {
->>>>>>> 6b5b0aa83ba151ecde58152449fe2e3fb009411a
     switch (game.phase) {
         case "TURN_PLAYER_MOVE":
             game.sortActif = null;
@@ -44,11 +40,7 @@ async function cellCliqued() {
                 player.retirerPASort();
 
                 game.phase = "SLOWMO_PLAYER";
-<<<<<<< HEAD
                 await slowSort(tabCells[this.id]);
-=======
-             await    slowSort(tabCells[this.id]);
->>>>>>> 6b5b0aa83ba151ecde58152449fe2e3fb009411a
 
                 game.sortActif = null;
             }
