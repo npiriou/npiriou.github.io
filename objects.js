@@ -210,7 +210,7 @@ function entite(
     this.attGluantes = function () {
         this.effets.push({
             nom: "Attaques gluantes", dureeRestante: 999, dommagesSubis: async function (cible) {
-                if (getRandomInt(5) != 0 || !cible) { return; }
+                if (getRandomInt(5) != 0 || !cible || cible.PVact==0) { return; }
                 let add = - 1;
                 if (add < 0 && Math.abs(add) > cible.PMact) add = 0 - cible.PMact; // on ne peut pas retirer plus que ce qu'il a
                 if (cible.PMact > 0 && (add != 0)) {
@@ -226,7 +226,7 @@ function entite(
     this.attGlacees = function () {
         this.effets.push({
             nom: "Attaques gluantes", dureeRestante: 999, dommagesSubis: async function (cible) {
-                if (getRandomInt(5) != 0 || !cible) { return; }
+                if (getRandomInt(5) != 0 || !cible|| cible.PVact==0) { return; }
                 let add = - 1;
                 if (add < 0 && Math.abs(add) > cible.PAact) add = 0 - cible.PAact; // on ne peut pas retirer plus que ce qu'il a
                 if (cible.PAact > 0 && (add != 0)) {
