@@ -6,7 +6,11 @@ function cell(posNum, posX, posY, contenu) {
     this.glyphes = [];
 
     this.recevoirSort = async function (entite) {
+<<<<<<< HEAD
 
+=======
+       
+>>>>>>> 6b5b0aa83ba151ecde58152449fe2e3fb009411a
         entite.mettreSortEnCd();
         if (!await game.sortActif.effetCell(this, entite)) {
             // sort sans dommage
@@ -15,9 +19,16 @@ function cell(posNum, posX, posY, contenu) {
         }
         if (game.sortActif.animation) { splash_projectile($("#" + entite.pos())[0], $("#" + this.posNum)[0], game.sortActif.animation) }
         if (this.contenu) {
+<<<<<<< HEAD
             await this.contenu.recevoirSort(entite);
         } else {
             ajouterAuChatType(entite.nom + " lance " + game.sortActif.nom, 0);
+=======
+            await  this.contenu.recevoirSort(entite);
+        } else {
+            ajouterAuChatType(entite.nom + " lance " + game.sortActif.nom, 0);
+            ajouterAuChatType("Voilà des PA bien gachés à lancer un sort dans le vide", 1);
+>>>>>>> 6b5b0aa83ba151ecde58152449fe2e3fb009411a
             splash(document.getElementById(this.posNum), "");
         }
     }
@@ -180,6 +191,7 @@ function entite(
         splash_rage(celltarget, " + " + DoAAjouter);
         ajouterAuChatType(this.nom + " gagne " + DoAAjouter + " dommages pour " + duree + " tours.", 0);
     }
+<<<<<<< HEAD
 
     this.ajouterPCDo = function (nom, DoAAjouter, duree) {
         let receveur = this;
@@ -244,6 +256,38 @@ function entite(
     this.pousser = async function (distPou, poslanceur) {
         await sleep(200);
 
+=======
+
+    this.ajouterPCDo = function (nom, DoAAjouter, duree) {
+        let receveur = this;
+        this.effets.push({
+            nom: nom, valeur: DoAAjouter, dureeRestante: duree, fin: function () {
+                receveur.pourcentDo -= DoAAjouter;
+            }
+        });
+        this.pourcentDo += DoAAjouter;
+        let celltarget = document.getElementById(this.pos());
+        splash_feuint(celltarget, " + " + DoAAjouter + " %");
+        ajouterAuChatType(this.nom + " gagne " + DoAAjouter + "  % dommages pour " + duree + " tours.", 0);
+    }
+
+    this.poison = function (nom, dommagesBase, duree, lanceur) {
+        let receveur = this;
+
+        this.effets.push({
+            nom: nom, valeur: dommagesBase, dureeRestante: duree, debutTour: async function () {
+                receveur.retirerPVs(Math.round(dommagesBase * ((lanceur.pourcentDo + 100) / 100) + lanceur.bonusDo));
+                await sleep(200);
+            }
+        });
+
+        let celltarget = document.getElementById(this.pos());
+        splash_invo(celltarget);
+        ajouterAuChatType(this.nom + " est empoisonné pour " + duree + " tours.", 0);
+    }
+
+    this.pousser = async function (distPou, poslanceur) {
+>>>>>>> 6b5b0aa83ba151ecde58152449fe2e3fb009411a
         let xl = xFromPos(poslanceur);
         let yl = yFromPos(poslanceur);
         let xr = xFromPos(this.pos());
@@ -255,8 +299,11 @@ function entite(
         (yl == yr) ? yd = 0 : (yl > yr) ? yd = -1 : yd = 1;
 
         for (let i = 0; i < distPou; i++) {
+<<<<<<< HEAD
             if (xr + xd < 0 || xr + xd > 9 || yr + yd < 0 || yr + yd > 9) { break; } // check si la pos suivante existe
 
+=======
+>>>>>>> 6b5b0aa83ba151ecde58152449fe2e3fb009411a
             if (estVide(tabCells[posFromxy(xr + xd, yr + yd)])) {
                 await deplacerContenu(posFromxy(xr, yr), posFromxy(xr + xd, yr + yd));
                 xr = xr + xd;

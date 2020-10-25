@@ -257,8 +257,18 @@ lancerUnSortSurCellParCode = async function (entite, cell, code) {
 iaRangeMoinsDebile = async function () {
     let invocATuer = trouverInvocations("ALLY")[0];
     let posPourLancer = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(player.pos(), this, this.sorts[0]);
+<<<<<<< HEAD
     let posPourLancer2; if(invocATuer) posPourLancer2 = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(invocATuer.pos(), this, this.sorts[0]);
     let aDejaAttaque = 0;
+=======
+    let posPourLancer2;
+
+    await flashIn(this);
+    await boostRage(this);
+    await boostFeuInt(this);
+
+    if (invocATuer) { posPourLancer2 = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(invocATuer.pos(), this, this.sorts[0]); }
+>>>>>>> 6b5b0aa83ba151ecde58152449fe2e3fb009411a
 
     await flashIn(this);
     await boostRage(this);
@@ -270,6 +280,7 @@ iaRangeMoinsDebile = async function () {
         await seDeplacer(this, posPourLancer);
         await lancerUnSortSurCell(this, tabCells[player.pos()], 0);
         await seDeplacer(this, posPourLancer);
+<<<<<<< HEAD
         await lancerUnSortSurCell(this, tabCells[player.pos()], 0);
         aDejaAttaque = 1;
     }
@@ -281,6 +292,21 @@ iaRangeMoinsDebile = async function () {
         await lancerUnSortSurCell(this, tabCells[player.pos()], 1);
         await seDeplacer(this, posPourLancer);
         await lancerUnSortSurCell(this, tabCells[player.pos()], 1);
+=======
+        await lancerUnSortSurEnnemi(this, player);
+        await seDeplacer(this, posPourLancer);
+        await lancerUnSortSurEnnemi(this, player);
+
+        if (this.sorts[1]){
+        posPourLancer = trouverPosLaPlusProcheAPorteeDeDeplacementPourLancerSort(player.pos(), this, this.sorts[1]);
+    }
+        await seDeplacer(this, posPourLancer);
+        await lancerUnSortSurEnnemi(this, player);
+        await seDeplacer(this, posPourLancer);
+        await lancerUnSortSurEnnemi(this, player);
+
+
+>>>>>>> 6b5b0aa83ba151ecde58152449fe2e3fb009411a
         await sEloignerAuMax(this, player);
         aDejaAttaque = 1;
     }

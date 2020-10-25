@@ -187,7 +187,12 @@ img {
 }
 
 .card__image-container {
+<<<<<<< HEAD
   background-color: rgba(49, 42, 32, 0.7);
+=======
+  background-color: rgba(49, 42, 32, 0.7); 
+  
+>>>>>>> 6b5b0aa83ba151ecde58152449fe2e3fb009411a
   text-align: center;
   padding: 1em 1em 0;
   border-radius: 3px 3px 0 0;

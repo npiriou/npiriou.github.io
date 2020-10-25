@@ -517,10 +517,14 @@ slowSort = async function (cell) {
     game.phase = "TURN_PLAYER_MOVE";
 }
 
+<<<<<<< HEAD
 function calculDommages(sort, Lanceur) {
     let dommagesBase = Math.floor(Math.random() * (sort.baseDmgMax - sort.baseDmgMin + 1)) + sort.baseDmgMin;
     return (Math.round(dommagesBase * ((Lanceur.pourcentDo + 100) / 100) + Lanceur.bonusDo));
 }
+=======
+
+>>>>>>> 6b5b0aa83ba151ecde58152449fe2e3fb009411a
 
 function ajouterNouveauSort(liste = listeSorts, sort = 0) {
     if (!sort) {
