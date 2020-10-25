@@ -11,28 +11,27 @@ div {
 
 td.cell {
   border: 1px solid rgb(71, 65, 43);
-   height: 80px;
-    width: 80px; 
-}
-.cellAlly{
-  border-bottom : 1px solid rgb(17, 0, 255) !important ;
+  height: 80px;
+  width: 80px;
 }
 
-.cellEnemy{
+.cellAlly {
+  border-bottom: 1px solid rgb(17, 0, 255) !important;
+}
+
+.cellEnemy {
   border-bottom: 1px solid rgb(255, 0, 0) !important;
 }
 
-
-
 #tabSorts {
   width: 200px;
-  height: 600px;
+  height: 800px;
   border: 5px solid rgb(71, 65, 43);
 }
 
 td.sort {
   border: 1px solid rgb(71, 65, 43);
-  height: 20%;
+  height: 16.67%;
   width: 50%;
 }
 
@@ -42,7 +41,7 @@ td.stat {
 
 button.pass {
   width: 100%;
-  height: 100%;
+  height: 133px;
   border-radius: 10px;
   background-color: rgb(240, 110, 4);
 }
@@ -53,12 +52,10 @@ img {
   border-radius: 10px;
 }
 
-.artEntite{
-  height:78px;
-  width:78px;
+.artEntite {
+  height: 78px;
+  width: 78px;
 }
-
-
 
 .disabled {
   filter: grayscale(1);
@@ -69,7 +66,7 @@ img {
 body {
   background: rgb(165, 149, 98);
   user-select: none;
-  overflow : hidden;
+  overflow: hidden;
 }
 
 #divHeader {
@@ -106,12 +103,16 @@ body {
   justify-content: center;
   align-items: center;
 }
-.divCell{
-  height:79px;
-  width:79px;
-  overflow:hidden;
+
+.divCell {
+  height: 79px;
+  width: 79px;
+  overflow: hidden;
 }
 
+.pointer:hover {
+  cursor: pointer;
+}
 
 .previsuPM:hover {
   background-color: darkgreen;
@@ -123,7 +124,7 @@ body {
   cursor: pointer;
 }
 
-.previsuPMMob{
+.previsuPMMob {
   background-color: rgba(41, 182, 41);
 }
 
@@ -186,8 +187,7 @@ img {
 }
 
 .card__image-container {
-  /* background-color: rgba(0, 0, 0, 0.7); */
-  background-color: white;
+  background-color: rgba(49, 42, 32, 0.7);
   text-align: center;
   padding: 1em 1em 0;
   border-radius: 3px 3px 0 0;
@@ -263,8 +263,6 @@ img {
   background-color: #C08A53;
 }
 
-
-
 .card:hover {
   z-index: 5;
   box-shadow: 0px 13px 30px -15px #000000;
@@ -287,7 +285,7 @@ img {
   height: 810px;
 }
 
-#status{
+#status {
   font-size: 20px;
   text-align: left;
 }

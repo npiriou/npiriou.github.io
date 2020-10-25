@@ -12,8 +12,8 @@ game.phase = "TURN_PLAYER_MOVE";
 game.sortActif = null;
 game.mobActif = null;
 game.level = 0;
-// tabCells[0].contenu=player;
-// tabCells[14].contenu=orc.clone();
+game.effets=[];
+
 
 charger();
 playerSave = player.clone();
@@ -25,6 +25,7 @@ remplirSelonPoids();
 
 initialiserObstacles();
 initCdSorts();
+triggerDebutCombat();
 refreshBoard();
 
 

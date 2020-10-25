@@ -13,7 +13,7 @@ function addOnClic() {
 
 }
 
-function cellCliqued() {
+async function cellCliqued() {
     switch (game.phase) {
         case "TURN_PLAYER_MOVE":
             game.sortActif = null;
@@ -38,7 +38,10 @@ function cellCliqued() {
                 retirerToutesPrevisuSort();
                 player.mettreSortEnCd();
                 player.retirerPASort();
-                tabCells[this.id].recevoirSort(player);
+
+                game.phase = "SLOWMO_PLAYER";
+                await slowSort(tabCells[this.id]);
+
                 game.sortActif = null;
             }
             if (game.phase == "TURN_PLAYER_SPELL") { // si on est toujours en phase de sort, donc que le round 
@@ -66,17 +69,28 @@ function onClickBonus(bouton) {
             break;
         case "buttonPO": player.POBonus++;
             break;
-        case "buttonNouveauSort": ajouterNouveauSort();
+        case "buttonHealPV": player.PVmax += 10; player.PVact = player.PVmax;
             break;
-        case "buttonGuerrier": ajouterNouveauSort(pression); player.PVmax += 20; player.PVact += 20;
+        case "buttonAttGlu": game.effets.push(effetAttGlu);
             break;
-        case "buttonMage": ajouterNouveauSort(fireball); player.pourcentDo += 30;
+        case "buttonAttGla": game.effets.push(effetAttGla);
             break;
-        case "buttonCostaud": ajouterNouveauSort(gifle); player.bonusDo += 2;
+        case "buttonNouveauSortA": ajouterNouveauSort(listeSortsAttaque);
             break;
-        case "buttonLache": ajouterNouveauSort(invoquerOgre); player.PMmax++; player.PMact++;
+        case "buttonNouveauSortU": ajouterNouveauSort(listeSortsUtil);
             break;
-        case "buttonChatteux": ajouterNouveauSort(diceThrow);
+        case "buttonGuerrier": ajouterNouveauSort(listeSorts, pression); ajouterNouveauSort(listeSorts, pansements); player.PVmax += 10; player.PVact += 10;
+            break;
+        case "buttonMage": ajouterNouveauSort(listeSorts, fireball); player.pourcentDo += 30;
+            break;
+        case "buttonIndecis": {
+            ajouterNouveauSort(listeSortsAttaque);
+            ajouterNouveauSort(listeSortsUtil);
+            break;
+        }
+        case "buttonLache": ajouterNouveauSort(listeSorts, invoquerOgre); player.PMmax++; player.PMact++;
+            break;
+        case "buttonChatteux": ajouterNouveauSort(listeSorts, diceThrow);
             let random = getRandomInt(6);
             if (random == 0) { player.bonusDo += 1; }
             if (random == 1) { player.pourcentDo += 15; }

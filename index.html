@@ -104,7 +104,7 @@
                             <td class="sort" data-sort="9"></td>
                         </tr>
                         <tr>
-                            <td id="tdPass" colspan="2"><button class="pass"
+                            <td id="tdPass" colspan="2"><button class="pass btn-lg"
                                     onclick="passerTourJoueur()">Passer</button>
                             </td>
                         </tr>
@@ -274,9 +274,12 @@
                     <div class="col bouton_bonus"><button id="buttonHeal" type="button" class="btn btn-warning choice"
                             data-dismiss="modal" onclick="onClickBonus(this)">
                             Récupérer tous mes PV </button></div>
-                    <div class="col bouton_bonus"><button id="buttonNouveauSort" type="button"
+                    <div class="col bouton_bonus"><button id="buttonNouveauSortA" type="button"
                             class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            Nouveau sort</button></div>
+                            Nouveau sort d'attaque</button></div>
+                    <div class="col bouton_bonus"><button id="buttonNouveauSortU" type="button"
+                            class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            Nouveau sort utilitaire</button></div>
                     <div class="col bouton_bonus_rare"><button id="buttonPA" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
                             +1 PA </button></div>
@@ -286,19 +289,31 @@
                     <div class="col bouton_bonus_rare"><button id="buttonPO" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
                             +1 de Portée</button></div>
+                    <div class="col bouton_bonus_rare"><button id="buttonHealPV" type="button"
+                            class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                            +10 PV maximum et récupérer tous mes PV</button></div>
+                    <div class="col bouton_bonus_rare"><button id="buttonAttGlu" type="button"
+                            class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
+                            data-placement="top" title="20% de chances de retirer un PM à la cible à chaque attaque" onclick="onClickBonus(this)">
+                            Attaques gluantes</button></div>
+                    <div class="col bouton_bonus_rare"><button id="buttonAttGla" type="button"
+                            class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
+                            data-placement="top" title="20% de chances de retirer un PA à la cible à chaque attaque"
+                            onclick="onClickBonus(this)">
+                            Attaques glacees</button></div>
                     <!-- bonus choix de classe -->
                     <div class="col bouton_bonus_classe"><button id="buttonGuerrier" type="button"
                             class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            Guerrier :</br>Sort Pression</br>+ 20 PVmax </button></div>
+                            Guerrier :</br>Sort Pression</br>Sort Pansements</br>+ 10 PV max </button></div>
                     <div class="col bouton_bonus_classe"><button id="buttonMage" type="button"
                             class="btn btn-info choice" data-dismiss="modal" onclick="onClickBonus(this)">
                             Mage :</br>Sort Boule de feu</br>+ 30 % Dommages</button></div>
                     <div class="col bouton_bonus_classe"><button id="buttonChatteux" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
                             Chatteux :</br>Sort Lancé de dé</br>+ 2 bonus aléatoires</button></div>
-                    <!-- <div class="col bouton_bonus_classe"><button id="buttonCostaud" type="button"
+                    <div class="col bouton_bonus_classe"><button id="buttonIndecis" type="button"
                             class="btn btn-danger choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            Costaud :</br>Sort Gifle</br>+ 2 Dommages</button></div> -->
+                            Indecis :</br>Sort d'attaque aléatoire</br>Sort utilitaire aléatoire</button></div>
                     <div class="col bouton_bonus_classe"><button id="buttonLache" type="button"
                             class="btn btn-dark choice" data-dismiss="modal" onclick="onClickBonus(this)">
                             Lâche :</br>Sort Invocation d'Ogre</br>+ 1 PM</button></div>
@@ -311,7 +326,7 @@
         </div>
     </div>
 
-<footer></footer>
+    <footer></footer>
 </body>
 
 <script src="jquery.touchSwipe.min.js"></script>

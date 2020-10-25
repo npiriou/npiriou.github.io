@@ -47,7 +47,7 @@ var templateSort =
 </tr>
 <tr>
     <th>Dommages</th>
-    <td>{1} à {2}</td>
+    <td>{1}{2}</td>
 </tr>
 
 <tr>
@@ -70,6 +70,10 @@ var templateSort =
 <tr>
     <th>Ligne de vue</th>
     <td>{8}</td>
+</tr>
+<tr>
+    <th>Durée</th>
+    <td>{10}</td>
 </tr>
 <tr>
     <th>Cooldown</th>

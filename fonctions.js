@@ -11,8 +11,10 @@ function initialisationSorts() {
             </img>`
         );
         document.getElementsByClassName("sort")[i].addEventListener("mouseover", onHoverSort);
+        document.getElementsByClassName("sort")[i].classList.add("pointer");
+
     }
-      $('[data-toggle="tooltip"]').tooltip(); // active les tooltips
+    $('[data-toggle="tooltip"]').tooltip(); // active les tooltips
 }
 
 function initialisationCellules() {
@@ -170,8 +172,8 @@ function refreshBoard() {
             document.getElementById("board").rows[tabCells[index].posY].cells[tabCells[index].posX].classList.remove("cellEnemy");
         }
     }
-      $('.tooltip').remove(); //supprime toutes les tooltips affichées
-         $('[data-toggle="tooltip"]').tooltip(); // refresh les tooltips
+    $('.tooltip').remove(); //supprime toutes les tooltips affichées
+    $('[data-toggle="tooltip"]').tooltip(); // refresh les tooltips
 
 }
 
@@ -184,7 +186,7 @@ async function deplacerContenu(posDepart, posArrivee) {
         tabCells[posArrivee].contenu = tabCells[posDepart].contenu;
         tabCells[posDepart].contenu = null;
     }
-    refreshBoard();
+    await refreshBoard();
     await sleep(100);
     return 1;
 }
@@ -233,7 +235,7 @@ async function passerTourJoueur() {
     sortActif = null;
     retirerToutesPrevisuSort();
     player.resetPAPM();
-    player.reduirecdSorts();
+    await player.reduirecdSorts();
     griserOuDegriserSorts();
     refreshBoard();
 
@@ -243,9 +245,12 @@ async function passerTourJoueur() {
         game.mobActif = tabMobs[i];
         // faire jouer chaque ia ici
         ajouterAuChatType(tabMobs[i].nom + " joue son tour.", 0);
-        await game.mobActif.ia();
-        game.mobActif.resetPAPM();
-        game.mobActif.reduirecdSorts();
+        await game.mobActif.reduireDureeEffets();
+        if (game.mobActif.PVact > 0) {
+            await game.mobActif.ia();
+            game.mobActif.resetPAPM();
+            game.mobActif.reduirecdSorts();
+        }
         game.mobActif = null;
         game.sortActif = null;
     }
@@ -257,14 +262,18 @@ async function passerTourJoueur() {
         game.mobActif = tabMobs[i];
         // faire jouer chaque ia ici
         ajouterAuChatType(tabMobs[i].nom + " joue son tour.", 0);
-        await game.mobActif.ia();
-        game.mobActif.resetPAPM();
-        game.mobActif.reduirecdSorts();
+        await game.mobActif.reduireDureeEffets();
+        if (game.mobActif.PVact > 0) {
+            await game.mobActif.ia();
+            game.mobActif.resetPAPM();
+            game.mobActif.reduirecdSorts();
+        }
         game.mobActif = null;
         game.sortActif = null;
     }
-
+    // nouveau début de tour de joueur
     game.phase = "TURN_PLAYER_MOVE";
+    player.reduireDureeEffets();
 }
 
 
@@ -302,6 +311,7 @@ function winRound() {
     player = Object.assign({}, playerSave); // on charge la derniere sauvegarde du joueur pour le cleanse
     player.resetPAPM();
     player.resetcdSorts();
+    player.resetEffets();
     griserOuDegriserSorts();
     retirerToutesPrevisuSort();
     retirerToutesPrevisuPMMob();
@@ -346,12 +356,14 @@ function newRound() {
 
     initialiserObstacles();
     initCdSorts();
+
+    triggerDebutCombat();
     refreshBoard();
     game.phase = "TURN_PLAYER_MOVE";
 }
 
 function sauvegarde() {
-    let save = { player: player, level: game.level };
+    let save = { player: player, level: game.level, effets : game.effets };
     localStorage.setItem("sauvegarde", JSON.stringify(save));
 }
 
@@ -369,13 +381,17 @@ function charger() {
     player.bonusDo = chargement.player.bonusDo;
     player.pourcentDo = chargement.player.pourcentDo;
 
-    for (let i = 0; i < chargement.player.sorts.length; i++) {
+    for (let i = 0; i < chargement.effets.length; i++) {
+        let effet = listeGameEffets.filter((effet) => effet.nom == chargement.effets[i].nom)[0];
+        game.effets.push(effet);
+    }
 
+    for (let i = 0; i < chargement.player.sorts.length; i++) {
         if (["CAC", "MJPOSERBOITE", "DOOM", "MJTP"].includes(chargement.player.sorts[i].code)) continue;
         let sort = listeSorts.filter((sort) => sort.code == chargement.player.sorts[i].code)[0];
 
         if (!sort) debugger;
-        ajouterNouveauSort(sort);
+        ajouterNouveauSort(listeSorts, sort);
     }
     player.resetPAPM();
     document.getElementById("titre").innerHTML = ("Étage " + game.level);
@@ -402,19 +418,31 @@ function randomiserBonusAffiches() {
     }
 
     if (game.level > 1) {
-        if (getRandomInt(2) == 0) { // 1/3 d'avoir un bonus rare proposé
-            boutonsBonusRares[getRandomInt(boutonsBonusRares.length)].style.display = 'block';
-            bonusRareAffiche = 1;
-        }
-        for (let i = 0; i < totalBonusAffiches; i++) {
-            let a = getRandomInt(boutonsBonus.length);
-            if (boutonsBonus[a].style.display == 'none') {
-                boutonsBonus[a].style.display = 'block'
+        if (game.level % 5 == 1) { // tous les 5 lvl, 4 bonus rares proposés
+            for (let i = 0; i < totalBonusAffiches + 1; i++) {
+                let a = getRandomInt(boutonsBonusRares.length);
+                if (boutonsBonusRares[a].style.display == 'none') {
+                    boutonsBonusRares[a].style.display = 'block'
+                }
+                else { totalBonusAffiches++ }
             }
-            else { totalBonusAffiches++ }
+        }
+
+        else { // lvl "normaux"
+            if (getRandomInt(2) == 0) { // 1/3 d'avoir un bonus rare proposé
+                boutonsBonusRares[getRandomInt(boutonsBonusRares.length)].style.display = 'block';
+                bonusRareAffiche = 1;
+            }
+            for (let i = 0; i < totalBonusAffiches; i++) {
+                let a = getRandomInt(boutonsBonus.length);
+                if (boutonsBonus[a].style.display == 'none') {
+                    boutonsBonus[a].style.display = 'block'
+                }
+                else { totalBonusAffiches++ }
+            }
         }
     }
-
+    // sinon si on est lvl 1 on a le choix entre les classes
     else for (let i = 0; i < boutonsBonusClasses.length; i++) {
         boutonsBonusClasses[i].style.display = 'block';
     }
@@ -446,10 +474,6 @@ function initCdSorts() {
         if (contientEntite(tabCells[i])) { tabCells[i].contenu.resetcdSorts(); }
     }
 }
-
-
-
-
 
 function isInSight(posDep, posCible, posAIgnorer = 100) { // check la Ligne de vue
 
@@ -488,20 +512,22 @@ slowMo = async function (chemin) {
     game.phase = "TURN_PLAYER_MOVE";
 }
 
+slowSort = async function (cell) {
+    await cell.recevoirSort(player);
+    game.phase = "TURN_PLAYER_MOVE";
+}
 
-function ajouterNouveauSort(sort = 0) {
+function calculDommages(sort, Lanceur) {
+    let dommagesBase = Math.floor(Math.random() * (sort.baseDmgMax - sort.baseDmgMin + 1)) + sort.baseDmgMin;
+    return (Math.round(dommagesBase * ((Lanceur.pourcentDo + 100) / 100) + Lanceur.bonusDo));
+}
+
+function ajouterNouveauSort(liste = listeSorts, sort = 0) {
     if (!sort) {
         if (player.sorts.length < 10) {
-            let sortAAjouter = listeSorts[Math.floor(Math.random() * listeSorts.length)];
-            let changerDeSort = 0;
-            for (let i = 0; i < player.sorts.length; i++) {
-
-                if (player.sorts[i] == sortAAjouter) {
-                    changerDeSort = 1;
-                }
-            }
-            if (changerDeSort == 1) {
-                ajouterNouveauSort();
+            let sortAAjouter = liste[Math.floor(Math.random() * liste.length)];
+            if (player.aDejaSort(sortAAjouter)) {
+                ajouterNouveauSort(liste, sort);
             }
             else {
                 player.sorts.push(sortAAjouter);
@@ -632,4 +658,19 @@ function shuffle(array) {
     }
 
     return array;
+}
+async function triggerDommagesSubis(lanceur, cible) {
+    for (let i = 0; i < lanceur.effets.length; i++) {
+        if (lanceur.effets[i].dommagesSubis) {
+            await lanceur.effets[i].dommagesSubis(cible);
+        }
+    }
+}
+
+function triggerDebutCombat() {
+    for (let i = 0; i < game.effets.length; i++) {
+        if (game.effets[i].debutCombat) {
+            game.effets[i].debutCombat();
+        }
+    }
 }
