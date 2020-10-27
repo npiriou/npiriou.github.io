@@ -33,7 +33,7 @@ function initialiserObstacles() {
             tabCells[i].contenu = boite.clone();
     }
     for (let i = 0; i < tabCells.length; i++) {
-        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom != "Boite")
+        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom != "Tonneau")
             && (tabCells[i].contenu != player)) {
             //   on récupere les pos du joueur et du mob détecté
             let posxJ = xFromPos(player.pos());
@@ -57,7 +57,7 @@ function initialiserObstacles() {
 
 function supprimerTousObstacles() {
     for (let i = 0; i < tabCells.length; i++) {
-        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == "Boite"))
+        if (contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == "Tonneau"))
             tabCells[i].contenu = null;
     }
     refreshBoard();
@@ -183,6 +183,7 @@ async function deplacerContenu(posDepart, posArrivee) {
         return 0;
     }
     else {
+        pivoterEntite(tabCells[posDepart].contenu, posArrivee);
         tabCells[posArrivee].contenu = tabCells[posDepart].contenu;
         tabCells[posDepart].contenu = null;
     }
@@ -197,6 +198,7 @@ function deplacerContenuInstantane(posDepart, posArrivee) {
 
     }
     else {
+        pivoterEntite(tabCells[posDepart].contenu, posArrivee);
         tabCells[posArrivee].contenu = tabCells[posDepart].contenu;
         tabCells[posDepart].contenu = null;
     }
@@ -255,8 +257,9 @@ async function passerTourJoueur() {
         game.sortActif = null;
     }
 
-    game.phase = "TURN_ENEMY";
+
     tabMobs = trouverEntites("ENEMY");
+    if (tabMobs.length > 0) game.phase = "TURN_ENEMY";
     // faire jouer ennemis ici
     for (let i = 0; i < tabMobs.length; i++) {
         game.mobActif = tabMobs[i];
@@ -272,7 +275,7 @@ async function passerTourJoueur() {
         game.sortActif = null;
     }
     // nouveau début de tour de joueur
-    game.phase = "TURN_PLAYER_MOVE";
+    if (game.phase == "TURN_ENEMY") { game.phase = "TURN_PLAYER_MOVE"; }
     player.reduireDureeEffets();
 }
 
@@ -304,7 +307,6 @@ function checkEndRound() {
 }
 
 function winRound() {
-
     game.phase = "MENU";
     playerSave.PVact = copy(player.PVact); // on retient les PV du joueur comme il ne regen pas
     // player = copy(playerSave);
@@ -324,17 +326,35 @@ function winRound() {
 
     randomiserBonusAffiches();
     player.afficherStatsEntite();
+    game.phase = "MENU";
+    // on affiche la modal - les parametres l'empeche de se fermer en cliquant au fond ou avec echap
     $(`#modalChooseBonus`).modal({ backdrop: 'static', keyboard: false });
 }
 
 async function looseRound() {
     game.phase = "END";
     await sleep(600);
-    if (confirm("Vous êtes mort")) {
-        location.reload();
+    record = loadRecord();
+    if (confirm("Vous êtes mort. Votre score : étage " + game.level + ". Votre record était de " + record + " étages.")) {
+        saveRecord(); location.reload();
     } else {
-        location.reload();
+        saveRecord(); location.reload();
     }
+}
+function saveRecord() {
+    let tabMobs = trouverEntites("ENEMY");
+    let ancienRecord = loadRecord();
+    let record = { level: game.level, mobs:tabMobs};
+    if (ancienRecord.lvl < record) {
+        localStorage.setItem("record", JSON.stringify(record));
+    }
+}
+
+function loadRecord() {
+    let record = localStorage.getItem('record');
+    if (!record) return 0;
+    record = JSON.parse(record);
+    return record.level;
 }
 
 function copy(a) {
@@ -363,7 +383,7 @@ function newRound() {
 }
 
 function sauvegarde() {
-    let save = { player: player, level: game.level, effets : game.effets };
+    let save = { player: player, level: game.level, effets: game.effets };
     localStorage.setItem("sauvegarde", JSON.stringify(save));
 }
 
@@ -504,6 +524,19 @@ function estAPorteeDeDeplacement(posdep, posarr, pm) {
     else return 0;
 }
 
+function pivoterEntite(entite, posDir) {
+    // si il se dirige a gauche et que l'image est vers la droite
+    if (xFromPos(posDir) < xFromPos(entite.pos()) && entite.skin.includes("img/anime/side/")) {
+        entite.skin = entite.skin.replace("img/anime/side/", "img/anime/");
+    }
+    // a l'inverse si il se dirige a droite et que l'image est vers la gauche
+    if (xFromPos(posDir) > xFromPos(entite.pos()) && !entite.skin.includes("img/anime/side/")) {
+        entite.skin = entite.skin.replace("img/anime/", "img/anime/side/");
+    }
+
+}
+
+
 slowMo = async function (chemin) {
     for (let i = 0; i < chemin.length; i++) {
         await deplacerContenu(player.pos(), posFromxy(chemin[i][0], chemin[i][1]));
@@ -515,25 +548,26 @@ slowMo = async function (chemin) {
 
 slowSort = async function (cell) {
     await cell.recevoirSort(player);
-    game.phase = "TURN_PLAYER_MOVE";
+    // on verif qu'on est tjs en slowmo, car si on a tué le dernier ennemi on est passé en "MENU"
+    if (game.phase == "SLOWMO_PLAYER") game.phase = "TURN_PLAYER_MOVE";
 }
 
-function coupCritique(Lanceur){
+function coupCritique(Lanceur) {
     // crit ou pas 
     let crit = 1
-    if (randomInteger(0, 99)< Lanceur.pourcentCrit){
-         crit = 1.5;
-         ajouterAuChatType("Coup critique !", 0);
-         anim_crit(Lanceur);         
-    }  
+    if (randomInteger(0, 99) < Lanceur.pourcentCrit) {
+        crit = 1.5;
+        ajouterAuChatType("Coup critique !", 0);
+        anim_crit(Lanceur);
+    }
     return crit;
 }
 
 function calculDommages(sort, Lanceur, dobase = null) {
-let crit = coupCritique(Lanceur);
+    let crit = coupCritique(Lanceur);
     let dommagesBase = Math.floor((Math.random() * (sort.baseDmgMax - sort.baseDmgMin + 1) + sort.baseDmgMin));
-    if (dobase) {dommagesBase = dobase;} // dobase permet de choisir les dommages de base a l'avance, utile pour dicethroww
-    return (Math.round(crit *dommagesBase * ((Lanceur.pourcentDo + 100) / 100) + Lanceur.bonusDo));
+    if (dobase) { dommagesBase = dobase; } // dobase permet de choisir les dommages de base a l'avance, utile pour dicethroww
+    return (Math.round(crit * dommagesBase * ((Lanceur.pourcentDo + 100) / 100) + Lanceur.bonusDo));
 }
 
 function ajouterNouveauSort(liste = listeSorts, sort = 0) {

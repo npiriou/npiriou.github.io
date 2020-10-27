@@ -7,12 +7,15 @@ div {
   width: 800px;
   height: 800px;
   table-layout: fixed;
+  background-image: url('img/dirt.png');
 }
 
 td.cell {
+  overflow : visible;
   border: 1px solid rgb(71, 65, 43);
   height: 80px;
   width: 80px;
+ 
 }
 
 .cellAlly {
@@ -27,10 +30,12 @@ td.cell {
   width: 200px;
   height: 800px;
   border: 5px solid rgb(71, 65, 43);
+  border-radius: 15px;
 }
 
 td.sort {
   border: 1px solid rgb(71, 65, 43);
+  border-radius: 15px;
   height: 16.67%;
   width: 50%;
 }
@@ -53,8 +58,16 @@ img {
 }
 
 .artEntite {
-  height: 78px;
-  width: 78px;
+  /* height: 78px;
+  width: 78px; */
+  position: absolute;
+  top: -9999px;
+  bottom: -9999px;
+  left: -9999px;
+  right: -9999px;
+  display: block;
+  margin: auto;
+
 }
 
 .disabled {
@@ -73,6 +86,7 @@ body {
   width: 100%;
   height: 20%;
   border: 5px solid rgb(71, 65, 43);
+  border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,6 +106,7 @@ body {
   align-items: center;
 }
 
+
 #divSorts {
   display: flex;
   justify-content: center;
@@ -107,7 +122,9 @@ body {
 .divCell {
   height: 79px;
   width: 79px;
-  overflow: hidden;
+  position: relative;
+  overflow: visible;
+
 }
 
 .pointer:hover {
@@ -157,7 +174,6 @@ body {
 img {
   max-height: 150px;
   margin: auto;
-  display: inline-block;
 }
 
 .card_title {

@@ -242,9 +242,13 @@
             </div>
             <div id="statusenrobage" class="col">
                 <p id="status">Bienvenue sur le jeu. </br>
-                    Déplacez-vous en cliquant près de votre personnage, c'est celui qui ressemble à un ninja.</br>
+                    Déplacez-vous en cliquant près de votre personnage.</br>
                     Vos sorts se trouvent à gauche de la grille.</br>
-                    Quand vous avez terminé vos actions, passez au tour suivant en cliquant sur le bouton "Passer".
+                    Quand vous avez terminé vos actions, passez au tour suivant en cliquant sur le bouton "Passer".</br>
+                    Patch note maj du 27/10:</br>
+                    Rework visuel complet du jeu, beaucoup de bugfix, ajouts de passifs en bonus rares, up pression,
+                    ajout d'un record d'étages qui se sauvegarde entre les parties.
+                </p>
                 </p>
             </div>
         </div>
@@ -307,6 +311,12 @@
                             data-placement="top" title="33% de chances de retirer un PA à la cible à chaque attaque"
                             onclick="onClickBonus(this)">
                             Attaques glacees</button></div>
+                    <div class="col bouton_bonus_rare"><button id="buttonAttPois" type="button"
+                            class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
+                            data-placement="top"
+                            title="Chaque attaque a 33% de chances d'empoisonner la cible pour deux tours, 1 dommage de base"
+                            onclick="onClickBonus(this)">
+                            Attaques empoisonnées</button></div>
                     <div class="col bouton_bonus_rare"><button id="buttonCharo" type="button"
                             class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
                             data-placement="top" title="Quand vous tuez un ennemi, récupérez 2 PV"
@@ -316,13 +326,13 @@
                     <!-- bonus choix de classe -->
                     <div class="col bouton_bonus_classe"><button id="buttonGuerrier" type="button"
                             class="btn btn-danger choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <strong>Guerrier</strong></br>Sort Pression</br>+1 PA</br>+ 10 PV max </button></div>
+                            <strong>Gladiateur</strong></br>Sort Pression</br>Sort Filet</br>+ 10 PV max </button></div>
                     <div class="col bouton_bonus_classe"><button id="buttonMage" type="button"
                             class="btn btn-info choice" data-dismiss="modal" onclick="onClickBonus(this)">
                             <strong>Mage</strong></br>Sort Boule de feu</br>+ 30 % Dommages</button></div>
                     <div class="col bouton_bonus_classe"><button id="buttonChatteux" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <strong>Chatteux</strong></br>Sort Lancé de dé</br>+15% de chances de coup critique</button>
+                            <strong>Chatteux</strong></br>Sort Lancé de dé</br>+30% de chances de coup critique</button>
                     </div>
                     <div class="col bouton_bonus_classe"><button id="buttonIndecis" type="button"
                             class="btn btn-primary choice" data-dismiss="modal" onclick="onClickBonus(this)">

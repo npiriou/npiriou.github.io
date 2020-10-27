@@ -53,6 +53,9 @@ async function cellCliqued() {
 
 
 function onClickBonus(bouton) {
+    // petit ajout pour stop les double clic de mastho
+    if (game.phase == "TURN_PLAYER_MOVE") {ajouterAuChatType("c'est fini les double clic", 1); return;}
+    game.phase = "TURN_PLAYER_MOVE";
 
     switch (bouton.id) {
         case "buttonDo": player.bonusDo += 1;
@@ -77,32 +80,37 @@ function onClickBonus(bouton) {
             break;
         case "buttonCharo": game.effets.push(effetCharo);
             break;
-        case "buttonNouveauSortA": ajouterNouveauSort(listeSortsAttaque);
+        case "buttonAttPois": game.effets.push(effetAttPois);
             break;
-        case "buttonNouveauSortU": ajouterNouveauSort(listeSortsUtil);
+        case "buttonNouveauSortA": 
+         ajouterNouveauSort(listeSortsAttaque);
+            break;
+        case "buttonNouveauSortU": 
+         ajouterNouveauSort(listeSortsUtil);
             break;
         case "buttonCrit": player.pourcentCrit += 15;
             break;
 
 
-        case "buttonGuerrier": ajouterNouveauSort(listeSorts, pression); player.PAmax++; player.PAact++; player.PVmax += 10; player.PVact += 10;
+        case "buttonGuerrier": ajouterNouveauSort(listeSorts, pression); ajouterNouveauSort(listeSorts, filet); player.PVmax += 10; player.PVact += 10;
             break;
         case "buttonMage": ajouterNouveauSort(listeSorts, fireball); player.pourcentDo += 30;
             break;
         case "buttonIndecis": {
             ajouterNouveauSort(listeSortsAttaque);
             ajouterNouveauSort(listeSortsUtil);
-            let random = getRandomInt(5);
+            let random = getRandomInt(6);
             if (random == 0) { player.POBonus++; ajouterAuChatType("Vous gagnez 1 de portée !", 1); }
             if (random == 1) { game.effets.push(effetAttGlu); ajouterAuChatType("Vous gagnez l'effet Attaques gluantes !", 1); }
             if (random == 2) { game.effets.push(effetAttGla); ajouterAuChatType("Vous gagnez l'effet Attaques glacées !", 1); }
             if (random == 3) { player.PAmax++; player.PAact++; ajouterAuChatType("Vous gagnez 1 PA !", 1); }
             if (random == 4) { player.PMmax++; player.PMact++; ajouterAuChatType("Vous gagnez 1 PM !", 1); }
+            if (random == 5) { game.effets.push(effetCharo); ajouterAuChatType("Vous gagnez l'effet Charognard !", 1); }
             break;
         }
         case "buttonLache": ajouterNouveauSort(listeSorts, invoquerOgre); player.PMmax++; player.PMact++;
             break;
-        case "buttonChatteux": ajouterNouveauSort(listeSorts, diceThrow); player.pourcentCrit += 15;
+        case "buttonChatteux": ajouterNouveauSort(listeSorts, diceThrow); player.pourcentCrit += 30;
             break;
     }
     player.afficherStatsEntite();

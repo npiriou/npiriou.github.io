@@ -63,7 +63,7 @@ function pathfindingAcrossEntities(Xdep, Ydep, Xarr, Yarr, listeAEnlever = []) {
         temparray = tabCells.slice(i, i + chunk);
 
         for (let k = 0; k < temparray.length; k++) {
-            if (temparray[k].contenu == null || temparray[k].contenu.nom != "Boite" || listeAEnlever.includes(i * 10 + k)) {
+            if (temparray[k].contenu == null || temparray[k].contenu.nom != "Tonneau" || listeAEnlever.includes(i * 10 + k)) {
                 temparray[k] = 1;
             }
             else temparray[k] = 0;
@@ -96,7 +96,7 @@ function pathfindingPoidsBoites(Xdep, Ydep, Xarr, Yarr, listeAEnlever = []) {
             if (temparray[k].contenu == null || listeAEnlever.includes(i * 10 + k)) {
                 temparray[k] = 1;
             }
-            else if (temparray[k].contenu && (temparray[k].contenu.nom == "Boite")) {
+            else if (temparray[k].contenu && (temparray[k].contenu.nom == "Tonneau")) {
                 temparray[k] = 4;
             }
             else temparray[k] = 0;

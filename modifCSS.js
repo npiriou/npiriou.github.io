@@ -43,13 +43,13 @@ function retirerToutesPrevisuPMMob() {
 
 function addHoverCell() {
     for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
-        //if (contientEntite(tabCells[index]) && (tabCells[index].contenu.nom != "Boite")) {
+        //if (contientEntite(tabCells[index]) && (tabCells[index].contenu.nom != "Tonneau")) {
         document.getElementsByClassName("cell")[index].children[0].addEventListener("mouseover", onHoverCell);
         document.getElementsByClassName("cell")[index].children[0].addEventListener("mouseout", onMouseOutOfCell);
     }
 }
 function onHoverCell() {
-    if (contientEntite(tabCells[this.id]) && tabCells[this.id].contenu.nom != "Boite") {
+    if (contientEntite(tabCells[this.id]) && tabCells[this.id].contenu.nom != "Tonneau") {
         tabCells[this.id].contenu.afficherStatsEntite();
         tabCells[this.id].contenu.afficherPrevisuPMMob();
     }

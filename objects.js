@@ -6,6 +6,7 @@ function cell(posNum, posX, posY, contenu) {
     this.glyphes = [];
 
     this.recevoirSort = async function (entite) {
+        pivoterEntite(entite, this.posNum); refreshBoard();
         entite.mettreSortEnCd();
         if (!await game.sortActif.effetCell(this, entite)) {
             // sort sans dommage
@@ -243,8 +244,21 @@ function entite(
             }
         });
     }
+    this.attPois = function () {
+        let lanceur =this;
+        this.effets.push({
+            nom: "Attaques empoisonnées", dureeRestante: 999, dommagesSubis: async function (cible) {
+                if (Math.random() > (1 / 3) || !cible || cible.PVact == 0) { return; }
+                    ajouterAuChatType(cible.nom + " est empoisonné.", 0);
+                    cible.poison("Empoisonné", 1,2, lanceur);
+                await sleep(100);
+            }
+        });
+    }
+
+
     this.charognard = function () {
-        lanceur = this;
+        let lanceur = this;
         this.effets.push({
             nom: "Charognard", dureeRestante: 999, onKill: async function () {
                 lanceur.ajouterPVs(2);
@@ -268,7 +282,7 @@ function entite(
         for (let i = 0; i < distPou; i++) {
             if (xr + xd < 0 || xr + xd > 9 || yr + yd < 0 || yr + yd > 9) { break; } // check si la pos suivante existe
 
-            if (estVide(tabCells[posFromxy(xr + xd, yr + yd)])) {
+            if (tabCells[posFromxy(xr + xd, yr + yd)] && estVide(tabCells[posFromxy(xr + xd, yr + yd)])) {
                 await deplacerContenu(posFromxy(xr, yr), posFromxy(xr + xd, yr + yd));
                 xr = xr + xd;
                 yr = yr + yd;
