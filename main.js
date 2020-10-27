@@ -16,8 +16,8 @@ game.effets=[];
 
 
 charger();
-playerSave = player.clone();
 
+playerSave = Object.assign({}, player);
 ajouterJoueur();
 poidsSelonLevel();
 remplirSelonPoids();

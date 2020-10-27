@@ -343,9 +343,9 @@ async function looseRound() {
 }
 function saveRecord() {
     let tabMobs = trouverEntites("ENEMY");
-    let ancienRecord = loadRecord();
+    let ancienRecordlevel = loadRecord();
     let record = { level: game.level, mobs:tabMobs, player:player};
-    if (ancienRecord.level < record) {
+    if ( ancienRecordlevel < record.level) {
         localStorage.setItem("record", JSON.stringify(record));
     }
 }
@@ -391,7 +391,7 @@ function charger() {
     let chargement = localStorage.getItem('sauvegarde');
     if (!chargement) return;
     chargement = JSON.parse(chargement);
-    localStorage.clear();
+    localStorage.removeItem("sauvegarde");
     game.level = chargement.level;
     player.PAmax = chargement.player.PAmax;
     player.PMmax = chargement.player.PMmax;
