@@ -344,8 +344,8 @@ async function looseRound() {
 function saveRecord() {
     let tabMobs = trouverEntites("ENEMY");
     let ancienRecord = loadRecord();
-    let record = { level: game.level, mobs:tabMobs};
-    if (ancienRecord.lvl < record) {
+    let record = { level: game.level, mobs:tabMobs, player:player};
+    if (ancienRecord.level < record) {
         localStorage.setItem("record", JSON.stringify(record));
     }
 }
