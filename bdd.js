@@ -246,7 +246,7 @@ var listeSortsUtil = [rage, pansements, flash, invoquerOgre, invoquerKang, poser
 
 
 // Entites  nom, PAmax, PMmax, PVmax, POBonus, sorts, side, ia, bonusDo, pourcentDo, skin, poids
-player = new entite("Player", 6, 3, 50, 0, [cac], "ALLY", null, 0, 0, "img/anime/Witch Hunters Leader.png", 0); // player
+player = new entite("Player", 6, 3, 50, 0, [cac], "ALLY", null, 0, 0, "img/anime/skins/WitchHuntersLeader.png", 0); // player
 
 mannequin = new entite("Mannequin", 4, 1, 10, 0, [cac], "ENEMY", iaDebile, 0, 0, "img/mannequin.png", 1);
 ogre = new entite("Ogre", 9, 2, 50, 0, [cac, rage], "ENEMY", iaDebile, 0, 0, "img/anime/Forest Ogre Orkgre.png", 3);
@@ -292,10 +292,21 @@ missile.animation = { path: "img/anim_missile.png", width: 50, height: 50, nb: 1
 pression.animation = { path: "img/anim_swords.png", width: 50, height: 50, nb: 1 };
 poisonflech.animation = { path: "img/anim_dart.png", width: 50, height: 50, nb: 1 };
 grab.animation = { path: "img/anim_grab.png", width: 50, height: 50, nb: 1 };
-toile.animation = { path: "img/anim_toile.png", width: 50, height: 50, nb: 1 };
+toile.animation = { path: "img/anim_toile.png", width: 70, height: 70, nb: 1 };
 toilecd.animation = { path: "img/anim_toile.png", width: 50, height: 50, nb: 1 };
 pasltime.animation = { path: "img/anim_time.png", width: 50, height: 50, nb: 1 };
 vague.animation = { path: "img/anim_vague.png", width: 70, height: 70, nb: 10 };
+ecrasement.animation =  { path: "img/anim_marteau.png", width: 100, height: 100, nb: 1 };
+
+// liste des skins
+let listeSkins = [
+    {obtention : 0, nom : "Défaut" , lien : `img/skins/WitchHuntersLeader.png`, select : 1 }, // select par défaut
+    {obtention : 10, nom : "Forgeron" , lien : `img/skins/LegendaryKnightsBlacksmithRemment.png`},
+    {obtention : 20, nom : "Chevalier Maudit" , lien : `img/skins/BossMythicalKnightGoldnharl.png`},
+    {obtention : 30, nom : "Magicien" , lien : `img/skins/MageGarrintan.png`},
+    {obtention : 45, nom : "Ange Gardien" , lien : `img/skins/CelestialBeatrix.png`},
+    {obtention : 63, nom : "Mecha Dracozord" , lien : `img/skins/RobotDracozord.png`}
+]
 
 // effets speciaux de la game
 effetAttGlu = { nom: "Attaques gluantes", debutCombat: function () { player.attGluantes(); } };

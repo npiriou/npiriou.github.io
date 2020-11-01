@@ -323,6 +323,7 @@ function winRound() {
     viderBoard();
     game.level++;
     document.getElementById("titre").innerHTML = ("Étage " + game.level);
+    saveRecord();
 
     randomiserBonusAffiches();
     player.afficherStatsEntite();
@@ -334,7 +335,7 @@ function winRound() {
 async function looseRound() {
     game.phase = "END";
     await sleep(600);
-    record = loadRecord();
+    let record = loadRecord();
     if (confirm("Vous êtes mort. Votre score : étage " + game.level + ". Votre record était de " + record + " étages.")) {
         saveRecord(); location.reload();
     } else {
@@ -344,8 +345,8 @@ async function looseRound() {
 function saveRecord() {
     let tabMobs = trouverEntites("ENEMY");
     let ancienRecordlevel = loadRecord();
-    let record = { level: game.level, mobs:tabMobs, player:player};
-    if ( ancienRecordlevel < record.level) {
+    let record = { level: game.level, mobs: tabMobs, player: player };
+    if (ancienRecordlevel < record.level) {
         localStorage.setItem("record", JSON.stringify(record));
     }
 }
@@ -389,7 +390,7 @@ function sauvegarde() {
 
 function charger() {
     let chargement = localStorage.getItem('sauvegarde');
-    if (!chargement) return;
+    if (!chargement) return 0;
     chargement = JSON.parse(chargement);
     localStorage.removeItem("sauvegarde");
     game.level = chargement.level;
@@ -729,4 +730,69 @@ function triggerDebutCombat() {
             game.effets[i].debutCombat();
         }
     }
+}
+
+function scrollSkin(dir) {
+    let record = loadRecord(); // return 0 si pas de record
+    let numSkinSelect = 0;
+    let skinLocked = 1;
+
+    for (let i = 0; i < listeSkins.length; i++) { // on retrouve quel skin est actuellement sélectionné
+        if (listeSkins[i].select == 1) { numSkinSelect = i; }
+    }
+
+    if (dir == 'left') {
+        //changement de skin select
+        listeSkins[numSkinSelect].select = 0; numSkinSelect--;
+        if (numSkinSelect < 0) { numSkinSelect = listeSkins.length - 1; }
+        listeSkins[numSkinSelect].select = 1;
+        //affichage
+        document.getElementById("divSkin").innerHTML = (`<img src = ` + listeSkins[numSkinSelect].lien + `></img>`);
+        document.getElementById("divNomSkin").innerHTML = (listeSkins[numSkinSelect].nom);
+    }
+    else { // fleche de droite
+        //changement de skin select
+        listeSkins[numSkinSelect].select = 0; numSkinSelect++;
+        if (numSkinSelect >= listeSkins.length) { numSkinSelect = 0; }
+        listeSkins[numSkinSelect].select = 1;
+        //affichage
+        document.getElementById("divSkin").innerHTML = (`<img src = ` + listeSkins[numSkinSelect].lien + `></img>`);
+        document.getElementById("divNomSkin").innerHTML = (listeSkins[numSkinSelect].nom);
+    }
+    // on vérifie qu'il a le level pour le nouveau skin 
+    if (record >= listeSkins[numSkinSelect].obtention) { skinLocked = 0; }
+    else skinLocked = 1;
+    // affichage de la restriction de level ou du bouton
+    if (skinLocked) {
+        document.getElementById("divSkinObt").innerHTML = ("Atteignez l'étage " + listeSkins[numSkinSelect].obtention + " pour le débloquer.");
+        document.getElementById("boutonJouer").style.display = "none";
+    }
+    else {
+        document.getElementById("divSkinObt").innerHTML = "";
+        document.getElementById("boutonJouer").style.display = "block";
+    }
+}
+
+function onClicJouer() {
+    let record = loadRecord(); // return 0 si pas de record
+    let numSkinSelect = 0;
+    let skinLocked = 1;
+
+    for (let i = 0; i < listeSkins.length; i++) { // on retrouve quel skin est actuellement sélectionné
+        if (listeSkins[i].select == 1) { numSkinSelect = i; }
+    }
+    // on vérifie qu'il a le level pour le skin 
+    if (record >= listeSkins[numSkinSelect].obtention) { skinLocked = 0; }
+    else skinLocked = 1;
+
+    if (!skinLocked) {
+        player.skin = listeSkins[numSkinSelect].lien.replace("img/skins/", "img/anime/skins/");
+    }
+    // sauvegarde du player et affichage du skin
+    playerSave = Object.assign({}, player);
+    refreshBoard();
+}
+
+function afficherModalSkin(){
+    if (game.level==0) {$(`#modalChooseSkin`).modal();}
 }

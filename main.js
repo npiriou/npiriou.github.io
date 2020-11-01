@@ -17,6 +17,7 @@ game.effets=[];
 
 charger();
 
+
 playerSave = Object.assign({}, player);
 ajouterJoueur();
 poidsSelonLevel();
@@ -36,3 +37,5 @@ addOnClicPrevisuSort();
 
 player.afficherStatsEntite();
 addHoverCell();
+
+afficherModalSkin();

@@ -119,3 +119,4 @@ function onClickBonus(bouton) {
     playerSave = Object.assign({}, player);
 }
 
+

@@ -245,25 +245,53 @@
                     Déplacez-vous en cliquant près de votre personnage.</br>
                     Vos sorts se trouvent à gauche de la grille.</br>
                     Quand vous avez terminé vos actions, passez au tour suivant en cliquant sur le bouton "Passer".</br>
-                    Patch note maj 1.01 du 27/10:</br>
-                    Rework visuel complet du jeu, beaucoup de bugfix, ajouts de passifs en bonus rares, up pression,
-                    ajout d'un record d'étages qui se sauvegarde entre les parties.</br>
-                    [23h] hotfix des records
+                    Patch note maj 1.2 du //</br>
+                    Ajout des skins.
                 </p>
                 </p>
             </div>
         </div>
     </div>
-    <!-- Button trigger modal
-    <button type="button" class="btn btn-primary" onclick="$(`#modalChooseBonus`).modal()">
-        Launch demo modal
-    </button>
-       Modal -->
+
+    <div class="modal fade" id="modalChooseSkin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-center">
+                    <h5 class="modal-title " id="exampleModalLongTitle">Choisissez une apparence</h5>
+                </div>
+                <div class="modal-body row">
+                    <div class="col arrow"><button id="arrowleft" type="button" class="btn btn-warning choice"
+                            onclick="scrollSkin('left')"> <img src="img/arrowleft.png"></img>
+                        </button></div>
+                    <div class="col">
+                        <div id="divSkin"> <img src="img/skins/WitchHuntersLeader.png"></img>
+                        </div>
+                        <div id="divNomSkin">Défaut
+                        </div>
+                        <div id="divSkinObt">
+                        </div>
+                        <div id="divBoutonJouer"><button id="boutonJouer" type="button" class="btn btn-warning choice "data-dismiss="modal"
+                            onclick="onClicJouer()" >Jouer
+                        </button>
+                        </div>
+                    </div>
+                    <div class="col arrow"><button id="arrowleft" type="button" class="btn btn-warning choice"
+                            onclick="scrollSkin('right')"> <img src="img/arrowright.png"></img>
+                        </button></div>
+                </div>
+                <div class="modal-footer">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="modalChooseBonus" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header d-flex justify-content-center">
                     <h5 class="modal-title" id="exampleModalLongTitle">Bien joué ! Choisissez un bonus :</h5>
                 </div>
                 <div class="modal-body row">
