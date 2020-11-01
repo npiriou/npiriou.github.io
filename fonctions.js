@@ -402,6 +402,7 @@ function charger() {
     player.bonusDo = chargement.player.bonusDo;
     player.pourcentDo = chargement.player.pourcentDo;
     player.pourcentCrit = chargement.player.pourcentCrit;
+    player.skin = chargement.player.skin;
 
     for (let i = 0; i < chargement.effets.length; i++) {
         let effet = listeGameEffets.filter((effet) => effet.nom == chargement.effets[i].nom)[0];

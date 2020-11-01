@@ -246,7 +246,7 @@ var listeSortsUtil = [rage, pansements, flash, invoquerOgre, invoquerKang, poser
 
 
 // Entites  nom, PAmax, PMmax, PVmax, POBonus, sorts, side, ia, bonusDo, pourcentDo, skin, poids
-player = new entite("Player", 6, 3, 50, 0, [cac], "ALLY", null, 0, 0, "img/anime/skins/WitchHuntersLeader.png", 0); // player
+player = new entite("Player", 6, 3, 50, 0, [cac, mjdoom], "ALLY", null, 0, 0, "img/anime/skins/WitchHuntersLeader.png", 0); // player
 
 mannequin = new entite("Mannequin", 4, 1, 10, 0, [cac], "ENEMY", iaDebile, 0, 0, "img/mannequin.png", 1);
 ogre = new entite("Ogre", 9, 2, 50, 0, [cac, rage], "ENEMY", iaDebile, 0, 0, "img/anime/Forest Ogre Orkgre.png", 3);
