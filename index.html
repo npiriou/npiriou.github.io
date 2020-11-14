@@ -27,231 +27,233 @@
 
 </head>
 
-<body>
+<body id='container'>
     <div id="divHeader">
-        <h1 id="titre">Triomphez du mannequin pour choisir votre classe</h1>
+        <span id="titre">Triomphez du mannequin pour choisir votre classe</span>
     </div>
     <div id="divBody">
-        <div class="row">
-            <div id="divStats" class="col">
-                <figure class="card card--normal col">
-                    <div class="card__image-container">
-                        <img id="img_stats" src="img/player.png" alt="Joueur" class="card__image">
-                    </div>
+        <!-- <div class=""> -->
+        <div id="divStats" class="">
+            <figure class="card card--normal col">
+                <div class="card__image-container">
+                    <img id="img_stats" src="" alt="Joueur" class="card__image">
+                </div>
 
-                    <figcaption class="card__caption">
-                        <div class="card__name card_title">Joueur</div>
+                <figcaption class="card__caption">
+                    <div class="card__name card_title">Joueur</div>
 
-                        <table class="card__stats">
-                            <tbody id="carboiteats">
-                                <tr>
-                                    <th>PV</th>
-                                    <td>55 / 55</td>
-                                </tr>
-                                <tr>
-                                    <th>PA</th>
-                                    <td>6 / 6</td>
-                                </tr>
+                    <table class="card__stats">
+                        <tbody id="carboiteats">
+                            <tr>
+                                <th>PV</th>
+                                <td>55 / 55</td>
+                            </tr>
+                            <tr>
+                                <th>PA</th>
+                                <td>6 / 6</td>
+                            </tr>
 
-                                <tr>
-                                    <th>PM</th>
-                                    <td>3 / 3</td>
-                                </tr>
+                            <tr>
+                                <th>PM</th>
+                                <td>3 / 3</td>
+                            </tr>
 
-                                <tr>
-                                    <th>Dommages Bonus</th>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <th>% Dommages Supplémentaires</th>
-                                    <td>0</td>
-                                </tr>
+                            <tr>
+                                <th>Dommages Bonus</th>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <th>% Dommages Supplémentaires</th>
+                                <td>0</td>
+                            </tr>
 
 
-                            </tbody>
-                        </table>
+                        </tbody>
+                    </table>
 
-                        <div class="card__abilities card_title">
-                            <div class="card__ability">
-                                <span class="card__label">
-                                    <!-- Sorts--> </span><!-- Liste des sorts-->
-                            </div>
+                    <div class="card__abilities card_title">
+                        <div class="card__ability">
+                            <span class="card__label">
+                                <!-- Sorts--> </span><!-- Liste des sorts-->
                         </div>
-                    </figcaption>
-                </figure>
-            </div>
-            <div id="divSorts" class="col">
-                <table id="tabSorts">
-                    <tbody>
-                        <tr>
-                            <td class="sort" data-sort="0"></td>
-                            <td class="sort" data-sort="1"></td>
-                        </tr>
-                        <tr>
-                            <td class="sort" data-sort="2"></td>
-                            <td class="sort" data-sort="3"></td>
-                        </tr>
-                        <tr>
-                            <td class="sort" data-sort="4"></td>
-                            <td class="sort" data-sort="5"></td>
-                        </tr>
-                        <tr>
-                            <td class="sort" data-sort="6"></td>
-                            <td class="sort" data-sort="7"></td>
-                        </tr>
-                        <tr>
-                            <td class="sort" data-sort="8"></td>
-                            <td class="sort" data-sort="9"></td>
-                        </tr>
-                        <tr>
-                            <td id="tdPass" colspan="2"><button class="pass btn-lg"
-                                    onclick="passerTourJoueur()">Passer</button>
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-            <div id="divBoard" class="col">
-                <table id="board">
-                    <thead></thead>
-                    <tbody>
-                        <tr>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                        </tr>
-                        <tr>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                        </tr>
-                        <tr>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                        </tr>
-                        <tr>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                        </tr>
-                        <tr>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                        </tr>
-                        <tr>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                        </tr>
-                        <tr>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                        </tr>
-                        <tr>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                        </tr>
-                        <tr>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                        </tr>
-                        <tr>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                            <td class="cell"> </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-            <div id="statusenrobage" class="col">
-                <p id="status">Bienvenue sur le jeu. </br>
-                    Déplacez-vous en cliquant près de votre personnage.</br>
-                    Vos sorts se trouvent à gauche de la grille.</br>
-                    Quand vous avez terminé vos actions, passez au tour suivant en cliquant sur le bouton "Passer".</br>
-                    Raccourcis clavier : 1,2,3... ou A,Z,E,... pour les sorts, Espace pour passer le tour.</br>
-                    Patch note maj 1.2 du 01/11</br>
-                    Ajout des skins. Réductions du lag des images.
-                </p>
-                </p>
-            </div>
+                    </div>
+                </figcaption>
+            </figure>
         </div>
+        <div id="divSorts" class="">
+            <table id="tabSorts">
+                <tbody>
+                    <tr>
+                        <td class="sort" data-sort="0"></td>
+                        <td class="sort" data-sort="1"></td>
+                    </tr>
+                    <tr>
+                        <td class="sort" data-sort="2"></td>
+                        <td class="sort" data-sort="3"></td>
+                    </tr>
+                    <tr>
+                        <td class="sort" data-sort="4"></td>
+                        <td class="sort" data-sort="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="sort" data-sort="6"></td>
+                        <td class="sort" data-sort="7"></td>
+                    </tr>
+                    <tr>
+                        <td class="sort" data-sort="8"></td>
+                        <td class="sort" data-sort="9"></td>
+                    </tr>
+                    <tr>
+                        <td id="tdPass" colspan="2"><button class="pass btn-lg"
+                                onclick="passerTourJoueur()">Passer</button>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <div id="divBoard" class="">
+            <table id="board">
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                    </tr>
+                    <tr>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                    </tr>
+                    <tr>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                    </tr>
+                    <tr>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                    </tr>
+                    <tr>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                    </tr>
+                    <tr>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                    </tr>
+                    <tr>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                    </tr>
+                    <tr>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                    </tr>
+                    <tr>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                    </tr>
+                    <tr>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                        <td class="cell"> </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div id="statusenrobage" class="">
+            <p id="status">Bienvenue sur le jeu. </br>
+                Déplacez-vous en cliquant près de votre personnage.</br>
+                Vos sorts se trouvent à gauche de la grille.</br>
+                Quand vous avez terminé vos actions, passez au tour suivant en cliquant sur le bouton "Passer".</br>
+                Raccourcis clavier : 1,2,3... ou A,Z,E,... pour les sorts, Espace pour passer le tour.</br>
+                </br>Dernière maj le 14/11:</br>
+                <span><a href="credits.html" onclick="window.open(this.href); return false;">Notes de patch et crédits</a>
+                    <br /></span>
+
+            </p>
+            </p>
+        </div>
+        <!-- </div> -->
     </div>
 
     <div class="modal fade" id="modalChooseSkin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -262,24 +264,27 @@
                     <h5 class="modal-title " id="exampleModalLongTitle">Choisissez une apparence</h5>
                 </div>
                 <div class="modal-body row">
-                    <div class="col arrow"><button id="arrowleft" type="button" class="btn btn-warning choice"
-                            onclick="scrollSkin('left')"> <img src="img/arrowleft.png"></img>
-                        </button></div>
+                    <div class="col arrow">
+                      <div class='divBtnArrow'>  <button id="arrowleft" type="button" class="btn btn-warning choice"
+                            onclick="scrollSkin('left')"> <img class='svg' src="img/arrowleft.png"></img>
+                        </button></div></div>
                     <div class="col">
-                        <div id="divSkin"> <img src="img/skins/WitchHuntersLeader.png"></img>
+                        <div id="divSkin"> <img class='chooseSkin' src="img/skins/WitchHuntersLeader.png"></img>
                         </div>
                         <div id="divNomSkin">Défaut
                         </div>
                         <div id="divSkinObt">
                         </div>
-                        <div id="divBoutonJouer"><button id="boutonJouer" type="button" class="btn btn-warning choice "data-dismiss="modal"
-                            onclick="onClicJouer()" >Jouer
-                        </button>
+                        <div id="divBoutonJouer"><button id="boutonJouer" type="button" class="btn btn-warning choice "
+                                data-dismiss="modal" onclick="onClicJouer()">Jouer
+                            </button>
                         </div>
                     </div>
-                    <div class="col arrow"><button id="arrowleft" type="button" class="btn btn-warning choice"
-                            onclick="scrollSkin('right')"> <img src="img/arrowright.png"></img>
-                        </button></div>
+                    <div class="col arrow">
+                        <div class='divBtnArrow'>
+                        <button id="arrowleft" type="button" class="btn btn-warning choice"
+                            onclick="scrollSkin('right')"> <img class='svg' src="img/arrowright.png"></img>
+                        </button></div></div>
                 </div>
                 <div class="modal-footer">
 
@@ -295,82 +300,112 @@
                 <div class="modal-header d-flex justify-content-center">
                     <h5 class="modal-title" id="exampleModalLongTitle">Bien joué ! Choisissez un bonus :</h5>
                 </div>
-                <div class="modal-body row">
-                    <div class="col bouton_bonus"><button id="buttonDo" type="button" class="btn btn-warning choice"
+                <div class="modal-body">
+                    <div class=" bouton_bon  bouton_bonus"><button id="buttonDo" type="button" class="btn btn-warning choice"
                             data-dismiss="modal" onclick="onClickBonus(this)">
-                            +1 dommages </button></div>
-                    <div class="col bouton_bonus"><button id="buttonPourcentDo" type="button"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/biceps.svg' /></div>
+                            <div class='bonusTxt'> +1 dommage</div>
+                        </button></div>
+                    <div class=" bouton_bon  bouton_bonus"><button id="buttonPourcentDo" type="button"
                             class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            +15% dommages </button></div>
-                    <div class="col bouton_bonus"><button id="buttonPVmax" type="button" class="btn btn-warning choice"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/growth.svg' /></div>
+                            <div class='bonusTxt'>  +15% dommages</div>
+                        </button></div>
+                    <div class=" bouton_bon  bouton_bonus"><button id="buttonPVmax" type="button" class="btn btn-warning choice"
                             data-dismiss="modal" onclick="onClickBonus(this)">
-                            +10 PV maximum </button></div>
-                    <div class="col bouton_bonus"><button id="buttonHeal" type="button" class="btn btn-warning choice"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/health-normal.svg' /></div>
+                            <div class='bonusTxt'> +10 PV maximum</div>
+                        </button></div>
+                    <div class=" bouton_bon  bouton_bonus"><button id="buttonHeal" type="button" class="btn btn-warning choice"
                             data-dismiss="modal" onclick="onClickBonus(this)">
-                            Récupérer tous mes PV </button></div>
-                    <div class="col bouton_bonus"><button id="buttonNouveauSortA" type="button"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/remedy.svg' /></div>
+                            <div class='bonusTxt'>  Récupérer tous mes PV</div>
+                        </button></div>
+                    <div class="  bouton_bon bouton_bonus"><button id="buttonNouveauSortA" type="button"
                             class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            Nouveau sort d'attaque</button></div>
-                    <div class="col bouton_bonus"><button id="buttonNouveauSortU" type="button"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/stabbed-note.svg' /></div>
+                            <div class='bonusTxt'>  Nouveau sort d'attaque</div>
+                        </button></div>
+                    <div class="  bouton_bon bouton_bonus"><button id="buttonNouveauSortU" type="button"
                             class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            Nouveau sort utilitaire</button></div>
-                    <div class="col bouton_bonus"><button id="buttonCrit" type="button" class="btn btn-warning choice"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/spell-book.svg' /></div>
+                            <div class='bonusTxt'>  Nouveau sort utilitaire</div>
+                        </button></div>
+                    <div class=" bouton_bon bouton_bonus"><button id="buttonCrit" type="button" class="btn btn-warning choice"
                             data-dismiss="modal" data-toggle="tooltip" data-placement="top"
-                            title="Les coups critiques augmentent les dégâts (et soins) de base des sorts de 50%"
+                            title="Les coups critiques augmentent les dégâts de base des sorts de 50%"
                             onclick="onClickBonus(this)">
-                            +15% de chances de coup critique</button></div>
-                    <div class="col bouton_bonus_rare"><button id="buttonPA" type="button"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/revolt.svg' /></div>
+                            <div class='bonusTxt'> +15% de chances de coup critique</div>
+                        </button></div>
+                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonPA" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            +1 PA </button></div>
-                    <div class="col bouton_bonus_rare"><button id="buttonPM" type="button"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/polar-star.svg' /> </div>
+                            <div class='bonusTxt'>  +1 PA</div>
+                        </button></div>
+                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonPM" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            +1 PM </button></div>
-                    <div class="col bouton_bonus_rare"><button id="buttonPO" type="button"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/boots.svg' /></div>
+                            <div class='bonusTxt'> +1 PM</div>
+                        </button></div>
+                    <div class=" bouton_bon  bouton_bonus_rare"><button id="buttonPO" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            +1 de Portée</button></div>
-                    <div class="col bouton_bonus_rare"><button id="buttonHealPV" type="button"
+                            <div class='bonusIco'><img class='svg' src='img/ico/eye-target.svg' /> </div>
+                            <div class='bonusTxt'>  +1 de Portée</div>
+                        </button></div>
+                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonHealPV" type="button"
                             class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            +10 PV maximum et récupérer tous mes PV</button></div>
-                    <div class="col bouton_bonus_rare"><button id="buttonAttGlu" type="button"
+                            <div class='bonusIco'><img class='svg' src='img/ico/health-increase.svg' /></div>
+                            <div class='bonusTxt'>  +10 PV maximum et récupérer tous mes PV</div>
+                        </button></div>
+                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonAttGlu" type="button"
                             class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
                             data-placement="top" title="20% de chances de retirer un PM à la cible à chaque attaque"
                             onclick="onClickBonus(this)">
-                            Attaques gluantes</button></div>
-                    <div class="col bouton_bonus_rare"><button id="buttonAttGla" type="button"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/sticky-boot.svg' /> </div>
+                            <div class='bonusTxt'> Attaques gluantes</div>
+                        </button></div>
+                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonAttGla" type="button"
                             class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
                             data-placement="top" title="33% de chances de retirer un PA à la cible à chaque attaque"
                             onclick="onClickBonus(this)">
-                            Attaques glacees</button></div>
-                    <div class="col bouton_bonus_rare"><button id="buttonAttPois" type="button"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/ice-spell-cast.svg' /> </div>
+                            <div class='bonusTxt'> Attaques glacees</div>
+                        </button></div>
+                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonAttPois" type="button"
                             class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
                             data-placement="top"
                             title="Chaque attaque a 33% de chances d'empoisonner la cible pour deux tours, 1 dommage de base"
                             onclick="onClickBonus(this)">
-                            Attaques empoisonnées</button></div>
-                    <div class="col bouton_bonus_rare"><button id="buttonCharo" type="button"
+                            <div class='bonusIco'> <img class='svg' src='img/ico/poison-bottle.svg' /> </div>
+                            <div class='bonusTxt'> Attaques empoisonnées</div>
+                        </button></div>
+                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonCharo" type="button"
                             class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
                             data-placement="top" title="Quand vous tuez un ennemi, récupérez 2 PV"
                             onclick="onClickBonus(this)">
-                            Charognard</button></div>
+                            <div class='bonusIco'> <img class='svg' src='img/ico/front-teeth.svg' /></div>
+                            <div class='bonusTxt'> Charognard</div>
+                        </button></div>
 
                     <!-- bonus choix de classe -->
-                    <div class="col bouton_bonus_classe"><button id="buttonGuerrier" type="button"
-                            class="btn btn-danger choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <strong>Gladiateur</strong></br>Sort Pression</br>Sort Filet</br>+ 10 PV max </button></div>
-                    <div class="col bouton_bonus_classe"><button id="buttonMage" type="button"
-                            class="btn btn-info choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <strong>Mage</strong></br>Sort Boule de feu</br>+ 30 % Dommages</button></div>
-                    <div class="col bouton_bonus_classe"><button id="buttonChatteux" type="button"
-                            class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <strong>Chatteux</strong></br>Sort Lancé de dé</br>+30% de chances de coup critique</button>
-                    </div>
-                    <div class="col bouton_bonus_classe"><button id="buttonIndecis" type="button"
-                            class="btn btn-primary choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <strong>Oracle</strong></br>Sort d'attaque aléatoire</br>Sort utilitaire aléatoire</br>1
-                            Bonus Rare aléatoire</button></div>
-                    <div class="col bouton_bonus_classe"><button id="buttonLache" type="button"
-                            class="btn btn-dark choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <strong>Lâche</strong></br>Sort Invocation d'Ogre</br>+ 1 PM</button></div>
+                    <div class="  bouton_bon bouton_bonus_classe"><button id="buttonGuerrier" type="button"
+                            class="btn btn-danger choice bouton_bonus_classe" data-dismiss="modal" onclick="onClickBonus(this)">
+                            <div><strong>Gladiateur</strong></br>Sort Pression</br>Sort Filet</br>+ 10 PV max </div></button></div>
+                    <div class=" bouton_bon  bouton_bonus_classe"><button id="buttonMage" type="button"
+                            class="btn btn-info choice bouton_bonus_classe" data-dismiss="modal" onclick="onClickBonus(this)">
+                            <div> <strong>Mage</strong></br>Sort Boule de feu</br>+ 30 % Dommages</div></button></div>
+                    <div class=" bouton_bon  bouton_bonus_classe"><button id="buttonChatteux" type="button"
+                            class="btn btn-success choice bouton_bonus_classe" data-dismiss="modal" onclick="onClickBonus(this)">
+                            <div><strong>Chatteux</strong></br>Sort Lancé de dé</br>+30% de chances de coup critique
+                        </div> </button> </div>
+                    <div class="  bouton_bon bouton_bonus_classe"><button id="buttonIndecis" type="button"
+                            class="btn btn-primary choice bouton_bonus_classe" data-dismiss="modal" onclick="onClickBonus(this)">
+                            <div> <strong>Oracle</strong></br>Sort d'attaque aléatoire</br>Sort utilitaire aléatoire</br>
+                            1 Bonus Rare aléatoire</div></button></div>
+                    <div class=" bouton_bon bouton_bonus_classe"><button id="buttonLache" type="button"
+                            class="btn btn-dark choice bouton_bonus_classe" data-dismiss="modal" onclick="onClickBonus(this)">
+                            <div> <strong>Lâche</strong></br>Sort Invocation d'Ogre</br>+ 1 PM</div></button></div>
                 </div>
                 <div class="modal-footer">
 
@@ -379,7 +414,14 @@
             </div>
         </div>
     </div>
-
+    <div id='modalPortrait' class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" 
+    aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            Le jeu est fait pour être joué en mode paysage, tourne ton téléphone ;)
+          </div>
+        </div>
+      </div>
     <footer></footer>
 </body>
 

@@ -36,6 +36,10 @@ var template =
 <tr>
     <th>% Dommages Supplémentaires</th>
     <td>{7}</td>
+</tr>
+<tr>
+    <th>Chances de coup critique</th>
+    <td>{9}%</td>
 </tr>`;
 
 

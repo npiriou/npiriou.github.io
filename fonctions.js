@@ -6,7 +6,7 @@ function initialisationSorts() {
     for (let i = 0; i < player.sorts.length; i++) {
         document.getElementsByClassName("sort")[i].innerHTML = (
             `<img data-toggle="tooltip" data-placement="top"  
-            title="` + player.sorts[i].nom + ` ` + player.sorts[i].coutPA + ` PA" id="art" 
+            title="` + player.sorts[i].nom + ` ` + player.sorts[i].coutPA + ` PA" id="art" class='artSpell'
             src ="` + player.sorts[i].logo + `" >
             </img>`
         );
@@ -277,6 +277,7 @@ async function passerTourJoueur() {
     // nouveau début de tour de joueur
     if (game.phase == "TURN_ENEMY") { game.phase = "TURN_PLAYER_MOVE"; }
     player.reduireDureeEffets();
+    griserOuDegriserSorts();
 }
 
 
@@ -445,7 +446,7 @@ function randomiserBonusAffiches() {
             for (let i = 0; i < totalBonusAffiches + 1; i++) {
                 let a = getRandomInt(boutonsBonusRares.length);
                 if (boutonsBonusRares[a].style.display == 'none') {
-                    boutonsBonusRares[a].style.display = 'block'
+                    boutonsBonusRares[a].style.display = 'flex'
                 }
                 else { totalBonusAffiches++ }
             }
@@ -453,13 +454,13 @@ function randomiserBonusAffiches() {
 
         else { // lvl "normaux"
             if (getRandomInt(2) == 0) { // 1/3 d'avoir un bonus rare proposé
-                boutonsBonusRares[getRandomInt(boutonsBonusRares.length)].style.display = 'block';
+                boutonsBonusRares[getRandomInt(boutonsBonusRares.length)].style.display = 'flex';
                 bonusRareAffiche = 1;
             }
             for (let i = 0; i < totalBonusAffiches; i++) {
                 let a = getRandomInt(boutonsBonus.length);
                 if (boutonsBonus[a].style.display == 'none') {
-                    boutonsBonus[a].style.display = 'block'
+                    boutonsBonus[a].style.display = 'flex'
                 }
                 else { totalBonusAffiches++ }
             }
@@ -467,7 +468,7 @@ function randomiserBonusAffiches() {
     }
     // sinon si on est lvl 1 on a le choix entre les classes
     else for (let i = 0; i < boutonsBonusClasses.length; i++) {
-        boutonsBonusClasses[i].style.display = 'block';
+        boutonsBonusClasses[i].style.display = 'flex';
     }
 }
 
@@ -546,6 +547,7 @@ slowMo = async function (chemin) {
 
     }
     game.phase = "TURN_PLAYER_MOVE";
+    player.afficherStatsEntite();
 }
 
 slowSort = async function (cell) {
@@ -609,25 +611,19 @@ function remplirSelonPoids() {
     if (game.poids >= gobpriest.poids + 10 && !listeMobs.includes(gobpriest)) { listeMobs.push(gobpriest); }
 
 
-    if (game.poids == Maneki.poids) { // round du boss
-        while (!bossPose) {
-            randoPos = randomInteger(40, 99);
-            if (!contientEntite(tabCells[randoPos])) {
-                tabCells[randoPos].contenu = Maneki.clone();
-                bossPose = 1;
+    tabBoss.forEach(boss => {
+        if (game.poids == boss.poids) { // round du boss
+            while (!bossPose) {
+                randoPos = randomInteger(40, 99);
+                if (!contientEntite(tabCells[randoPos])) {
+                    tabCells[randoPos].contenu = boss.clone();
+                    bossPose = 1;
+                }
             }
         }
-    }
-    else if (game.poids == gobpriest.poids) { // round du boss
-        while (!bossPose) {
-            randoPos = randomInteger(40, 99);
-            if (!contientEntite(tabCells[randoPos])) {
-                tabCells[randoPos].contenu = gobpriest.clone();
-                bossPose = 1;
-            }
-        }
-    }
-    else {
+    })
+
+    if (!bossPose) {
         while (poidsTerrain < game.poids) {
             randoMob = getRandomInt(listeMobs.length);
             randoPos = getRandomInt(100);
@@ -717,10 +713,18 @@ async function triggerDommagesSubis(lanceur, cible) {
     }
 }
 
-async function triggeronKill() {
-    for (let i = 0; i < player.effets.length; i++) {
-        if (player.effets[i].onKill) {
-            await player.effets[i].onKill();
+async function triggeronKill(lanceur = player) {
+    for (let i = 0; i < lanceur.effets.length; i++) {
+        if (lanceur.effets[i].onKill) {
+            await lanceur.effets[i].onKill();
+        }
+    }
+}
+async function triggeronDeath(entite) {
+
+    for (let i = 0; i < entite.effets.length; i++) {
+        if (entite.effets[i].onDeath) {
+            await entite.effets[i].onDeath();
         }
     }
 }
@@ -748,7 +752,7 @@ function scrollSkin(dir) {
         if (numSkinSelect < 0) { numSkinSelect = listeSkins.length - 1; }
         listeSkins[numSkinSelect].select = 1;
         //affichage
-        document.getElementById("divSkin").innerHTML = (`<img src = ` + listeSkins[numSkinSelect].lien + `></img>`);
+        document.getElementById("divSkin").innerHTML = (`<img class='chooseSkin' src = ` + listeSkins[numSkinSelect].lien + `></img>`);
         document.getElementById("divNomSkin").innerHTML = (listeSkins[numSkinSelect].nom);
     }
     else { // fleche de droite
@@ -757,7 +761,7 @@ function scrollSkin(dir) {
         if (numSkinSelect >= listeSkins.length) { numSkinSelect = 0; }
         listeSkins[numSkinSelect].select = 1;
         //affichage
-        document.getElementById("divSkin").innerHTML = (`<img src = ` + listeSkins[numSkinSelect].lien + `></img>`);
+        document.getElementById("divSkin").innerHTML = (`<img class='chooseSkin' src = ` + listeSkins[numSkinSelect].lien + `></img>`);
         document.getElementById("divNomSkin").innerHTML = (listeSkins[numSkinSelect].nom);
     }
     // on vérifie qu'il a le level pour le nouveau skin 
@@ -794,6 +798,36 @@ function onClicJouer() {
     refreshBoard();
 }
 
-function afficherModalSkin(){
-    if (game.level==0) {$(`#modalChooseSkin`).modal();}
+function afficherModalSkin() {
+    if (game.level == 0) {
+        if (window.innerHeight > window.innerWidth) {
+            // alert("Le jeu est fait pour être joué en mode paysage, tourne ton téléphone ;)");
+            $(`#modalPortrait`).modal();
+        }
+        $(`#modalChooseSkin`).modal();
+    }
+}
+
+function preloadImage(url) {
+    let img = new Image();
+    img.src = url;
+}
+
+function preloadAllImages() {
+    listeEntitesNonJoueur.forEach(entite => {
+        // on les load à l'endroit et à l'envers
+        preloadImage(entite.skin);
+        entite.skin = entite.skin.replace("img/anime/", "img/anime/side/");
+        preloadImage(entite.skin);
+        entite.skin = entite.skin.replace("img/anime/side/", "img/anime/");
+    })
+    listeSorts.forEach(spell => {
+        if (spell.animation) preloadImage(spell.animation.path);
+    })
+    for (let i = 1; i < 7; i++) {
+        preloadImage('img/dices/' + i + '.png');
+    }
+    for (let i = 1; i < 5; i++) {
+        preloadImage('img/crit' + i + '.png');
+    }
 }

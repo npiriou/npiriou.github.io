@@ -26,7 +26,7 @@ function cell(posNum, posX, posY, contenu) {
         this.glyphes.push([lanceur, nombreTours, callback]);
         if (image) {
             document.getElementById(this.posNum).style.backgroundImage = "url('" + image + "')";
-            document.getElementById(this.posNum).style.backgroundSize = "78px 78px";
+            document.getElementById(this.posNum).style.backgroundSize = "4vw 4vw";
         } else {
             document.getElementById(this.posNum).classList.add("glyph");
         }
@@ -118,7 +118,7 @@ function entite(
             // sort sans dommage
             return;
         }
-        this.retirerPVs(calculDommages(game.sortActif, entite)); 
+        this.retirerPVs(calculDommages(game.sortActif, entite));
         if (entite) await triggerDommagesSubis(entite, this);
     }
     this.aDejaSort = function (sort) {
@@ -197,6 +197,18 @@ function entite(
         ajouterAuChatType(this.nom + " gagne " + DoAAjouter + "  % dommages pour " + duree + " tours.", 0);
     }
 
+    this.ajouterPo = function (nom, PoAAjouter, duree) {
+        let receveur = this;
+        this.effets.push({
+            nom: nom, valeur: PoAAjouter, dureeRestante: duree, fin: function () {
+                receveur.POBonus -= PoAAjouter;
+            }
+        });
+        this.POBonus += PoAAjouter;
+        let celltarget = document.getElementById(this.pos());
+        splash_PA(celltarget, "");
+        ajouterAuChatType(this.nom + " gagne " + PoAAjouter + " de portée pour " + duree + " tours.", 0);
+    }
     this.poison = function (nom, dommagesBase, duree, lanceur) {
         let receveur = this;
         this.effets.push({
@@ -245,23 +257,46 @@ function entite(
         });
     }
     this.attPois = function () {
-        let lanceur =this;
+        let lanceur = this;
         this.effets.push({
             nom: "Attaques empoisonnées", dureeRestante: 999, dommagesSubis: async function (cible) {
                 if (Math.random() > (1 / 3) || !cible || cible.PVact == 0) { return; }
-                    ajouterAuChatType(cible.nom + " est empoisonné.", 0);
-                    cible.poison("Empoisonné", 1,2, lanceur);
+                ajouterAuChatType(cible.nom + " est empoisonné.", 0);
+                cible.poison("Empoisonné", 1, 2, lanceur);
                 await sleep(100);
             }
         });
     }
-
 
     this.charognard = function () {
         let lanceur = this;
         this.effets.push({
             nom: "Charognard", dureeRestante: 999, onKill: async function () {
                 lanceur.ajouterPVs(2);
+            }
+        });
+    }
+
+    this.ajouterSplitOnDeath = function (nom, nbSpawn, duree) {
+        let lanceur = this;
+        // on cherche quelle taille faire spawn selon la taille au dessus
+        let willSpawn = globuleSmall;
+        switch (lanceur.nom) {
+            case "Globule Royal": willSpawn = globuleBig; break;
+            case "Grand Globule": willSpawn = globuleMedium; break;
+            case "Globule": willSpawn = globuleSmall; break;
+        }
+        this.effets.push({
+            nom: nom, valeur: nbSpawn, dureeRestante: duree, onDeath: function () {
+                // faire spawn nbSpawn petit glob
+                let posAdj = posAdjacentes(lanceur.pos());
+                posAdj.forEach(pos => {
+                    // un blob spawn dans chaque case vide adjacente
+                    // 1 chance sur 3 de ne pas spawn
+                    if (estVide(tabCells[pos]) && (Math.random() < 2/3)) {
+                        tabCells[pos].contenu = willSpawn.clone();
+                    }
+                })
             }
         });
     }
@@ -312,12 +347,13 @@ function entite(
 
 
     this.mort = function () {
+        triggeronDeath(this);
         ajouterAuChatType(this.nom + " est mort.", 0);
         tabCells[this.pos()].contenu = null;
         tabCells.forEach(cell => {
             cell.retirerGlyphe(this);
         });
-        if (this.side == "ENEMY"){triggeronKill();}
+        if (this.side == "ENEMY") { triggeronKill(); }
         refreshBoard();
         checkEndRound();
         delete this;
@@ -349,8 +385,8 @@ function entite(
 
     this.afficherStatsEntite = function () {
 
-        document.getElementById("carboiteats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo, this.POBonus);
-        document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.skin + `"></img>`;
+        document.getElementById("carboiteats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo, this.POBonus,  this.pourcentCrit);
+        document.getElementsByClassName("card__image-container")[0].innerHTML = `<img class='artSpell' src="` + this.skin + `"></img>`;
         document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
         document.getElementsByClassName("card__ability")[0].innerHTML = "";
     }
@@ -399,7 +435,7 @@ function sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax,
         if (this.zoneLancer) c = zoneLancer; else c = "Non";
 
         document.getElementById("carboiteats").innerHTML = templateSort.format(this.coutPA, dmg, dmg2, this.porteeMin, this.porteeMax, pom, c, this.AoE, ldv, cd, duree);
-        document.getElementsByClassName("card__image-container")[0].innerHTML = `<img src ="` + this.logo + `"></img>`;
+        document.getElementsByClassName("card__image-container")[0].innerHTML = `<img class='artSpell' src ="` + this.logo + `"></img>`;
         document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
         document.getElementsByClassName("card__ability")[0].innerHTML = this.description;
     }

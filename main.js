@@ -1,9 +1,8 @@
-
 let tabCells = [];
 numeroterBoard();
 initialisationCellules();
 initialisationSorts();
-
+preloadAllImages();
 
 
 

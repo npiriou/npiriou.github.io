@@ -580,7 +580,7 @@ function splash_invo(elem) {
 
 function splash_projectile(elem, elemCible, img) {
     //EXEMPLE splash_projectile($("#9")[0], $("#39")[0], {path:"img/arti.png", width: 50, height:50, nb:15})
-    {
+ {
         let coords = getCoords(elem);
         let coordsCible = getCoords(elemCible);
         const bubbles = img.nb; //nb de projectiles 10k c'est trop
@@ -589,7 +589,8 @@ function splash_projectile(elem, elemCible, img) {
 
         const explode = (x, y, xCible, yCible, img) => {
             let particles = [];
-            let ratio = window.devicePixelRatio;
+          //  let ratio = window.devicePixelRatio;
+          // ??? le ratio faisait bugger les animations sur mobile, maintenant qu'il est supprimé ça marche 
             let c = document.createElement('canvas');
             let ctx = c.getContext('2d');
             let xCanva = 100;
@@ -604,9 +605,11 @@ function splash_projectile(elem, elemCible, img) {
             c.style.width = Math.max(x, xCible) - Math.min(x, xCible) + 200 + 'px';
             c.style.height = Math.max(y, yCible) - Math.min(y, yCible) + 200 + 'px';
             c.style.zIndex = 100;
-            c.width = (Math.max(x, xCible) - Math.min(x, xCible) + 200) * ratio;
-            c.height = (Math.max(y, yCible) - Math.min(y, yCible) + 200) * ratio;
+            c.width = (Math.max(x, xCible) - Math.min(x, xCible) + 200) /* * ratio;*/
+            c.height = (Math.max(y, yCible) - Math.min(y, yCible) + 200) /* * ratio;*/
             c.style.zIndex = "9999999"
+
+
             document.body.appendChild(c);
 
 
@@ -648,11 +651,9 @@ function splash_projectile(elem, elemCible, img) {
         const render = (particles, ctx, width, height, img) => {
             requestAnimationFrame(() => render(particles, ctx, width, height, img));
             ctx.clearRect(0, 0, width, height);
-            // ctx.globalAlpha = 1.0;
-            // ctx.font = 'bold 48px serif';
-            // ctx.fillStyle = 'black';
-            // ctx.fillText(text, width / 4, ctx.textY);
-            // ctx.textY -= height / 100;
+
+
+    
             particles.forEach((p, i) => {
                 p.delay--;
                 if (p.delay > 0) {
