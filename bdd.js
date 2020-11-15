@@ -277,9 +277,9 @@ elasticite = new sort("ELASTICITE", "Elasticité", 0, 0, 0, 0, 0, 0, null, "Case
 globage = new sort("GLOBAGE", "Globage", 6, 0, 0, 1, 1, 0, null, "Case", 1, effetGlobage, 25, 0, 2, "img/cac.png", "OS la cible, se soigne et gagne 1 PM");
 
 
-var listeSorts = [pression, cac, missile, rage, fireball, pansements, diceThrow, ecrasement, flash, invoquerOgre, invoquerKang, poserBoite, feuint, poisonflech, kick, toile, pasltime, sprint, vague, filet, echange, vision];
+var listeSorts = [pression, cac, missile, rage, fireball, pansements, diceThrow, ecrasement, flash, invoquerOgre, /*invoquerKang,*/ poserBoite, feuint, poisonflech, kick, toile, pasltime, sprint, vague, filet, echange, vision];
 var listeSortsAttaque = [pression, missile, fireball, diceThrow, ecrasement, poisonflech, kick, pasltime, vague];
-var listeSortsUtil = [rage, pansements, flash, invoquerOgre, invoquerKang, poserBoite, feuint, toile, sprint, filet, echange, vision];
+var listeSortsUtil = [rage, pansements, flash, invoquerOgre,/* invoquerKang,*/ poserBoite, feuint, toile, sprint, filet, echange, vision];
 
 
 // Entites  nom, PAmax, PMmax, PVmax, POBonus, sorts, side, ia, bonusDo, pourcentDo, skin, poids
