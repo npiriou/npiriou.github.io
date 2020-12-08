@@ -11,14 +11,44 @@ function cell(posNum, posX, posY, contenu) {
         if (!await game.sortActif.effetCell(this, entite)) {
             // sort sans dommage
             ajouterAuChatType(entite.nom + " lance " + game.sortActif.nom, 0);
+            await this.assignCollateral(entite)
             return;
         }
         if (game.sortActif.animation) { splash_projectile($("#" + entite.pos())[0], $("#" + this.posNum)[0], game.sortActif.animation) }
-        if (this.contenu) {
+
+        if (this.contenu) { //si la case est occupee
             await this.contenu.recevoirSort(entite);
-        } else {
+        } else { // si la case est vide
             ajouterAuChatType(entite.nom + " lance " + game.sortActif.nom, 0);
             splash(document.getElementById(this.posNum), "");
+        }
+        
+
+        await this.assignCollateral(entite) // si cest un sort de zone
+    }
+
+    this.assignCollateral = async function (lanceur) {
+        let arrPos = [];
+        switch (game.sortActif.AoE) {
+            case 'Case': return;
+            case 'Croix': arrPos = posAdjacentes(this.posNum); break;
+        }
+        for (let i = 0; i < arrPos.length; i++) {
+            await tabCells[arrPos[i]].recevoirSortCollateral(lanceur);
+        }
+    }
+
+    this.recevoirSortCollateral = async function (entite) {
+
+        await game.sortActif.effetCell(this, entite); // joue l'effet du sort s'il en a un
+
+        if (this.contenu) { //si la case est occupee
+            if (!await game.sortActif.effet(this.contenu)) {
+                // sort sans dommage
+                return;
+            }
+            this.contenu.retirerPVs(calculDommages(game.sortActif, entite));
+            if (entite) await triggerDommagesSubis(entite, this.contenu);
         }
     }
 
@@ -293,7 +323,7 @@ function entite(
                 posAdj.forEach(pos => {
                     // un blob spawn dans chaque case vide adjacente
                     // 1 chance sur 3 de ne pas spawn
-                    if (estVide(tabCells[pos]) && (Math.random() < 2/3)) {
+                    if (estVide(tabCells[pos]) && (Math.random() < 2 / 3)) {
                         tabCells[pos].contenu = willSpawn.clone();
                     }
                 })
@@ -384,8 +414,11 @@ function entite(
     }
 
     this.afficherStatsEntite = function () {
-
-        document.getElementById("carboiteats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo, this.POBonus,  this.pourcentCrit);
+        let affEffets = [];
+        this.effets.forEach(e => {
+            affEffets.push(e.nom)
+        });
+        document.getElementById("carboiteats").innerHTML = template.format(this.PVact, this.PVmax, this.PAact, this.PAmax, this.PMact, this.PMmax, this.bonusDo, this.pourcentDo, this.POBonus, this.pourcentCrit, affEffets.join(', '));
         document.getElementsByClassName("card__image-container")[0].innerHTML = `<img class='artSpell' src="` + this.skin + `"></img>`;
         document.getElementsByClassName("card__name card_title")[0].innerHTML = this.nom;
         document.getElementsByClassName("card__ability")[0].innerHTML = "";

@@ -23,15 +23,20 @@ function previsuSort(sortClique) {
                 if (game.sortActif.estAPortee(player.pos(), index, player.POBonus)
                     && (!game.sortActif.LdV || isInSight(player.pos(), index))) {
                     cellboiteee.classList.add("previsuSort");
-                }
+                    if (game.sortActif.AoE === 'Croix') { 
+                    cellboiteee.classList.add("previsuSortCroix");
+                }}
             }
+
         }
     }
 }
 
+
 function retirerToutesPrevisuSort() {
     for (let index = 0; index < document.getElementsByClassName("cell").length; index++) {
         document.getElementsByClassName("cell")[index].classList.remove("previsuSort");
+        document.getElementsByClassName("cell")[index].classList.remove("previsuSortCroix");
     }
 }
 function retirerToutesPrevisuPMMob() {

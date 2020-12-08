@@ -5,10 +5,10 @@ function initialisationSorts() {
 
     for (let i = 0; i < player.sorts.length; i++) {
         document.getElementsByClassName("sort")[i].innerHTML = (
-            `<img data-toggle="tooltip" data-placement="top"  
+            `<div class='spellHov'><img data-toggle="tooltip" data-placement="top"  
             title="` + player.sorts[i].nom + ` ` + player.sorts[i].coutPA + ` PA" id="art" class='artSpell'
             src ="` + player.sorts[i].logo + `" >
-            </img>`
+            </img></div>`
         );
         document.getElementsByClassName("sort")[i].addEventListener("mouseover", onHoverSort);
         document.getElementsByClassName("sort")[i].classList.add("pointer");
@@ -304,7 +304,7 @@ function checkEndRound() {
     }
     if (tabMobs.length == 0)
         winRound();
-    else if (player.PVact <= 0) looseRound();
+    else if (player.PVact <= 0) loseRound();
 }
 
 function winRound() {
@@ -322,6 +322,7 @@ function winRound() {
 
 
     viderBoard();
+    game.totalKills += game.nbMobsGenerated;
     game.level++;
     document.getElementById("titre").innerHTML = ("Étage " + game.level);
     saveRecord();
@@ -333,7 +334,7 @@ function winRound() {
     $(`#modalChooseBonus`).modal({ backdrop: 'static', keyboard: false });
 }
 
-async function looseRound() {
+async function loseRound() {
     game.phase = "END";
     await sleep(600);
     let record = loadRecord();
@@ -347,9 +348,18 @@ function saveRecord() {
     let tabMobs = trouverEntites("ENEMY");
     let ancienRecordlevel = loadRecord();
     let record = { level: game.level, mobs: tabMobs, player: player };
+    let newTotalKills = loadKills()+game.nbMobsGenerated;
     if (ancienRecordlevel < record.level) {
         localStorage.setItem("record", JSON.stringify(record));
     }
+    localStorage.setItem('nbKills', newTotalKills)
+}
+
+function loadKills(){
+    let nbKills = localStorage.getItem('nbKills');
+    if (!nbKills) return 0;
+    nbKills = JSON.parse(nbKills);
+    return nbKills;
 }
 
 function loadRecord() {
@@ -385,11 +395,12 @@ function newRound() {
 }
 
 function sauvegarde() {
-    let save = { player: player, level: game.level, effets: game.effets };
+    let save = { player: player, level: game.level, effets: game.effets, map: game.map };
     localStorage.setItem("sauvegarde", JSON.stringify(save));
 }
 
 function charger() {
+    // player loading
     let chargement = localStorage.getItem('sauvegarde');
     if (!chargement) return 0;
     chargement = JSON.parse(chargement);
@@ -420,11 +431,15 @@ function charger() {
     player.resetPAPM();
     document.getElementById("titre").innerHTML = ("Étage " + game.level);
 
+    // map loading
+if (chargement.map) {
+    document.getElementById('board').classList.add(chargement.map);
+}
 }
 
 
 function randomiserBonusAffiches() {
-
+    removeClassesFromExcessBonus();
     let boutonsBonus = document.getElementsByClassName("bouton_bonus");
     let boutonsBonusRares = document.getElementsByClassName("bouton_bonus_rare");
     let boutonsBonusClasses = document.getElementsByClassName("bouton_bonus_classe");
@@ -472,6 +487,24 @@ function randomiserBonusAffiches() {
     }
 }
 
+function removeClassesFromExcessBonus() {
+    game.effets.forEach(eff => {
+        if (eff.nom == 'Charognard') {
+            document.getElementById("buttonCharo").parentElement.style.display = "none";
+            document.getElementById("buttonCharo").parentElement.classList.remove("bouton_bonus_rare");
+        } if (eff.nom == "Attaques empoisonnées") {
+            document.getElementById("buttonAttPois").parentElement.style.display = "none";
+            document.getElementById("buttonAttPois").parentElement.classList.remove("bouton_bonus_rare");
+        }
+    })
+    if (player.sorts.length >= 10) {
+        document.getElementById("buttonNouveauSortA").parentElement.style.display = "none";
+        document.getElementById("buttonNouveauSortA").parentElement.classList.remove("bouton_bonus");
+        document.getElementById("buttonNouveauSortU").parentElement.style.display = "none";
+        document.getElementById("buttonNouveauSortU").parentElement.classList.remove("bouton_bonus");
+    }
+
+}
 
 function getCoords(elem) { // crossbrowser version
     var box = elem.getBoundingClientRect();
@@ -608,6 +641,8 @@ function remplirSelonPoids() {
     let randoMob;
     let randoPos;
     let bossPose = 0;
+    game.nbMobsGenerated=0;
+
     if (game.poids >= gobpriest.poids + 10 && !listeMobs.includes(gobpriest)) { listeMobs.push(gobpriest); }
 
 
@@ -618,6 +653,7 @@ function remplirSelonPoids() {
                 if (!contientEntite(tabCells[randoPos])) {
                     tabCells[randoPos].contenu = boss.clone();
                     bossPose = 1;
+                    game.nbMobsGenerated=1;
                 }
             }
         }
@@ -635,7 +671,7 @@ function remplirSelonPoids() {
                 tabCells[randoPos].contenu = listeMobs[randoMob].clone();
                 poidsTerrain += listeMobs[randoMob].poids;
                 let nBExemplaire = 0;
-
+                game.nbMobsGenerated++;
 
                 for (let i = 0; i < tabCells.length; i++) {
                     if ((contientEntite(tabCells[i]) && (tabCells[i].contenu.nom == listeMobs[randoMob].nom))) {
@@ -737,32 +773,68 @@ function triggerDebutCombat() {
     }
 }
 
-function scrollSkin(dir) {
+function scrollSkin(dir, content = 'skin') {
+    console.log('content=' + content)
+
     let record = loadRecord(); // return 0 si pas de record
+    let nbKills = loadKills();
     let numSkinSelect = 0;
     let skinLocked = 1;
+    let numSkinSelectGround = 0;
+    let skinLockedGround = 1;
 
     for (let i = 0; i < listeSkins.length; i++) { // on retrouve quel skin est actuellement sélectionné
         if (listeSkins[i].select == 1) { numSkinSelect = i; }
     }
-
-    if (dir == 'left') {
-        //changement de skin select
-        listeSkins[numSkinSelect].select = 0; numSkinSelect--;
-        if (numSkinSelect < 0) { numSkinSelect = listeSkins.length - 1; }
-        listeSkins[numSkinSelect].select = 1;
-        //affichage
-        document.getElementById("divSkin").innerHTML = (`<img class='chooseSkin' src = ` + listeSkins[numSkinSelect].lien + `></img>`);
-        document.getElementById("divNomSkin").innerHTML = (listeSkins[numSkinSelect].nom);
+    for (let i = 0; i < groundList.length; i++) { // on retrouve quel skin est actuellement sélectionné
+        if (groundList[i].select == 1) { numSkinSelectGround = i; }
     }
-    else { // fleche de droite
-        //changement de skin select
-        listeSkins[numSkinSelect].select = 0; numSkinSelect++;
-        if (numSkinSelect >= listeSkins.length) { numSkinSelect = 0; }
-        listeSkins[numSkinSelect].select = 1;
-        //affichage
-        document.getElementById("divSkin").innerHTML = (`<img class='chooseSkin' src = ` + listeSkins[numSkinSelect].lien + `></img>`);
-        document.getElementById("divNomSkin").innerHTML = (listeSkins[numSkinSelect].nom);
+
+    if (content === 'skin') {
+        if (dir == 'left') {
+            //changement de skin select
+            listeSkins[numSkinSelect].select = 0; numSkinSelect--;
+            if (numSkinSelect < 0) { numSkinSelect = listeSkins.length - 1; }
+            listeSkins[numSkinSelect].select = 1;
+            //affichage
+            document.getElementById("divSkin").innerHTML = (`<img class='chooseSkin' src = ` + listeSkins[numSkinSelect].lien + `></img>`);
+            document.getElementById("divNomSkin").innerHTML = (listeSkins[numSkinSelect].nom);
+        }
+        else { // fleche de droite
+            //changement de skin select
+            listeSkins[numSkinSelect].select = 0; numSkinSelect++;
+            if (numSkinSelect >= listeSkins.length) { numSkinSelect = 0; }
+            listeSkins[numSkinSelect].select = 1;
+            //affichage
+            document.getElementById("divSkin").innerHTML = (`<img class='chooseSkin' src = ` + listeSkins[numSkinSelect].lien + `></img>`);
+            document.getElementById("divNomSkin").innerHTML = (listeSkins[numSkinSelect].nom);
+        }
+
+    }
+    if (content === 'ground') {
+        if (dir == 'left') {
+            //changement de skin select
+            groundList[numSkinSelectGround].select = 0; numSkinSelectGround--;
+            if (numSkinSelectGround < 0) { numSkinSelectGround = groundList.length - 1; }
+            groundList[numSkinSelectGround].select = 1;
+
+            //affichage
+            document.getElementById("divSkinGround").innerHTML = (`<img class='chooseSkinGround' src = ` + groundList[numSkinSelectGround].lien + `></img>`);
+            document.getElementById("divNomSkinGround").innerHTML = (groundList[numSkinSelectGround].nom);
+        }
+        else { // fleche de droite
+            //changement de skin select
+            groundList[numSkinSelectGround].select = 0; numSkinSelectGround++;
+            if (numSkinSelectGround >= groundList.length) { numSkinSelectGround = 0; }
+            groundList[numSkinSelectGround].select = 1;
+
+            console.log('numSkinSelectGround=' + numSkinSelectGround)
+
+            //affichage
+            document.getElementById("divSkinGround").innerHTML = (`<img class='chooseSkinGround' src = ` + groundList[numSkinSelectGround].lien + `></img>`);
+            document.getElementById("divNomSkinGround").innerHTML = (groundList[numSkinSelectGround].nom);
+        }
+
     }
     // on vérifie qu'il a le level pour le nouveau skin 
     if (record >= listeSkins[numSkinSelect].obtention) { skinLocked = 0; }
@@ -774,28 +846,48 @@ function scrollSkin(dir) {
     }
     else {
         document.getElementById("divSkinObt").innerHTML = "";
-        document.getElementById("boutonJouer").style.display = "block";
+        if (!skinLockedGround) document.getElementById("boutonJouer").style.display = "block";
     }
+    // on vérifie qu'il a le level pour le nouveau skin de map
+    if (nbKills >= groundList[numSkinSelectGround].obtention) { skinLockedGround = 0; }
+    else skinLockedGround = 1;
+    // affichage de la restriction de level ou du bouton
+    if (skinLockedGround) {
+        document.getElementById("divSkinObtGround").innerHTML = ("Tuez " + groundList[numSkinSelectGround].obtention + " ennemis au total pour le débloquer. Actuellement : "+nbKills+'.');
+        document.getElementById("boutonJouer").style.display = "none";
+    }
+    else {
+        document.getElementById("divSkinObtGround").innerHTML = "";
+        if (!skinLocked) document.getElementById("boutonJouer").style.display = "block";
+    }
+
 }
 
 function onClicJouer() {
     let record = loadRecord(); // return 0 si pas de record
+    let nbKills = loadKills();
     let numSkinSelect = 0;
-    let skinLocked = 1;
 
     for (let i = 0; i < listeSkins.length; i++) { // on retrouve quel skin est actuellement sélectionné
         if (listeSkins[i].select == 1) { numSkinSelect = i; }
     }
-    // on vérifie qu'il a le level pour le skin 
-    if (record >= listeSkins[numSkinSelect].obtention) { skinLocked = 0; }
-    else skinLocked = 1;
+    for (let i = 0; i < groundList.length; i++) { // on retrouve quel skin de map est actuellement sélectionné
+        if (groundList[i].select == 1) { numSkinSelectGround = i; }
+    }
 
-    if (!skinLocked) {
+    // on vérifie qu'il a le level pour le skin 
+    if (record >= listeSkins[numSkinSelect].obtention) {
         player.skin = listeSkins[numSkinSelect].lien.replace("img/skins/", "img/anime/skins/");
     }
     // sauvegarde du player et affichage du skin
     playerSave = Object.assign({}, player);
     refreshBoard();
+
+    // on vérifie qu'il a les kills pour le skin de map
+    if (nbKills >= groundList[numSkinSelectGround].obtention) {
+        document.getElementById('board').classList.add(groundList[numSkinSelectGround].class);
+        game.map=groundList[numSkinSelectGround].class;
+    }
 }
 
 function afficherModalSkin() {

@@ -238,25 +238,25 @@ pasdEffet = function () { return 1; }
 
 // sort(code, nom, coutPA, baseDmgMin, baseDmgMax, porteeMin, porteeMax, POModif, zoneLancer, AoE, LdV, 
 //       effet, valeurEffet, dureeEffet, cooldown, logo, description)
-pression = new sort("PRESSION", "Pression", 3, 5, 7, 1, 2, 0, null, "Case", 1, pasdEffet, 0, 0, 0, "img/pression.jpg", "Envoie un bon coup d'épée");
+pression = new sort("PRESSION", "Pression", 3, 7, 8, 1, 2, 0, null, "Case", 1, pasdEffet, 0, 0, 0, "img/pression.jpg", "Envoie un bon coup d'épée");
 cac = new sort("CAC", "Attaque au CaC", 3, 3, 4, 1, 1, 0, null, "Case", 1, pasdEffet, 0, 0, 0, "img/cac.png", "Met une bonne patate à la cible");
 missile = new sort("MISSILE", "Missile", 4, 3, 4, 4, 10, 1, null, "Case", 0, pasdEffet, 0, 0, 0, "img/missile.png", "Tire un missile sans ligne de vue");
 rage = new sort("RAGE", "Rage", 2, 0, 0, 0, 0, 1, null, "Case", 1, effetBoostDo, 5, 3, 3, "img/rage.png", "Augmente les dommages de 5 pour 3 tours");
 fireball = new sort("FIREBALL", "Boule de feu", 5, 8, 12, 2, 4, 1, null, "Case", 1, pasdEffet, 0, 0, 0, "img/fireball.png", "Une boule de feu tout ce qu'il y a de plus classique");
 mjtp = new sort("MJTP", "mjtp", 0, 0, 0, 1, 1000, 0, null, "Case", 0, effetTP, 0, 0, 0, "img/tp.jpg", "Téléporte. Faites le en direction des ennemis pour un effet de surprise !");
-mjdoom = new sort("DOOM", "Doom", 0, 1000, 1000, 0, 100, 1, null, "Case", 0, pasdEffet, 0, 0, 0, "img/doom.jpg", "BOOOOOM");
+mjdoom = new sort("DOOM", "Doom", 0, 1000, 1000, 0, 100, 1, null, "Croix", 0, pasdEffet, 0, 0, 0, "img/doom.jpg", "BOOOOOM");
 gifle = new sort("GIFLE", "Gifle", 1, 1, 1, 1, 1, 0, null, "Case", 1, pasdEffet, 0, 0, 0, "img/gifle.png", "Met une petite claque humiliante à la cible");
 pansements = new sort("PANSEMENTS", "Pansements", 4, 0, 0, 0, 0, 1, null, "Case", 1, effetSoin, 10, 0, 1000, "img/pansement.png", "Un petit pansement et ça va mieux, soigne de 10 PV");
-ecrasement = new sort("ECRASEMENT", "Ecrasement", 6, 15, 30, 2, 2, 0, null, "Case", 1, pasdEffet, 0, 0, 0, "img/hammer.png", "Aïe, ça doit faire mal");
+ecrasement = new sort("ECRASEMENT", "Ecrasement", 5, 15, 30, 2, 2, 0, null, "Croix", 1, pasdEffet, 0, 0, 0, "img/hammer.png", "Un bon coup de marteau en zone Croix");
 flash = new sort("FLASH", "Flash", 1, 0, 0, 1, 2, 0, null, "Case", 0, effetTP, 0, 0, 6, "img/flash.png", "Téléporte. Faites le en direction des ennemis pour un effet de surprise !");
 invoquerOgre = new sort("INVOC_OGRE", "Invocation d'Ogre", 6, 0, 0, 1, 1, 1, null, "Case", 1, effetInvocOgre, 0, 0, 10, "img/invoc.jpg", "Invoque un Ogre affamé");
 invoquerKang = new sort("INVOC_Kang", "Invocation de Chevre", 5, 0, 0, 1, 1, 1, null, "Case", 1, effetInvocKang, 0, 0, 6, "img/goatspell.png", "Invoque une chevre qui pousse les ennemis");
 mjposerBoite = new sort("MJPOSERBOITE", "mjposerboite", 0, 0, 0, 1, 1000, 0, null, "Case", 0, pasdEffet, 0, 0, 0, "img/boite.png", "Pose une boite");
-poserBoite = new sort("POSER_BOITE", "Invocation de boite", 3, 0, 0, 1, 5, 1, null, "Case", 0, pasdEffet, 0, 0, 2, "img/boite.png", "Pose une boite");
+poserBoite = new sort("POSER_BOITE", "Invocation de tonneau", 3, 0, 0, 1, 5, 1, null, "Case", 0, pasdEffet, 0, 0, 2, "img/boite.png", "Pose un tonneau");
 diceThrow = new sort("DICETHROW", "Lancé de dé", 3, 1, 6, 1, 6, 1, null, "Case", 1, pasdEffet, 0, 0, 0, "img/dice.png", "Faites parler votre skill");
 feuint = new sort("FEU_INTERIEUR", "Feu intérieur", 2, 0, 0, 0, 0, 1, null, "Case", 1, effetBoostPCDo, 75, 2, 3, "img/feuint.png", "Augmente les % dommages de 75 pour 2 tours");
-poisonflech = new sort("FLECHETTE", "Fléchette empoisonnée", 4, 4, 5, 1, 4, 1, "Ligne", "Case", 0, effetPoison, 5, 2, 0, "img/dart.png", "Une flechette qui empoisonne de 5 pendant deux tours");
-kick = new sort("KICK", "High Kick", 3, 8, 10, 1, 1, 0, "Ligne", "Case", 1, effetPoussee, 3, 0, 0, "img/kick.png", "Repousse la cible de trois cases");
+poisonflech = new sort("FLECHETTE", "Fléchette empoisonnée", 5, 4, 5, 1, 3, 0, "Ligne", "Case", 0, effetPoison, 5, 2, 0, "img/dart.png", "Une flechette qui empoisonne de 5 pendant deux tours");
+kick = new sort("KICK", "High Kick", 3, 10, 12, 1, 1, 0, "Ligne", "Case", 1, effetPoussee, 3, 0, 0, "img/kick.png", "Repousse la cible de trois cases");
 grab = new sort("GRAB", "Grab", 3, 5, 7, 2, 7, 0, "Ligne", "Case", 1, effetGrab, 5, 0, 2, "img/grab.png", "Attire la cible de 5 cases");
 toile = new sort("TOILE", "Toile", 1, 0, 0, 2, 7, 1, null, "Case", 1, effetPMInstant, -2, 0, 0, "img/toile.png", "Ne fais pas de dégâts, mais retire jusqu'à 2 PM à la cible");
 pasltime = new sort("PASLTIME", "Pas l'time", 4, 8, 10, 2, 6, 1, "Ligne", "Case", 1, effetPAInstant, -3, 0, 0, "img/pasltime.png", "Distord la temporalité pour retirer jusqu'à 3 PA à la cible");
@@ -265,6 +265,8 @@ vague = new sort("VAGUE", "Vague déferlante", 5, 12, 20, 1, 3, 1, "Ligne", "Cas
 filet = new sort("FILET", "Filet", 4, 5, 7, 1, 3, 0, "Ligne", "Case", 1, effetFilet, 2, 0, 1, "img/net.png", "Retire jusqu'à 2 PM et repousse le lanceur dans la direction inverse");
 echange = new sort("ECHANGE", "Echange", 4, 0, 0, 1, 3, 0, null, "Case", 0, effetSwap, 0, 0, 3, "img/swap.png", "Échange de place avec la cible");
 vision = new sort("VISION", "Visions Astrales", 3, 0, 0, 0, 0, 1, null, "Case", 1, effetBoostPo, 5, 5, 5, "img/vision.png", "Augmente la portée de 5 pour 5 tours");
+petard = new sort("PETARD", "Pétard", 3, 4, 6, 3, 3, 1, null, "Croix", 0, pasdEffet, 0, 0, 0, "img/petard.png", "Lance un pétard sans ligne de vue qui explose en zone Croix");
+foudre = new sort("FOUDRE", "Foudre", 4, 7, 11, 1, 7, 1, "Ligne", "Croix", 1, pasdEffet, 0, 0, 0, "img/foudre.png", "Invoque la foudre en zone Croix");
 
 
 // sorts des mobs et boss uniquement
@@ -277,13 +279,13 @@ elasticite = new sort("ELASTICITE", "Elasticité", 0, 0, 0, 0, 0, 0, null, "Case
 globage = new sort("GLOBAGE", "Globage", 6, 0, 0, 1, 1, 0, null, "Case", 1, effetGlobage, 25, 0, 2, "img/cac.png", "OS la cible, se soigne et gagne 1 PM");
 
 
-var listeSorts = [pression, cac, missile, rage, fireball, pansements, diceThrow, ecrasement, flash, invoquerOgre, /*invoquerKang,*/ poserBoite, feuint, poisonflech, kick, toile, pasltime, sprint, vague, filet, echange, vision];
-var listeSortsAttaque = [pression, missile, fireball, diceThrow, ecrasement, poisonflech, kick, pasltime, vague];
-var listeSortsUtil = [rage, pansements, flash, invoquerOgre,/* invoquerKang,*/ poserBoite, feuint, toile, sprint, filet, echange, vision];
+var listeSorts = [pression, cac, missile, rage, fireball, pansements, diceThrow, ecrasement, flash, invoquerOgre, invoquerKang, poserBoite, feuint, poisonflech, kick, toile, pasltime, sprint, vague, filet, echange, vision, petard,foudre];
+var listeSortsAttaque = [pression, missile, fireball, diceThrow, ecrasement, poisonflech, kick, pasltime, vague, petard,foudre];
+var listeSortsUtil = [rage, pansements, flash, invoquerOgre, invoquerKang, poserBoite, feuint, toile, sprint, filet, echange, vision,];
 
 
 // Entites  nom, PAmax, PMmax, PVmax, POBonus, sorts, side, ia, bonusDo, pourcentDo, skin, poids
-player = new entite("Player", 6, 3, 50, 0, [cac, ], "ALLY", null, 0, 0, "img/anime/skins/WitchHuntersLeader.png", 0); // player
+player = new entite("Player", 6, 3, 50, 0, [cac,], "ALLY", null, 0, 0, "img/anime/skins/WitchHuntersLeader.png", 0); // player
 
 mannequin = new entite("Mannequin", 4, 1, 10, 0, [cac], "ENEMY", iaDebile, 0, 0, "img/mannequin.png", 1);
 ogre = new entite("Ogre", 9, 2, 50, 0, [cac, rage], "ENEMY", iaDebile, 0, 0, "img/anime/Forest Ogre Orkgre.png", 3);
@@ -295,7 +297,7 @@ nain = new entite("Nain", 9, 3, 40, 0, [ecrasement, cac, ], "ENEMY", iaRangeMoin
 apprentiSorcier = new entite("Apprenti sorcier", 3, 2, 15, 0, [diceThrow], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/anime/Boss Spirit Fighter.png", 3);
 chien = new entite("Chien zombie", 10, 4, 35, 0, [cac, flash, rage], "ENEMY", iaDebile, 0, 0, "img/anime/Boss Hellhound Garm.png", 8);
 bot = new entite("Mysterieux robot", 10, 3, 100, 0, [grab, cac], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/bot.png", 9)
-ranger = new entite("Dryade", 8, 4, 95, 0, [poisonflech], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/anime/Dryads Archer.png", 18);
+ranger = new entite("Dryade", 10, 4, 95, 0, [poisonflech], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/anime/Dryads Archer.png", 18);
 minorspider = new entite("Petite Araignée", 5, 3, 15, 0, [toilecd, cac], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/anime/Forest Red Spider.png", 2);
 sirene = new entite("Sirène", 8, 4, 110, 0, [vague, feuint], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/anime/Boss Sea Mermaid Warrior Undeen.png", 13);
 tempSpider = new entite("Araignée Temporelle", 8, 5, 150, 0, [pasltime, toilecd, flash], "ENEMY", iaRangeMoinsDebile, 0, 0, "img/anime/Clockwork Spider.png", 21);
@@ -342,6 +344,8 @@ toilecd.animation = { path: "img/anim_toile.png", width: 50, height: 50, nb: 1 }
 pasltime.animation = { path: "img/anim_time.png", width: 50, height: 50, nb: 1 };
 vague.animation = { path: "img/anim_vague.png", width: 70, height: 70, nb: 10 };
 ecrasement.animation = { path: "img/anim_marteau.png", width: 100, height: 100, nb: 1 };
+petard.animation = { path: "img/anim_petard.png", width: 40, height: 70, nb: 1 };
+foudre.animation = { path: "img/anim_foudre.png", width: 60, height: 80, nb: 1 };
 
 // liste des skins
 let listeSkins = [
@@ -353,6 +357,14 @@ let listeSkins = [
     { obtention: 63, nom: "Mecha Dracozord", lien: `img/skins/RobotDracozord.png` },
     { obtention: 101, nom: "Hades", lien: `img/skins/BossHades.png` }
 
+]
+
+let groundList =[
+    { obtention: 0, nom: "Défaut", class: "dirt" ,lien: `img/grounds/dirt.png`, select: 1 }, // select par défaut
+    { obtention: 50, nom: "Desert", class: "sand" ,lien: `img/grounds/sand.png` },
+    { obtention: 150, nom: "Prairie", class: "grass" ,lien: `img/grounds/grass.png` },
+    { obtention: 500, nom: "Jungle", class: "jungle" ,lien: `img/grounds/jungle.png` },
+    { obtention: 1000, nom: "Rivière", class: "water" ,lien: `img/grounds/water.png` },
 ]
 
 // effets speciaux de la game
@@ -438,8 +450,8 @@ mapRoulette.effetCell = function (cell, lanceur) {
     // tableau des effets
     switch (this.actifs[effet]) {
         case "degat":
-            setTimeout(() => ajouterAuChatType("La roulette n'est pas en votre faveur, vous perdez 50% de votre vie!", 0), text_delay);
-            player.PVact -= player.PVact / 2;
+            setTimeout(() => ajouterAuChatType("La roulette n'est pas en votre faveur, vous perdez 25% de votre vie!", 0), text_delay);
+            player.PVact -= player.PVact / 4;
             player.PVact = Math.round(player.PVact); // arrondi superieur la chance
             break;
         case "po":

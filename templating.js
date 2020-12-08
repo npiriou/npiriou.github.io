@@ -40,6 +40,10 @@ var template =
 <tr>
     <th>Chances de coup critique</th>
     <td>{9}%</td>
+    </tr>
+    <tr>
+    <th>Effets</th>
+    <td class='smallerText'>{10}</td>
 </tr>`;
 
 

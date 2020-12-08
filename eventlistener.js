@@ -64,7 +64,8 @@ function onClickBonus(bouton) {
             break;
         case "buttonPVmax": player.PVmax += 10; player.PVact += 10;
             break;
-        case "buttonHeal": player.PVact = player.PVmax;
+        case "buttonHeal": player.PVact +=50; 
+        if (player.PVact > player.PVmax) player.PVact = player.PVmax;
             break;
         case "buttonPA": player.PAmax++; player.PAact++;
             break;
@@ -72,7 +73,8 @@ function onClickBonus(bouton) {
             break;
         case "buttonPO": player.POBonus++;
             break;
-        case "buttonHealPV": player.PVmax += 10; player.PVact = player.PVmax;
+        case "buttonHealPV": player.PVmax += 10; player.PVact +=60; 
+        if (player.PVact > player.PVmax) player.PVact = player.PVmax;
             break;
         case "buttonAttGlu": game.effets.push(effetAttGlu);
             break;

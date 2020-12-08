@@ -246,8 +246,9 @@
                 Vos sorts se trouvent à gauche de la grille.</br>
                 Quand vous avez terminé vos actions, passez au tour suivant en cliquant sur le bouton "Passer".</br>
                 Raccourcis clavier : 1,2,3... ou A,Z,E,... pour les sorts, Espace pour passer le tour.</br>
-                </br>Dernière maj le 14/11:</br>
-                <span><a href="credits.html" onclick="window.open(this.href); return false;">Notes de patch et crédits</a>
+                </br>Dernière maj le 08/12:</br>
+                <span><a href="credits.html" onclick="window.open(this.href); return false;">Notes de patch et
+                        crédits</a>
                     <br /></span>
 
             </p>
@@ -265,9 +266,10 @@
                 </div>
                 <div class="modal-body row">
                     <div class="col arrow">
-                      <div class='divBtnArrow'>  <button id="arrowleft" type="button" class="btn btn-warning choice"
-                            onclick="scrollSkin('left')"> <img class='svg' src="img/arrowleft.png"></img>
-                        </button></div></div>
+                        <div class='divBtnArrow'> <button id="arrowleft" type="button" class="btn btn-warning choice"
+                                onclick="scrollSkin('left')"> <img class='svg' src="img/arrowleft.png"></img>
+                            </button></div>
+                    </div>
                     <div class="col">
                         <div id="divSkin"> <img class='chooseSkin' src="img/skins/WitchHuntersLeader.png"></img>
                         </div>
@@ -275,154 +277,188 @@
                         </div>
                         <div id="divSkinObt">
                         </div>
-                        <div id="divBoutonJouer"><button id="boutonJouer" type="button" class="btn btn-warning choice "
-                                data-dismiss="modal" onclick="onClicJouer()">Jouer
-                            </button>
-                        </div>
+                        
                     </div>
                     <div class="col arrow">
                         <div class='divBtnArrow'>
-                        <button id="arrowleft" type="button" class="btn btn-warning choice"
-                            onclick="scrollSkin('right')"> <img class='svg' src="img/arrowright.png"></img>
-                        </button></div></div>
+                            <button id="arrowleft" type="button" class="btn btn-warning choice"
+                                onclick="scrollSkin('right')"> <img class='svg' src="img/arrowright.png"></img>
+                            </button></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-
-
+                    <div class="modal-body row">
+                        <div class="col arrow">
+                            <div class='divBtnArrow'> <button id="arrowleftGround" type="button"
+                                    class="btn btn-warning choice" onclick="scrollSkin('left','ground')"> <img class='svg'
+                                        src="img/arrowleft.png"></img>
+                                </button></div>
+                        </div>
+                        <div class="col">
+                            <div id="divSkinGround"> <img class='chooseSkinGround' src="img/grounds/dirt.png"></img>
+                            </div><br/>
+                            <div id="divNomSkinGround">Défaut
+                            </div>
+                            <div id="divSkinObtGround">
+                            </div>
+                            <div id="divBoutonJouer"><button id="boutonJouer" type="button" class="btn btn-warning choice "
+                                    data-dismiss="modal" onclick="onClicJouer()">Jouer
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col arrow">
+                            <div class='divBtnArrow'>
+                                <button id="arrowleftGround" type="button" class="btn btn-warning choice"
+                                    onclick="scrollSkin('right','ground')"> <img class='svg' src="img/arrowright.png"></img>
+                                </button></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modalChooseBonus" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header d-flex justify-content-center">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Bien joué ! Choisissez un bonus :</h5>
-                </div>
-                <div class="modal-body">
-                    <div class=" bouton_bon  bouton_bonus"><button id="buttonDo" type="button" class="btn btn-warning choice"
-                            data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/biceps.svg' /></div>
-                            <div class='bonusTxt'> +1 dommage</div>
-                        </button></div>
-                    <div class=" bouton_bon  bouton_bonus"><button id="buttonPourcentDo" type="button"
-                            class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/growth.svg' /></div>
-                            <div class='bonusTxt'>  +15% dommages</div>
-                        </button></div>
-                    <div class=" bouton_bon  bouton_bonus"><button id="buttonPVmax" type="button" class="btn btn-warning choice"
-                            data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/health-normal.svg' /></div>
-                            <div class='bonusTxt'> +10 PV maximum</div>
-                        </button></div>
-                    <div class=" bouton_bon  bouton_bonus"><button id="buttonHeal" type="button" class="btn btn-warning choice"
-                            data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/remedy.svg' /></div>
-                            <div class='bonusTxt'>  Récupérer tous mes PV</div>
-                        </button></div>
-                    <div class="  bouton_bon bouton_bonus"><button id="buttonNouveauSortA" type="button"
-                            class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/stabbed-note.svg' /></div>
-                            <div class='bonusTxt'>  Nouveau sort d'attaque</div>
-                        </button></div>
-                    <div class="  bouton_bon bouton_bonus"><button id="buttonNouveauSortU" type="button"
-                            class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/spell-book.svg' /></div>
-                            <div class='bonusTxt'>  Nouveau sort utilitaire</div>
-                        </button></div>
-                    <div class=" bouton_bon bouton_bonus"><button id="buttonCrit" type="button" class="btn btn-warning choice"
-                            data-dismiss="modal" data-toggle="tooltip" data-placement="top"
-                            title="Les coups critiques augmentent les dégâts de base des sorts de 50%"
-                            onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/revolt.svg' /></div>
-                            <div class='bonusTxt'> +15% de chances de coup critique</div>
-                        </button></div>
-                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonPA" type="button"
-                            class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/polar-star.svg' /> </div>
-                            <div class='bonusTxt'>  +1 PA</div>
-                        </button></div>
-                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonPM" type="button"
-                            class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/boots.svg' /></div>
-                            <div class='bonusTxt'> +1 PM</div>
-                        </button></div>
-                    <div class=" bouton_bon  bouton_bonus_rare"><button id="buttonPO" type="button"
-                            class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div class='bonusIco'><img class='svg' src='img/ico/eye-target.svg' /> </div>
-                            <div class='bonusTxt'>  +1 de Portée</div>
-                        </button></div>
-                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonHealPV" type="button"
-                            class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div class='bonusIco'><img class='svg' src='img/ico/health-increase.svg' /></div>
-                            <div class='bonusTxt'>  +10 PV maximum et récupérer tous mes PV</div>
-                        </button></div>
-                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonAttGlu" type="button"
-                            class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
-                            data-placement="top" title="20% de chances de retirer un PM à la cible à chaque attaque"
-                            onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/sticky-boot.svg' /> </div>
-                            <div class='bonusTxt'> Attaques gluantes</div>
-                        </button></div>
-                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonAttGla" type="button"
-                            class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
-                            data-placement="top" title="33% de chances de retirer un PA à la cible à chaque attaque"
-                            onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/ice-spell-cast.svg' /> </div>
-                            <div class='bonusTxt'> Attaques glacees</div>
-                        </button></div>
-                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonAttPois" type="button"
-                            class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
-                            data-placement="top"
-                            title="Chaque attaque a 33% de chances d'empoisonner la cible pour deux tours, 1 dommage de base"
-                            onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/poison-bottle.svg' /> </div>
-                            <div class='bonusTxt'> Attaques empoisonnées</div>
-                        </button></div>
-                    <div class="  bouton_bon bouton_bonus_rare"><button id="buttonCharo" type="button"
-                            class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
-                            data-placement="top" title="Quand vous tuez un ennemi, récupérez 2 PV"
-                            onclick="onClickBonus(this)">
-                            <div class='bonusIco'> <img class='svg' src='img/ico/front-teeth.svg' /></div>
-                            <div class='bonusTxt'> Charognard</div>
-                        </button></div>
+        <div class="modal fade" id="modalChooseBonus" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-center">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Bien joué ! Choisissez un bonus :</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class=" bouton_bon  bouton_bonus"><button id="buttonDo" type="button"
+                                class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/biceps.svg' /></div>
+                                <div class='bonusTxt'> +1 dommage</div>
+                            </button></div>
+                        <div class=" bouton_bon  bouton_bonus"><button id="buttonPourcentDo" type="button"
+                                class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/growth.svg' /></div>
+                                <div class='bonusTxt'> +15% dommages</div>
+                            </button></div>
+                        <div class=" bouton_bon  bouton_bonus"><button id="buttonPVmax" type="button"
+                                class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/health-normal.svg' /></div>
+                                <div class='bonusTxt'> +10 PV maximum</div>
+                            </button></div>
+                        <div class=" bouton_bon  bouton_bonus"><button id="buttonHeal" type="button"
+                                class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/remedy.svg' /></div>
+                                <div class='bonusTxt'> Récupérer jusqu'à 50 PV</div>
+                            </button></div>
+                        <div class="  bouton_bon bouton_bonus"><button id="buttonNouveauSortA" type="button"
+                                class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/stabbed-note.svg' /></div>
+                                <div class='bonusTxt'> Nouveau sort d'attaque</div>
+                            </button></div>
+                        <div class="  bouton_bon bouton_bonus"><button id="buttonNouveauSortU" type="button"
+                                class="btn btn-warning choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/spell-book.svg' /></div>
+                                <div class='bonusTxt'> Nouveau sort utilitaire</div>
+                            </button></div>
+                        <div class=" bouton_bon bouton_bonus"><button id="buttonCrit" type="button"
+                                class="btn btn-warning choice" data-dismiss="modal" data-toggle="tooltip"
+                                data-placement="top"
+                                title="Les coups critiques augmentent les dégâts de base des sorts de 50%"
+                                onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/revolt.svg' /></div>
+                                <div class='bonusTxt'> +15% de chances de coup critique</div>
+                            </button></div>
+                        <div class="  bouton_bon bouton_bonus_rare"><button id="buttonPA" type="button"
+                                class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/polar-star.svg' /> </div>
+                                <div class='bonusTxt'> +1 PA</div>
+                            </button></div>
+                        <div class="  bouton_bon bouton_bonus_rare"><button id="buttonPM" type="button"
+                                class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/boots.svg' /></div>
+                                <div class='bonusTxt'> +1 PM</div>
+                            </button></div>
+                        <div class=" bouton_bon  bouton_bonus_rare"><button id="buttonPO" type="button"
+                                class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                                <div class='bonusIco'><img class='svg' src='img/ico/eye-target.svg' /> </div>
+                                <div class='bonusTxt'> +1 de Portée</div>
+                            </button></div>
+                        <div class="  bouton_bon bouton_bonus_rare"><button id="buttonHealPV" type="button"
+                                class="btn btn-success choice" data-dismiss="modal" onclick="onClickBonus(this)">
+                                <div class='bonusIco'><img class='svg' src='img/ico/health-increase.svg' /></div>
+                                <div class='bonusTxt'> +10 PV maximum et récupérer jusqu'à 50 PV</div>
+                            </button></div>
+                        <div class="  bouton_bon bouton_bonus_rare"><button id="buttonAttGlu" type="button"
+                                class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
+                                data-placement="top" title="20% de chances de retirer un PM à la cible à chaque attaque"
+                                onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/sticky-boot.svg' /> </div>
+                                <div class='bonusTxt'> Attaques gluantes</div>
+                            </button></div>
+                        <div class="  bouton_bon bouton_bonus_rare"><button id="buttonAttGla" type="button"
+                                class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
+                                data-placement="top" title="33% de chances de retirer un PA à la cible à chaque attaque"
+                                onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/ice-spell-cast.svg' /> </div>
+                                <div class='bonusTxt'> Attaques glacees</div>
+                            </button></div>
+                        <div class="  bouton_bon bouton_bonus_rare"><button id="buttonAttPois" type="button"
+                                class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
+                                data-placement="top"
+                                title="Chaque attaque a 33% de chances d'empoisonner la cible pour deux tours, 1 dommage de base"
+                                onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/poison-bottle.svg' /> </div>
+                                <div class='bonusTxt'> Attaques empoisonnées</div>
+                            </button></div>
+                        <div class="  bouton_bon bouton_bonus_rare"><button id="buttonCharo" type="button"
+                                class="btn btn-success choice" data-dismiss="modal" data-toggle="tooltip"
+                                data-placement="top" title="Quand vous tuez un ennemi, récupérez 2 PV"
+                                onclick="onClickBonus(this)">
+                                <div class='bonusIco'> <img class='svg' src='img/ico/front-teeth.svg' /></div>
+                                <div class='bonusTxt'> Charognard</div>
+                            </button></div>
 
-                    <!-- bonus choix de classe -->
-                    <div class="  bouton_bon bouton_bonus_classe"><button id="buttonGuerrier" type="button"
-                            class="btn btn-danger choice bouton_bonus_classe" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div><strong>Gladiateur</strong></br>Sort Pression</br>Sort Filet</br>+ 10 PV max </div></button></div>
-                    <div class=" bouton_bon  bouton_bonus_classe"><button id="buttonMage" type="button"
-                            class="btn btn-info choice bouton_bonus_classe" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div> <strong>Mage</strong></br>Sort Boule de feu</br>+ 30 % Dommages</div></button></div>
-                    <div class=" bouton_bon  bouton_bonus_classe"><button id="buttonChatteux" type="button"
-                            class="btn btn-success choice bouton_bonus_classe" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div><strong>Chatteux</strong></br>Sort Lancé de dé</br>+30% de chances de coup critique
-                        </div> </button> </div>
-                    <div class="  bouton_bon bouton_bonus_classe"><button id="buttonIndecis" type="button"
-                            class="btn btn-primary choice bouton_bonus_classe" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div> <strong>Oracle</strong></br>Sort d'attaque aléatoire</br>Sort utilitaire aléatoire</br>
-                            1 Bonus Rare aléatoire</div></button></div>
-                    <div class=" bouton_bon bouton_bonus_classe"><button id="buttonLache" type="button"
-                            class="btn btn-dark choice bouton_bonus_classe" data-dismiss="modal" onclick="onClickBonus(this)">
-                            <div> <strong>Lâche</strong></br>Sort Invocation d'Ogre</br>+ 1 PM</div></button></div>
-                </div>
-                <div class="modal-footer">
+                        <!-- bonus choix de classe -->
+                        <div class="  bouton_bon bouton_bonus_classe"><button id="buttonGuerrier" type="button"
+                                class="btn btn-danger choice bouton_bonus_classe" data-dismiss="modal"
+                                onclick="onClickBonus(this)">
+                                <div><strong>Gladiateur</strong></br>Sort Pression</br>Sort Filet</br>+ 10 PV max </div>
+                            </button></div>
+                        <div class=" bouton_bon  bouton_bonus_classe"><button id="buttonMage" type="button"
+                                class="btn btn-info choice bouton_bonus_classe" data-dismiss="modal"
+                                onclick="onClickBonus(this)">
+                                <div> <strong>Mage</strong></br>Sort Boule de feu</br>+ 30 % Dommages</div>
+                            </button></div>
+                        <div class=" bouton_bon  bouton_bonus_classe"><button id="buttonChatteux" type="button"
+                                class="btn btn-success choice bouton_bonus_classe" data-dismiss="modal"
+                                onclick="onClickBonus(this)">
+                                <div><strong>Chatteux</strong></br>Sort Lancé de dé</br>+30% de chances de coup critique
+                                </div>
+                            </button> </div>
+                        <div class="  bouton_bon bouton_bonus_classe"><button id="buttonIndecis" type="button"
+                                class="btn btn-primary choice bouton_bonus_classe" data-dismiss="modal"
+                                onclick="onClickBonus(this)">
+                                <div> <strong>Oracle</strong></br>Sort d'attaque aléatoire</br>Sort utilitaire
+                                    aléatoire</br>
+                                    1 Bonus Rare aléatoire</div>
+                            </button></div>
+                        <div class=" bouton_bon bouton_bonus_classe"><button id="buttonLache" type="button"
+                                class="btn btn-dark choice bouton_bonus_classe" data-dismiss="modal"
+                                onclick="onClickBonus(this)">
+                                <div> <strong>Lâche</strong></br>Sort Invocation d'Ogre</br>+ 1 PM</div>
+                            </button></div>
+                    </div>
+                    <div class="modal-footer">
 
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id='modalPortrait' class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" 
-    aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-          <div class="modal-content">
-            Le jeu est fait pour être joué en mode paysage, tourne ton téléphone ;)
-          </div>
+        <div id='modalPortrait' class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog"
+            aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    Le jeu est fait pour être joué en mode paysage, tourne ton téléphone ;)
+                </div>
+            </div>
         </div>
-      </div>
-    <footer></footer>
+        <footer></footer>
 </body>
 
 <script src="jquery.touchSwipe.min.js"></script>

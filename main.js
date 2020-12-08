@@ -12,6 +12,7 @@ game.sortActif = null;
 game.mobActif = null;
 game.level = 0;
 game.effets=[];
+game.totalKills=0;
 
 
 charger();
