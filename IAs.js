@@ -1,5 +1,4 @@
 function pathfinding(Xdep, Ydep, Xarr, Yarr, listeAEnlever = []) {
-
     let graph = [];
     var i, j, temparray, chunk = 10;
     for (i = 0, j = tabCells.length; i < j; i += chunk) {
