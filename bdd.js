@@ -1497,7 +1497,7 @@ let listeSkins = [
     obtention: 0,
     nom: "Défaut",
     lien: `img/skins/WitchHuntersLeader.png`,
-    select: 1,
+    select: true,
   }, // select par défaut
   {
     obtention: 10,

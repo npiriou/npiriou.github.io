@@ -959,13 +959,13 @@ const onClicJouer = () => {
 
   for (let i = 0; i < listeSkins.length; i++) {
     // on retrouve quel skin est actuellement sélectionné
-    if (listeSkins[i].select === 1) {
+    if (listeSkins[i].select === true) {
       numSkinSelect = i;
     }
   }
   for (let i = 0; i < groundList.length; i++) {
     // on retrouve quel skin de map est actuellement sélectionné
-    if (groundList[i].select == 1) {
+    if (groundList[i].select === true) {
       numSkinSelectGround = i;
     }
   }
