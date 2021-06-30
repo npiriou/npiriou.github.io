@@ -404,6 +404,7 @@ const charger = () => {
   player.pourcentDo = chargement.player.pourcentDo;
   player.pourcentCrit = chargement.player.pourcentCrit;
   player.skin = chargement.player.skin;
+  game.map = chargement.map
 
   for (let i = 0; i < chargement.effets.length; i++) {
     let effet = listeGameEffets.filter(
@@ -956,6 +957,7 @@ const onClicJouer = () => {
   let record = loadRecord(); // return 0 si pas de record
   let nbKills = loadKills();
   let numSkinSelect = 0;
+  let numSkinSelectGround = 0;
 
   for (let i = 0; i < listeSkins.length; i++) {
     // on retrouve quel skin est actuellement sélectionné
